@@ -182,7 +182,19 @@ export async function updateAiModelAction(formData: FormData) {
 
 export async function generateAiArticleAction() {
   await requireAdmin();
-  const result = await generateDailyArticle({ force: true });
+
+  let result;
+
+  try {
+    result = await generateDailyArticle({ force: true });
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "The AI article generator failed unexpectedly.";
+
+    redirect(`/admin/articles?error=${encodeURIComponent(message)}`);
+  }
 
   if (result.status === "created") {
     revalidatePublicContent(result.article.slug);

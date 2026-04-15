@@ -1,15 +1,24 @@
 import Link from "next/link";
 
 import { AdminShell } from "@/components/admin/admin-shell";
+import { GenerateAiArticleForm } from "@/components/admin/generate-ai-article-form";
 import { requireAdmin } from "@/lib/auth/options";
+import { formatArticleDate } from "@/lib/cms/helpers";
 import { listArticles } from "@/lib/cms/storage";
 import { deleteArticleAction, generateAiArticleAction } from "@/app/admin/actions";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminArticlesPage() {
+export default async function AdminArticlesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ skipped?: string; error?: string }>;
+}) {
   const session = await requireAdmin();
-  const articles = await listArticles({ includeDrafts: true });
+  const [articles, params] = await Promise.all([
+    listArticles({ includeDrafts: true }),
+    searchParams,
+  ]);
 
   return (
     <AdminShell
@@ -18,21 +27,28 @@ export default async function AdminArticlesPage() {
       currentPath="/admin/articles"
       userLabel={session.username}
     >
-      <div className="flex flex-wrap gap-3">
-        <Link
-          href="/admin/articles/new"
-          className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
-        >
-          New article
-        </Link>
-        <form action={generateAiArticleAction}>
-          <button
-            type="submit"
-            className="rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
+      {params.skipped ? (
+        <div className="rounded-[1.75rem] border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+          An AI-generated article for today already exists, so a second one was not created.
+        </div>
+      ) : null}
+
+      {params.error ? (
+        <div className="rounded-[1.75rem] border border-red-200 bg-red-50 px-5 py-4 text-sm leading-7 text-red-800">
+          {params.error}
+        </div>
+      ) : null}
+
+      <div className="space-y-4">
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/admin/articles/new"
+            className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
           >
-            Generate daily AI article now
-          </button>
-        </form>
+            New article
+          </Link>
+          <GenerateAiArticleForm action={generateAiArticleAction} />
+        </div>
       </div>
 
       <div className="space-y-4">
@@ -45,6 +61,9 @@ export default async function AdminArticlesPage() {
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
                   {article.status} · {article.aiGenerated ? "AI-assisted" : "Manual"}
+                </p>
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-muted)]">
+                  {formatArticleDate(article.status === "published" ? article.publishedAt : article.updatedAt)}
                 </p>
                 <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
                   {article.title}

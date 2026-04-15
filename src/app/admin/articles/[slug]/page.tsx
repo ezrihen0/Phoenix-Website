@@ -11,11 +11,13 @@ export const dynamic = "force-dynamic";
 
 export default async function EditArticlePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ generated?: string; saved?: string }>;
 }) {
   const session = await requireAdmin();
-  const { slug } = await params;
+  const [{ slug }, pageState] = await Promise.all([params, searchParams]);
   const article = await getArticleBySlug(slug, { includeDrafts: true });
 
   if (!article) {
@@ -29,6 +31,18 @@ export default async function EditArticlePage({
       currentPath="/admin/articles"
       userLabel={session.username}
     >
+      {pageState.generated ? (
+        <div className="rounded-[1.75rem] border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
+          AI article created. Review the draft, make any edits you want, and save when you are ready.
+        </div>
+      ) : null}
+
+      {pageState.saved ? (
+        <div className="rounded-[1.75rem] border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
+          Article saved.
+        </div>
+      ) : null}
+
       <ArticleEditor article={article} />
     </AdminShell>
   );

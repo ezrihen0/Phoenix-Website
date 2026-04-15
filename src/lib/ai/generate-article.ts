@@ -46,12 +46,31 @@ function buildPromptContext(existingArticles: Article[]) {
   };
 }
 
+async function readOpenAiError(response: Response) {
+  const fallback = `OpenAI request failed with status ${response.status}`;
+
+  try {
+    const data = (await response.json()) as {
+      error?: {
+        message?: string;
+      };
+    };
+
+    if (data.error?.message) {
+      return `${fallback}: ${data.error.message}`;
+    }
+
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 async function requestOpenAiArticle(
   topicHint: string,
   recentArticles: Article[],
 ): Promise<GeneratedArticleDraft> {
   const apiKey = process.env.OPENAI_API_KEY;
-  const model = process.env.OPENAI_MODEL || "gpt-4.1";
 
   if (!apiKey) {
     throw new Error("OPENAI_API_KEY is not configured.");
@@ -59,6 +78,7 @@ async function requestOpenAiArticle(
 
   const context = buildPromptContext(recentArticles);
   const settings = await getSiteSettings();
+  const model = settings.aiModel || process.env.OPENAI_MODEL || "gpt-4.1";
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -72,13 +92,13 @@ async function requestOpenAiArticle(
       messages: [
         {
           role: "system",
-          content: settings.aiSystemPrompt,
+          content: `${settings.aiSystemPrompt}\n\nReturn only valid JSON that matches the requested output shape. Do not wrap the JSON in markdown fences.`,
         },
         {
           role: "user",
           content: JSON.stringify({
             goal:
-              "Write a fresh daily SEO article for a Calgary fireplace and chimney service website. Use clean markdown. Include helpful internal links to service pages and natural references to related existing articles. Avoid duplicate topics.",
+              "Write a fresh daily SEO article for a Calgary fireplace and chimney service website. Use clean markdown inside the body field. Include helpful internal links to service pages and natural references to related existing articles. Avoid duplicate topics. Return a JSON object only.",
             topicHint,
             targetAudience: "Calgary homeowners and property buyers",
             outputShape: {
@@ -99,7 +119,7 @@ async function requestOpenAiArticle(
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI request failed with status ${response.status}`);
+    throw new Error(await readOpenAiError(response));
   }
 
   const data = (await response.json()) as {
@@ -127,6 +147,7 @@ async function requestOpenAiArticle(
 
 export async function generateDailyArticle(options?: { force?: boolean }) {
   const existingArticles = await listArticles({ includeDrafts: true });
+  const settings = await getSiteSettings();
   const today = new Date().toISOString().slice(0, 10);
 
   const duplicateForToday = existingArticles.find((article) => {
@@ -165,7 +186,7 @@ export async function generateDailyArticle(options?: { force?: boolean }) {
     keywords: draft.keywords,
     relatedSlugs,
     status: "published",
-    authorName: (await getSiteSettings()).defaultAuthorName,
+    authorName: settings.defaultAuthorName,
     createdAt: now,
     updatedAt: now,
     publishedAt: now,
