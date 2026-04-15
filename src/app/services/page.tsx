@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
 
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { getSiteSettings } from "@/lib/cms/storage";
 import {
   buildBreadcrumbSchema,
   buildServiceSchema,
   createPageMetadata,
 } from "@/lib/seo";
-import { services, siteConfig } from "@/lib/site-data";
+import { services } from "@/lib/site-data";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Fireplace & Chimney Services Calgary | Gas, Wood, WETT & Masonry",
@@ -24,7 +26,9 @@ export const metadata: Metadata = createPageMetadata({
   ],
 });
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const siteSettings = await getSiteSettings();
+
   return (
     <>
       <StructuredData
@@ -41,11 +45,14 @@ export default function ServicesPage() {
 
       <section className="section-pad pb-10">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
-          <SectionHeading
-            eyebrow="Calgary service scope"
-            title="Repair, inspection, sweeping, and masonry without hopping between contractors."
-            description="The original site split these services into stacked Elementor sections. This rebuild keeps the same scope but gives each service clearer framing, benefits, and next steps."
-          />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Calgary service scope"
+              title="Repair, inspection, sweeping, and masonry without hopping between contractors."
+              description="Fireplace repair, WETT inspections, chimney sweeping, and masonry service handled by one local team with clear next steps for each visit."
+            />
+          </Reveal>
+          <Reveal delay={120}>
           <div className="rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-card)] p-8">
             <p className="text-sm leading-7 text-[var(--color-muted)]">
               Every visit starts with the problem you are actually seeing: ignition failure, poor draft,
@@ -54,7 +61,7 @@ export default function ServicesPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href={siteConfig.workizUrl}
+                href={siteSettings.workizUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
@@ -62,7 +69,7 @@ export default function ServicesPage() {
                 Book online
               </a>
               <a
-                href={`tel:${siteConfig.phoneHref}`}
+                href={`tel:${siteSettings.phoneHref}`}
                 className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
               >
                 <Phone className="h-4 w-4" />
@@ -70,14 +77,16 @@ export default function ServicesPage() {
               </a>
             </div>
           </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="pb-20">
         <div className="page-frame space-y-8">
           {services.map((service, index) => (
+            <Reveal key={service.slug} delay={index * 80}>
             <article
-              key={service.slug}
+              id={service.slug}
               className="overflow-hidden rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-card)] shadow-[0_20px_60px_rgba(31,26,22,0.07)]"
             >
               <div className={`grid gap-0 lg:grid-cols-2 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
@@ -108,7 +117,7 @@ export default function ServicesPage() {
                   </div>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <a
-                      href={siteConfig.workizUrl}
+                      href={siteSettings.workizUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
@@ -116,7 +125,7 @@ export default function ServicesPage() {
                       Schedule this service
                     </a>
                     <a
-                      href={`tel:${siteConfig.phoneHref}`}
+                      href={`tel:${siteSettings.phoneHref}`}
                       className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
                     >
                       Call for a quick diagnosis
@@ -126,6 +135,7 @@ export default function ServicesPage() {
                 </div>
               </div>
             </article>
+            </Reveal>
           ))}
         </div>
       </section>

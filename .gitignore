@@ -22,7 +22,13 @@
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
+*.log
+*.tmp
+*.temp
+*.orig
+*.rej
 
 # debug
 npm-debug.log*
@@ -30,11 +36,32 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files
+.env
+.env.local
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+.env.test.local
+!.env.example
 
 # vercel
 .vercel
+
+# tooling caches
+.cache/
+.turbo/
+
+# local CMS content store
+/data/cms/
+
+# editor folders
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
 
 # typescript
 *.tsbuildinfo

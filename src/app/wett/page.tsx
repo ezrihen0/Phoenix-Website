@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { CheckCircle2, ShieldCheck } from "lucide-react";
 
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { getSiteSettings } from "@/lib/cms/storage";
 import {
   buildBreadcrumbSchema,
   buildServiceSchema,
   createPageMetadata,
 } from "@/lib/seo";
-import { siteConfig, wettBenefits } from "@/lib/site-data";
+import { wettBenefits } from "@/lib/site-data";
 
 export const metadata: Metadata = createPageMetadata({
   title: "WETT Inspection Calgary | Insurance & Real-Estate Reports",
@@ -19,7 +21,9 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ["WETT inspection Calgary", "insurance fireplace inspection Calgary"],
 });
 
-export default function WettPage() {
+export default async function WettPage() {
+  const siteSettings = await getSiteSettings();
+
   return (
     <>
       <StructuredData
@@ -37,6 +41,7 @@ export default function WettPage() {
       />
 
       <section className="section-pad">
+        <Reveal>
         <div className="page-frame overflow-hidden rounded-[2.8rem] border border-[var(--color-border)] bg-[var(--color-ink)] text-[var(--color-paper)] shadow-[0_25px_80px_rgba(31,26,22,0.22)]">
           <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-6 p-8 sm:p-10 lg:p-12">
@@ -66,7 +71,7 @@ export default function WettPage() {
               </div>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={siteConfig.workizUrl}
+                  href={siteSettings.workizUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
@@ -74,7 +79,7 @@ export default function WettPage() {
                   Book WETT inspection
                 </a>
                 <a
-                  href={`tel:${siteConfig.phoneHref}`}
+                  href={`tel:${siteSettings.phoneHref}`}
                   className="rounded-full border border-white/16 px-5 py-3 text-sm font-semibold text-white"
                 >
                   Call for urgency questions
@@ -92,16 +97,19 @@ export default function WettPage() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       <section className="pb-20">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
           <div className="space-y-6">
-            <SectionHeading
-              eyebrow="Why a WETT inspection gets requested"
-              title="Most requests are driven by insurance, a purchase or sale, or uncertainty about a system's real condition."
-              description="The old site listed those scenarios plainly. This version keeps them but connects them to the practical outcome: a report the next decision can rely on."
-            />
+            <Reveal>
+              <SectionHeading
+                eyebrow="Why a WETT inspection gets requested"
+                title="Most requests are driven by insurance, a purchase or sale, or uncertainty about a system's real condition."
+                description="These are the situations where homeowners, buyers, sellers, and insurers usually need a report they can rely on."
+              />
+            </Reveal>
             <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
               <p className="text-sm leading-7 text-[var(--color-muted)]">
                 Our WETT workflow reviews appliance setup, clearances, flue condition,
@@ -115,14 +123,13 @@ export default function WettPage() {
               "Insurance provider requests and renewals",
               "New stove or insert installations",
               "Peace of mind after repairs or long periods without use",
-            ].map((item) => (
-              <div
-                key={item}
-                className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6"
-              >
-                <CheckCircle2 className="h-5 w-5 text-[var(--color-ember)]" />
-                <p className="mt-4 text-base leading-7 text-[var(--color-muted)]">{item}</p>
-              </div>
+            ].map((item, index) => (
+              <Reveal key={item} delay={index * 80}>
+                <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
+                  <CheckCircle2 className="h-5 w-5 text-[var(--color-ember)]" />
+                  <p className="mt-4 text-base leading-7 text-[var(--color-muted)]">{item}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -157,7 +164,7 @@ export default function WettPage() {
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={siteConfig.workizUrl}
+                  href={siteSettings.workizUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
@@ -165,7 +172,7 @@ export default function WettPage() {
                   Book inspection now
                 </a>
                 <a
-                  href={`tel:${siteConfig.phoneHref}`}
+                  href={`tel:${siteSettings.phoneHref}`}
                   className="rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
                 >
                   Call for report timing

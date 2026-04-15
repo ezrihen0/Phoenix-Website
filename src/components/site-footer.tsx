@@ -2,9 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Clock3, Mail, MapPinned, Phone } from "lucide-react";
 
-import { footerLinks, siteConfig } from "@/lib/site-data";
+import type { PublicSiteSettings } from "@/lib/cms/types";
+import { footerLinks } from "@/lib/site-data";
 
-export function SiteFooter() {
+type SiteFooterProps = {
+  settings: PublicSiteSettings;
+};
+
+export function SiteFooter({ settings }: SiteFooterProps) {
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-ink)] text-[var(--color-paper)]">
       <div className="page-bleed grid gap-10 px-4 py-14 lg:grid-cols-[1.15fr_0.85fr_0.9fr]">
@@ -22,19 +27,19 @@ export function SiteFooter() {
           </p>
           <div className="flex flex-wrap gap-3">
             <a
-              href={`tel:${siteConfig.phoneHref}`}
+              href={`tel:${settings.phoneHref}`}
               className="rounded-full border border-[rgba(255,255,255,0.22)] bg-[var(--color-gold)] px-4 py-2.5 text-sm font-semibold shadow-[0_12px_28px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5 hover:brightness-105"
               style={{ color: "var(--color-ink)" }}
             >
               Call now
             </a>
             <a
-              href={siteConfig.workizUrl}
+              href={settings.workizUrl}
               target="_blank"
               rel="noreferrer"
               className="rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold transition hover:border-white/40"
             >
-              Book with Workiz
+              {settings.bookingLabel}
             </a>
           </div>
         </div>
@@ -65,26 +70,25 @@ export function SiteFooter() {
           </p>
           <p className="inline-flex items-center gap-3">
             <Phone className="h-4 w-4 text-[var(--color-gold)]" />
-            <a href={`tel:${siteConfig.phoneHref}`}>{siteConfig.phoneDisplay}</a>
+            <a href={`tel:${settings.phoneHref}`}>{settings.phoneDisplay}</a>
           </p>
           <p className="inline-flex items-center gap-3">
             <Mail className="h-4 w-4 text-[var(--color-gold)]" />
-            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+            <a href={`mailto:${settings.email}`}>{settings.email}</a>
           </p>
           <p className="inline-flex items-center gap-3">
             <Clock3 className="h-4 w-4 text-[var(--color-gold)]" />
-            {siteConfig.hoursLabel} · {siteConfig.hoursDetail}
+            {settings.hoursLabel} · {settings.hoursDetail}
           </p>
           <p className="inline-flex items-start gap-3 leading-7">
             <MapPinned className="mt-1 h-4 w-4 shrink-0 text-[var(--color-gold)]" />
-            {siteConfig.serviceRadius}
+            {settings.serviceRadius}
           </p>
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="page-bleed flex flex-col gap-3 px-4 py-5 text-xs text-[var(--color-paper)]/60 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 {siteConfig.legalName}. All rights reserved.</p>
-          <p>Built in Next.js with a backend seam ready for future Workiz and admin expansion.</p>
+        <div className="page-bleed px-4 py-5 text-center text-xs text-[var(--color-paper)]/60">
+          <p>© 2026 {settings.legalName}. All rights reserved.</p>
         </div>
       </div>
     </footer>

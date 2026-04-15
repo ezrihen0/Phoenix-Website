@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowRight, CheckCircle2, MapPinned } from "lucide-react";
 
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { getSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { aboutPoints, services, siteConfig } from "@/lib/site-data";
 
@@ -15,7 +17,9 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ["about fireplace repair Calgary", "chimney company Calgary"],
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const siteSettings = await getSiteSettings();
+
   return (
     <>
       <StructuredData
@@ -28,11 +32,13 @@ export default function AboutPage() {
       <section className="section-pad">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div className="space-y-5">
-            <SectionHeading
-              eyebrow="About Phoenix"
-              title="A Calgary service company built around safety, workmanship, and useful documentation."
-              description="The current site speaks to honesty, craftsmanship, and customer care. This version keeps that promise but presents it with more clarity and better information hierarchy."
-            />
+            <Reveal>
+              <SectionHeading
+                eyebrow="About Phoenix"
+                title="A Calgary service company built around safety, workmanship, and useful documentation."
+                description="Phoenix combines fireplace repair, chimney service, WETT reporting, and masonry work so homeowners can deal with one accountable local team."
+              />
+            </Reveal>
             <p className="text-base leading-8 text-[var(--color-muted)]">
               Phoenix works across gas fireplaces, wood-burning systems, chimneys,
               and exterior masonry. That range matters because homeowners rarely show up with a perfectly defined issue.
@@ -40,7 +46,7 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <a
-                href={siteConfig.workizUrl}
+                href={siteSettings.workizUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
@@ -56,6 +62,7 @@ export default function AboutPage() {
               </a>
             </div>
           </div>
+          <Reveal delay={120}>
           <div className="overflow-hidden rounded-[2.5rem] border border-[var(--color-border)] shadow-[0_25px_70px_rgba(31,26,22,0.12)]">
             <div className="relative min-h-[26rem]">
               <Image
@@ -67,22 +74,22 @@ export default function AboutPage() {
               />
             </div>
           </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="pb-20">
         <div className="page-frame grid gap-5 md:grid-cols-2">
-          {aboutPoints.map((point) => (
-            <article
-              key={point.title}
-              className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-7"
-            >
-              <p className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-ember)]">
-                <CheckCircle2 className="h-4 w-4" />
-                {point.title}
-              </p>
-              <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">{point.description}</p>
-            </article>
+          {aboutPoints.map((point, index) => (
+            <Reveal key={point.title} delay={index * 80}>
+              <article className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-7">
+                <p className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-ember)]">
+                  <CheckCircle2 className="h-4 w-4" />
+                  {point.title}
+                </p>
+                <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">{point.description}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -101,11 +108,13 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="space-y-6">
-            <SectionHeading
-              eyebrow="What Phoenix covers"
-              title="One local team across inspection, repair, sweeping, and rebuilding."
-              description="That wider scope matters because many service calls overlap: draft issues can be cleaning, masonry, or liner-related; a real-estate inspection can reveal repair needs that must be documented clearly."
-            />
+            <Reveal>
+              <SectionHeading
+                eyebrow="What Phoenix covers"
+                title="One local team across inspection, repair, sweeping, and masonry work."
+                description="That wider scope matters because many service calls overlap: draft issues can be cleaning, masonry, or liner-related; a real-estate inspection can reveal repair needs that must be documented clearly."
+              />
+            </Reveal>
             <div className="grid gap-3">
               {services.map((service) => (
                 <div
@@ -127,7 +136,7 @@ export default function AboutPage() {
           <div className="rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-ink)] p-8 text-[var(--color-paper)]">
             <p className="eyebrow text-[var(--color-gold)]">Serving Calgary & area</p>
             <p className="mt-5 text-base leading-8 text-[var(--color-paper)]/78">
-              {siteConfig.serviceRadius}
+              {siteSettings.serviceRadius}
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {siteConfig.serviceAreas.map((area) => (

@@ -4,7 +4,7 @@ export const siteConfig = {
   legalName: "Phoenix Chimney & Fireplace Services",
   description:
     "Calgary chimney and fireplace specialists for gas fireplace repair, WETT inspections, chimney sweeping, masonry repair, and safety-first maintenance.",
-  url: "https://fireplacerepairscalgary.ca",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://fireplacerepairscalgary.ca",
   phoneDisplay: "(825) 425-0050",
   phoneHref: "+18254250050",
   email: "phoenixfireplace0@gmail.com",
@@ -33,6 +33,7 @@ export const siteConfig = {
 export const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
+  { href: "/articles", label: "Articles" },
   { href: "/wett", label: "WETT" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -248,7 +249,7 @@ export const homeFaqs = [
   {
     question: "What is the fastest way to schedule service?",
     answer:
-      "Use the Workiz booking link for 24/7 online scheduling, or call the office if you need help choosing the right service type.",
+      "Use the online booking link for 24/7 scheduling, or call the office if you need help choosing the right service type.",
   },
 ] as const;
 
@@ -266,6 +267,7 @@ export const footerLinks = [
     title: "Company",
     items: [
       { label: "About Phoenix", href: "/about" },
+      { label: "Articles", href: "/articles" },
       { label: "WETT Inspections", href: "/wett" },
       { label: "Contact", href: "/contact" },
     ],

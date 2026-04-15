@@ -10,8 +10,7 @@ export default function NotFound() {
             That page has gone cold.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-[var(--color-muted)]">
-            The route may have changed during the rebuild. Use the main navigation,
-            go back home, or head straight to the services page.
+            Use the main navigation, go back home, or head straight to the services page.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link

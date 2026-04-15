@@ -6,10 +6,14 @@ import { routeLeadSubmission } from "@/lib/contact";
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
-    const result = await routeLeadSubmission(payload);
+    const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    const realIp = request.headers.get("x-real-ip")?.trim();
+    const result = await routeLeadSubmission(payload, {
+      remoteIp: forwardedFor || realIp || undefined,
+    });
 
     return NextResponse.json(result, {
-      status: result.ok ? 200 : 503,
+      status: result.ok ? 200 : 400,
     });
   } catch (error) {
     if (error instanceof ZodError) {

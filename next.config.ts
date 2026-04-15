@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   poweredByHeader: false,
+  deploymentId: process.env.DEPLOYMENT_VERSION,
   async headers() {
     return [
       {
@@ -18,6 +20,10 @@ const nextConfig: NextConfig = {
           {
             key: "X-Frame-Options",
             value: "SAMEORIGIN",
+          },
+          {
+            key: "X-Accel-Buffering",
+            value: "no",
           },
         ],
       },

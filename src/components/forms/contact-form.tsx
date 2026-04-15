@@ -1,8 +1,11 @@
 "use client";
 
+import Script from "next/script";
 import { LoaderCircle, Send } from "lucide-react";
 import { useState } from "react";
 
+import type { PublicSiteSettings } from "@/lib/cms/types";
+import { CONTACT_FORM_RECAPTCHA_ACTION } from "@/lib/recaptcha";
 import { contactServiceOptions, siteConfig } from "@/lib/site-data";
 
 type FormState = {
@@ -14,12 +17,45 @@ const initialState: FormState = {
   status: "idle",
 };
 
+const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY?.trim() || "";
+
 type ContactFormProps = {
   className?: string;
+  settings?: Pick<PublicSiteSettings, "phoneDisplay" | "workizUrl">;
 };
 
-export function ContactForm({ className = "" }: ContactFormProps) {
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
+
+export function ContactForm({ className = "", settings }: ContactFormProps) {
   const [state, setState] = useState<FormState>(initialState);
+  const phoneDisplay = settings?.phoneDisplay || siteConfig.phoneDisplay;
+  const workizUrl = settings?.workizUrl || siteConfig.workizUrl;
+
+  async function getRecaptchaToken() {
+    if (!recaptchaSiteKey) {
+      return "";
+    }
+
+    if (!window.grecaptcha) {
+      throw new Error("Bot protection is still loading. Please try again in a moment.");
+    }
+
+    return await new Promise<string>((resolve, reject) => {
+      window.grecaptcha?.ready(() => {
+        window.grecaptcha
+          ?.execute(recaptchaSiteKey, { action: CONTACT_FORM_RECAPTCHA_ACTION })
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,49 +65,71 @@ export function ContactForm({ className = "" }: ContactFormProps) {
 
     setState({ status: "submitting" });
 
-    const payload = Object.fromEntries(formData.entries());
+    try {
+      const recaptchaToken = await getRecaptchaToken();
+      const payload = Object.fromEntries(formData.entries()) as Record<string, string>;
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+      payload.recaptchaToken = recaptchaToken;
 
-    const result = (await response.json()) as { message?: string };
-
-    if (response.ok) {
-      form.reset();
-      setState({
-        status: "success",
-        message:
-          result.message ?? "Thanks. Your request has been sent successfully.",
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
-      return;
-    }
 
-    setState({
-      status: "error",
-      message:
-        result.message ??
-        "We could not send your request right now. Please call or book online.",
-    });
+      const result = (await response.json()) as { message?: string };
+
+      if (response.ok) {
+        form.reset();
+        setState({
+          status: "success",
+          message:
+            result.message ?? "Thanks. Your request has been sent successfully.",
+        });
+        return;
+      }
+
+      setState({
+        status: "error",
+        message:
+          result.message ??
+          "We could not send your request right now. Please call or book online.",
+      });
+    } catch (error) {
+      setState({
+        status: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "We could not send your request right now. Please call or book online.",
+      });
+    }
   }
 
   return (
-    <form
-      className={`glass-panel rounded-[2rem] p-6 sm:p-8 ${className}`}
-      onSubmit={handleSubmit}
-    >
-      <div className="grid gap-5 sm:grid-cols-2">
+    <>
+      {recaptchaSiteKey ? (
+        <Script
+          id="google-recaptcha-v3"
+          src={`https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`}
+          strategy="afterInteractive"
+        />
+      ) : null}
+
+      <form
+        className={`glass-panel rounded-[2rem] p-6 sm:p-8 ${className}`}
+        onSubmit={handleSubmit}
+      >
+        <div className="grid gap-5 sm:grid-cols-2">
         <Field label="First name" name="firstName" placeholder="First name" required />
         <Field label="Last name" name="lastName" placeholder="Last name" required />
         <Field
           label="Phone"
           name="phone"
           type="tel"
-          placeholder={siteConfig.phoneDisplay}
+          placeholder={phoneDisplay}
           required
         />
         <Field
@@ -131,36 +189,37 @@ export function ContactForm({ className = "" }: ContactFormProps) {
         <input type="text" name="honey" className="hidden" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="text-sm leading-6 text-[var(--color-muted)]">
-          Prefer instant scheduling? Use the Workiz booking link above for 24/7 booking.
+        <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-sm leading-6 text-[var(--color-muted)]">
+            Prefer instant scheduling? Use the <a href={workizUrl} target="_blank" rel="noreferrer" className="font-semibold text-[var(--color-forest)]">online booking link</a> for 24/7 self-serve booking.
+          </div>
+          <button
+            type="submit"
+            disabled={state.status === "submitting"}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-ember)] px-6 py-3 font-semibold text-white transition hover:bg-[var(--color-ember-dark)] disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {state.status === "submitting" ? (
+              <LoaderCircle className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+            Send request
+          </button>
         </div>
-        <button
-          type="submit"
-          disabled={state.status === "submitting"}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-ember)] px-6 py-3 font-semibold text-white transition hover:bg-[var(--color-ember-dark)] disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          {state.status === "submitting" ? (
-            <LoaderCircle className="h-4 w-4 animate-spin" />
-          ) : (
-            <Send className="h-4 w-4" />
-          )}
-          Send request
-        </button>
-      </div>
 
-      {state.message ? (
-        <p
-          className={`mt-4 rounded-2xl px-4 py-3 text-sm ${
-            state.status === "success"
-              ? "bg-emerald-50 text-emerald-800"
-              : "bg-amber-50 text-amber-800"
-          }`}
-        >
-          {state.message}
-        </p>
-      ) : null}
-    </form>
+        {state.message ? (
+          <p
+            className={`mt-4 rounded-2xl px-4 py-3 text-sm ${
+              state.status === "success"
+                ? "bg-emerald-50 text-emerald-800"
+                : "bg-amber-50 text-amber-800"
+            }`}
+          >
+            {state.message}
+          </p>
+        ) : null}
+      </form>
+    </>
   );
 }
 

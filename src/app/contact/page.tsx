@@ -3,8 +3,10 @@ import type { ReactNode } from "react";
 import { CalendarDays, Clock3, Mail, MapPinned, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/forms/contact-form";
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-data";
 
@@ -16,7 +18,9 @@ export const metadata: Metadata = createPageMetadata({
   keywords: ["contact fireplace repair Calgary", "book chimney service Calgary"],
 });
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const siteSettings = await getPublicSiteSettings();
+
   return (
     <>
       <StructuredData
@@ -29,33 +33,37 @@ export default function ContactPage() {
       <section className="section-pad">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
           <div className="space-y-6">
-            <SectionHeading
-              eyebrow="Contact Phoenix"
-              title="Call, book online, or send the issue over and we will route it correctly."
-              description="The original site used the contact page as a practical backup for visitors who were not ready to book online. This rebuild keeps that role, but makes the next actions much clearer."
-            />
+            <Reveal>
+              <SectionHeading
+                eyebrow="Contact Phoenix"
+                title="Call, book online, or send the issue over and we will route it correctly."
+                description="Share the issue, your timeline, and the best way to reach you. We will point the request to the right service and follow up with next steps."
+              />
+            </Reveal>
             <div className="grid gap-4">
               <ContactCard icon={<Phone className="h-5 w-5" />} label="Phone">
-                <a href={`tel:${siteConfig.phoneHref}`}>{siteConfig.phoneDisplay}</a>
+                <a href={`tel:${siteSettings.phoneHref}`}>{siteSettings.phoneDisplay}</a>
               </ContactCard>
               <ContactCard icon={<Mail className="h-5 w-5" />} label="Email">
-                <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+                <a href={`mailto:${siteSettings.email}`}>{siteSettings.email}</a>
               </ContactCard>
               <ContactCard icon={<Clock3 className="h-5 w-5" />} label="Office hours">
-                {siteConfig.hoursLabel} · {siteConfig.hoursDetail}
+                {siteSettings.hoursLabel} · {siteSettings.hoursDetail}
               </ContactCard>
               <ContactCard icon={<CalendarDays className="h-5 w-5" />} label="Booking">
-                <a href={siteConfig.workizUrl} target="_blank" rel="noreferrer">
-                  24/7 Workiz online booking
+                <a href={siteSettings.workizUrl} target="_blank" rel="noreferrer">
+                  24/7 online booking
                 </a>
               </ContactCard>
               <ContactCard icon={<MapPinned className="h-5 w-5" />} label="Coverage">
-                {siteConfig.serviceRadius}
+                {siteSettings.serviceRadius}
               </ContactCard>
             </div>
           </div>
 
-          <ContactForm />
+          <Reveal delay={120}>
+            <ContactForm settings={siteSettings} />
+          </Reveal>
         </div>
       </section>
 
@@ -82,7 +90,7 @@ export default function ContactPage() {
               </div>
             </div>
             <iframe
-              src={siteConfig.mapEmbedUrl}
+              src={siteSettings.mapEmbedUrl}
               title="Service area map for Calgary"
               className="min-h-[22rem] w-full border-0"
               loading="lazy"

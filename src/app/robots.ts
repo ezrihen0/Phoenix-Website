@@ -5,10 +5,13 @@ import { siteConfig } from "@/lib/site-data";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/admin", "/admin/", "/api/", "/feed.xml?*"],
+      },
+    ],
     sitemap: absoluteUrl("/sitemap.xml"),
     host: siteConfig.url,
   };

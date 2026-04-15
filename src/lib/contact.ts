@@ -1,4 +1,11 @@
+import "server-only";
+
+import nodemailer from "nodemailer";
 import { z } from "zod";
+
+import { getSiteSettings, saveLead } from "@/lib/cms/storage";
+import { CONTACT_FORM_RECAPTCHA_ACTION, DEFAULT_RECAPTCHA_MIN_SCORE } from "@/lib/recaptcha";
+import type { LeadDeliveryStatus } from "@/lib/cms/types";
 
 export const contactRequestSchema = z.object({
   firstName: z.string().trim().min(2, "First name is required."),
@@ -10,15 +17,126 @@ export const contactRequestSchema = z.object({
   preferredTime: z.string().trim().optional(),
   message: z.string().trim().min(10, "Tell us what is happening."),
   honey: z.string().max(0).optional().default(""),
+  recaptchaToken: z.string().trim().optional().default(""),
 });
 
 export type ContactRequest = z.infer<typeof contactRequestSchema>;
 
 export type LeadDispatchResult = {
   ok: boolean;
-  mode: "workiz" | "demo" | "unconfigured";
   message: string;
+  leadId?: string;
+  bookingDeliveryStatus: LeadDeliveryStatus;
+  emailDeliveryStatus: LeadDeliveryStatus;
 };
+
+type DeliveryResult = {
+  status: LeadDeliveryStatus;
+  note?: string;
+};
+
+type RecaptchaVerificationResult = {
+  ok: boolean;
+  message?: string;
+};
+
+function normalizeOptional(value?: string) {
+  return value?.trim() ? value.trim() : undefined;
+}
+
+function getRecaptchaMinScore() {
+  const parsed = Number.parseFloat(process.env.RECAPTCHA_MIN_SCORE || "");
+
+  if (!Number.isFinite(parsed)) {
+    return DEFAULT_RECAPTCHA_MIN_SCORE;
+  }
+
+  return Math.min(1, Math.max(0, parsed));
+}
+
+async function verifyRecaptchaToken(
+  token: string | undefined,
+  remoteIp?: string,
+): Promise<RecaptchaVerificationResult> {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY?.trim();
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY?.trim();
+
+  if (!secretKey || !siteKey) {
+    return { ok: true };
+  }
+
+  if (!token) {
+    return {
+      ok: false,
+      message: "We could not verify your submission. Please try again.",
+    };
+  }
+
+  const formData = new URLSearchParams({
+    secret: secretKey,
+    response: token,
+  });
+
+  if (remoteIp) {
+    formData.set("remoteip", remoteIp);
+  }
+
+  try {
+    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: formData.toString(),
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        message: "We could not verify your submission right now. Please try again.",
+      };
+    }
+
+    const result = (await response.json()) as {
+      success?: boolean;
+      score?: number;
+      action?: string;
+      hostname?: string;
+      [key: string]: unknown;
+    };
+
+    if (!result.success) {
+      return {
+        ok: false,
+        message: "We could not verify your submission. Please try again.",
+      };
+    }
+
+    if (result.action !== CONTACT_FORM_RECAPTCHA_ACTION) {
+      return {
+        ok: false,
+        message: "We could not verify your submission. Please refresh the page and try again.",
+      };
+    }
+
+    if (typeof result.score === "number" && result.score < getRecaptchaMinScore()) {
+      return {
+        ok: false,
+        message: "We could not verify your submission. Please call or use online booking if the form keeps failing.",
+      };
+    }
+
+    return { ok: true };
+  } catch (error) {
+    console.error("[recaptcha] Verification failed", error);
+
+    return {
+      ok: false,
+      message: "We could not verify your submission right now. Please try again.",
+    };
+  }
+}
 
 function buildWorkizPayload(payload: ContactRequest) {
   return {
@@ -62,8 +180,87 @@ async function dispatchToWorkiz(payload: ContactRequest) {
   return response;
 }
 
+async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryResult> {
+  const settings = await getSiteSettings();
+
+  if (!settings.sendLeadEmails) {
+    return {
+      status: "skipped",
+      note: "Lead email notifications are turned off.",
+    };
+  }
+
+  const recipient = (settings.notificationEmail || settings.email).trim();
+  const sender = settings.email.trim();
+  const appPassword = settings.googleAppPassword.trim();
+
+  if (!recipient || !sender || !appPassword) {
+    return {
+      status: "failed",
+      note: "Gmail app password delivery is enabled, but the email settings are incomplete.",
+    };
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: sender,
+      pass: appPassword,
+    },
+  });
+
+  const subject = `New fireplace lead: ${payload.firstName} ${payload.lastName}`;
+  const lines = [
+    `Name: ${payload.firstName} ${payload.lastName}`,
+    `Phone: ${payload.phone}`,
+    `Email: ${payload.email}`,
+    `Service: ${payload.service}`,
+    `Preferred day: ${normalizeOptional(payload.preferredDay) || "Not provided"}`,
+    `Preferred time: ${normalizeOptional(payload.preferredTime) || "Not provided"}`,
+    "",
+    "Message:",
+    payload.message,
+  ];
+
+  try {
+    await transporter.sendMail({
+      from: `Phoenix website leads <${sender}>`,
+      to: recipient,
+      replyTo: payload.email,
+      subject,
+      text: lines.join("\n"),
+      html: `
+        <h2>${subject}</h2>
+        <p><strong>Name:</strong> ${payload.firstName} ${payload.lastName}</p>
+        <p><strong>Phone:</strong> ${payload.phone}</p>
+        <p><strong>Email:</strong> ${payload.email}</p>
+        <p><strong>Service:</strong> ${payload.service}</p>
+        <p><strong>Preferred day:</strong> ${normalizeOptional(payload.preferredDay) || "Not provided"}</p>
+        <p><strong>Preferred time:</strong> ${normalizeOptional(payload.preferredTime) || "Not provided"}</p>
+        <p><strong>Message:</strong></p>
+        <p>${payload.message.replace(/\n/g, "<br />")}</p>
+      `,
+    });
+
+    return {
+      status: "sent",
+      note: `Lead email sent to ${recipient}.`,
+    };
+  } catch (error) {
+    console.error("[lead-email] Failed to send notification", error);
+
+    return {
+      status: "failed",
+      note: error instanceof Error ? error.message : "Unknown email delivery error.",
+    };
+  }
+}
+
 export async function routeLeadSubmission(
   rawPayload: unknown,
+  options?: { remoteIp?: string },
 ): Promise<LeadDispatchResult> {
   const parsed = contactRequestSchema.safeParse(rawPayload);
 
@@ -76,35 +273,75 @@ export async function routeLeadSubmission(
   if (payload.honey) {
     return {
       ok: true,
-      mode: "demo",
       message: "Submission received.",
+      bookingDeliveryStatus: "skipped",
+      emailDeliveryStatus: "skipped",
     };
   }
 
-  const workizResponse = await dispatchToWorkiz(payload);
+  const recaptchaVerification = await verifyRecaptchaToken(
+    payload.recaptchaToken,
+    options?.remoteIp,
+  );
 
-  if (workizResponse) {
+  if (!recaptchaVerification.ok) {
     return {
-      ok: true,
-      mode: "workiz",
-      message: "Thanks. Your request was sent successfully.",
+      ok: false,
+      message: recaptchaVerification.message || "We could not verify your submission. Please try again.",
+      bookingDeliveryStatus: "skipped",
+      emailDeliveryStatus: "skipped",
     };
   }
 
-  if (process.env.NODE_ENV !== "production") {
-    console.info("[contact-demo] Lead submission", buildWorkizPayload(payload));
+  let bookingDelivery: DeliveryResult = {
+    status: "skipped",
+    note: "Online booking sync is not configured.",
+  };
 
-    return {
-      ok: true,
-      mode: "demo",
-      message: "Thanks. Your request was captured in demo mode.",
+  try {
+    const workizResponse = await dispatchToWorkiz(payload);
+
+    if (workizResponse) {
+      bookingDelivery = {
+        status: "sent",
+        note: "Lead synced to the booking system.",
+      };
+    }
+  } catch (error) {
+    console.error("[lead-booking-sync] Failed to sync lead", error);
+    bookingDelivery = {
+      status: "failed",
+      note: error instanceof Error ? error.message : "Unknown booking sync error.",
     };
   }
+
+  const emailDelivery = await sendNotificationEmail(payload);
+  const createdAt = new Date().toISOString();
+  const leadId = crypto.randomUUID();
+
+  await saveLead({
+    id: leadId,
+    source: "contact-form",
+    firstName: payload.firstName,
+    lastName: payload.lastName,
+    phone: payload.phone,
+    email: payload.email,
+    service: payload.service,
+    preferredDay: normalizeOptional(payload.preferredDay),
+    preferredTime: normalizeOptional(payload.preferredTime),
+    message: payload.message,
+    createdAt,
+    bookingDeliveryStatus: bookingDelivery.status,
+    bookingDeliveryNote: bookingDelivery.note,
+    emailDeliveryStatus: emailDelivery.status,
+    emailDeliveryNote: emailDelivery.note,
+  });
 
   return {
-    ok: false,
-    mode: "unconfigured",
-    message:
-      "Lead delivery is not configured yet. Please call or use online booking for immediate help.",
+    ok: true,
+    message: "Thanks. Your request has been received.",
+    leadId,
+    bookingDeliveryStatus: bookingDelivery.status,
+    emailDeliveryStatus: emailDelivery.status,
   };
 }

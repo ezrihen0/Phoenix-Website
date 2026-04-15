@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { Reveal } from "@/components/motion/reveal";
+
 type ServiceCardProps = {
   title: string;
   tagline: string;
@@ -18,7 +20,8 @@ export function ServiceCard({
   icon,
 }: ServiceCardProps) {
   return (
-    <article className="group overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] shadow-[0_20px_50px_rgba(31,26,22,0.06)]">
+    <Reveal>
+      <article className="group overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] shadow-[0_20px_50px_rgba(31,26,22,0.06)]">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={image}
@@ -48,6 +51,7 @@ export function ServiceCard({
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
-    </article>
+      </article>
+    </Reveal>
   );
 }
