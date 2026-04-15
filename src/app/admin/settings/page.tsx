@@ -60,7 +60,8 @@ export default async function AdminSettingsPage({
           <Field label="Business name" name="businessName" defaultValue={settings.businessName} required />
           <Field label="Legal name" name="legalName" defaultValue={settings.legalName} required />
           <Field label="Site URL" name="siteUrl" defaultValue={settings.siteUrl} required />
-          <Field label="Public business email / sending email" name="email" defaultValue={settings.email} required />
+          <Field label="Public business email" name="email" defaultValue={settings.email} required />
+          <Field label="Sending email (SMTP / Gmail)" name="sendingEmail" defaultValue={settings.sendingEmail} required />
           <Field label="Phone display" name="phoneDisplay" defaultValue={settings.phoneDisplay} required />
           <Field label="Phone href" name="phoneHref" defaultValue={settings.phoneHref} required />
           <Field label="Hours label" name="hoursLabel" defaultValue={settings.hoursLabel} required />
@@ -96,7 +97,7 @@ export default async function AdminSettingsPage({
             />
             <span>
               <span className="block font-semibold text-[var(--color-ink)]">Email new leads to the recipient inbox</span>
-              Send each contact-form submission to the receiving inbox below using the sender email and Google app password.
+              Send each contact-form submission to the receiving inbox below using the sending email and Google app password.
             </span>
           </label>
           <Field label="Recipient inbox email (receives notifications)" name="notificationEmail" defaultValue={settings.notificationEmail} required />
@@ -122,7 +123,7 @@ export default async function AdminSettingsPage({
         </div>
 
         <p className="text-xs leading-6 text-[var(--color-muted)]">
-          The public business email above is also the sending Gmail account used for SMTP delivery. The recipient inbox email is the address that receives new lead notifications. The Google app password must belong to the sending Gmail account.
+          The public business email is shown across the site. The sending email is the Gmail account used for SMTP delivery. The recipient inbox email is the address that receives new lead notifications. The Google app password must belong to the sending Gmail account.
         </p>
 
         <button

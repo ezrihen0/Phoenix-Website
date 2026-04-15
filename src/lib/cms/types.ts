@@ -28,6 +28,7 @@ export type SiteSettings = {
   phoneDisplay: string;
   phoneHref: string;
   email: string;
+  sendingEmail: string;
   hoursLabel: string;
   hoursDetail: string;
   serviceRadius: string;

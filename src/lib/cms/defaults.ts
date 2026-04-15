@@ -9,6 +9,7 @@ export const defaultSiteSettings: SiteSettings = {
   phoneDisplay: "(825) 425-0050",
   phoneHref: "+18254250050",
   email: "phoenixfireplace0@gmail.com",
+  sendingEmail: "phoenixfireplace0@gmail.com",
   hoursLabel: "Sunday-Friday",
   hoursDetail: "9AM-6PM local dispatch",
   serviceRadius: "Serving Calgary and surrounding communities within 100 km.",

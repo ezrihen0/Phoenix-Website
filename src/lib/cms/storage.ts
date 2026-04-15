@@ -142,16 +142,25 @@ function sortLeads(leads: Lead[]) {
 }
 
 function normalizeSettingsRecord(
-  settings?: Partial<SiteSettings> & { leadNotificationEmail?: string },
+  settings?: Partial<SiteSettings> & { leadNotificationEmail?: string; senderEmail?: string },
 ) {
   if (!settings) {
     return settings;
   }
 
+  const { leadNotificationEmail, senderEmail, ...rest } = settings;
+
   return {
-    ...settings,
+    ...rest,
+    sendingEmail:
+      rest.sendingEmail || senderEmail || rest.email || defaultSiteSettings.sendingEmail,
     notificationEmail:
-      settings.notificationEmail || settings.leadNotificationEmail || defaultSiteSettings.notificationEmail,
+      rest.notificationEmail ||
+      leadNotificationEmail ||
+      rest.sendingEmail ||
+      senderEmail ||
+      rest.email ||
+      defaultSiteSettings.notificationEmail,
   } satisfies Partial<SiteSettings>;
 }
 

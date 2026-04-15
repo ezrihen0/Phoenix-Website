@@ -190,14 +190,14 @@ async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryR
     };
   }
 
-  const recipient = (settings.notificationEmail || settings.email).trim();
-  const sender = settings.email.trim();
+  const recipient = (settings.notificationEmail || settings.sendingEmail || settings.email).trim();
+  const sender = (settings.sendingEmail || settings.email).trim();
   const appPassword = settings.googleAppPassword.trim();
 
   if (!recipient || !sender || !appPassword) {
     return {
       status: "failed",
-      note: "Gmail app password delivery is enabled, but the email settings are incomplete.",
+      note: "Lead email delivery is enabled, but the sender, recipient, or app password is missing.",
     };
   }
 

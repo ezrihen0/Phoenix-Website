@@ -32,6 +32,7 @@ const settingsSchema = z.object({
   phoneDisplay: z.string().trim().min(7),
   phoneHref: z.string().trim().min(7),
   email: z.string().trim().email(),
+  sendingEmail: z.string().trim().email(),
   hoursLabel: z.string().trim().min(2),
   hoursDetail: z.string().trim().min(2),
   serviceRadius: z.string().trim().min(8),
@@ -197,7 +198,8 @@ export async function saveSettingsAction(formData: FormData) {
       ...existing,
       ...parsed,
       aiProvider: "openai",
-      notificationEmail: parsed.notificationEmail || parsed.email,
+      sendingEmail: parsed.sendingEmail || parsed.email,
+      notificationEmail: parsed.notificationEmail || parsed.sendingEmail || parsed.email,
       googleAppPassword: parsed.googleAppPassword || existing.googleAppPassword,
     });
   } catch (error) {
