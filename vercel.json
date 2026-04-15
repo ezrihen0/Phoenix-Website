@@ -1,8 +1,8 @@
 {
-  "crons": [
-    {
-      "path": "/api/cron/generate-article",
-      "schedule": "5 8 * * *"
-    }
-  ]
+    "crons": [
+        {
+            "path": "/api/cron/generate-article",
+            "schedule": "5 8 * * *"
+        }
+    ]
 }
