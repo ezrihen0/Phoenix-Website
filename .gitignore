@@ -71,3 +71,6 @@ next-env.d.ts
 .env*.local
 .vercel-env-api.json
 .vercel-*.env
+
+.vercel
+.env*.local
