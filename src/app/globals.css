@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-paper: #f4ecdf;
+  --color-paper-strong: #efe3d2;
+  --color-card: #f8f2ea;
+  --color-card-strong: #efe4d4;
+  --color-ink: #1f1a16;
+  --color-muted: #65574c;
+  --color-ember: #b9471d;
+  --color-ember-dark: #8f3515;
+  --color-gold: #cb9852;
+  --color-forest: #223a33;
+  --color-border: rgba(31, 26, 22, 0.12);
+  --color-shadow: rgba(31, 26, 22, 0.08);
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-bricolage);
+  --font-serif: var(--font-cormorant);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background:
+    radial-gradient(circle at top left, rgba(203, 152, 82, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(185, 71, 29, 0.14), transparent 24%),
+    linear-gradient(180deg, #f7f0e5 0%, #efe3d2 100%);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-bricolage), sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+a:not([class]) {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(185, 71, 29, 0.18);
+}
+
+.page-frame {
+  margin-inline: auto;
+  width: min(100% - 2rem, 80rem);
+}
+
+.page-bleed {
+  margin-inline: auto;
+  width: min(100% - 1rem, 90rem);
+}
+
+.section-pad {
+  padding-block: clamp(4rem, 7vw, 7rem);
+}
+
+.eyebrow {
+  color: var(--color-ember);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.display-title {
+  font-family: var(--font-cormorant), serif;
+}
+
+.glass-panel {
+  background: rgba(248, 242, 234, 0.8);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 22px 50px var(--color-shadow);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.texture-dots {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(31, 26, 22, 0.08) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+.ambient-lines {
+  background-image:
+    linear-gradient(rgba(31, 26, 22, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 26, 22, 0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
 }

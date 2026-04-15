@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Phoenix Chimney & Fireplace Services
 
-## Getting Started
+Next.js marketing site rebuild for the Calgary fireplace and chimney business, using the existing live-site media locally and keeping the booking flow centered on Workiz.
 
-First, run the development server:
+## Stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS v4
+- Local image assets copied from the live site
+- Server-side contact route with a clean seam for future Workiz API delivery
+
+## Routes
+
+- `/`
+- `/services`
+- `/wett`
+- `/about`
+- `/contact`
+
+## SEO Included
+
+- page-level metadata and canonicals
+- robots.txt
+- sitemap.xml
+- manifest.webmanifest
+- Open Graph and Twitter image routes
+- LocalBusiness, WebSite, Service, FAQ, and Breadcrumb structured data
+
+## Local Development
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy the env template if you want to wire contact submissions into Workiz:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Start the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Build for production verification:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Workiz Integration
 
-## Learn More
+The current public booking buttons point to the Workiz online-booking URL stored in `src/lib/site-data.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+The contact form posts to `/api/contact` and supports two modes:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `WORKIZ_API_TOKEN` and `WORKIZ_LEAD_ENDPOINT` configured: submit leads server-side to Workiz
+- no production config present: return a clear fallback so the site can direct users to call or book online
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This keeps the current project Next.js-only while leaving a clean backend seam if a future NestJS service takes over lead routing.
 
-## Deploy on Vercel
+## Content Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- The original site contains inconsistent phone numbers. The rebuild currently uses `(825) 425-0050` as the single source of truth until business data is confirmed.
+- Business hours, booking link, and contact info are centralized in `src/lib/site-data.ts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Suggested Next Build Steps
+
+1. Confirm final business phone, hours, and email.
+2. Wire real Workiz API credentials into the contact route.
+3. Add a protected admin/settings layer if non-technical editing is needed.
+4. Add analytics IDs and conversion tracking once the production property is ready.
