@@ -79,10 +79,10 @@ export function createPageMetadata({
       images: shareImages,
       ...(openGraphType === "article"
         ? {
-            publishedTime,
-            modifiedTime,
-            authors,
-          }
+          publishedTime,
+          modifiedTime,
+          authors,
+        }
         : {}),
     },
     twitter: {

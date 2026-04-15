@@ -73,16 +73,15 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  isActive
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${isActive
                     ? "bg-[var(--color-ink)] shadow-[0_12px_24px_rgba(31,26,22,0.18)]"
                     : "text-[var(--color-ink)] hover:bg-[var(--color-card)]"
-                }`}
+                  }`}
                 style={
                   isActive
                     ? {
-                        color: "var(--color-paper)",
-                      }
+                      color: "var(--color-paper)",
+                    }
                     : undefined
                 }
               >
@@ -153,16 +152,15 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-2xl px-4 py-3 text-base font-semibold transition ${
-                    isActive
+                  className={`rounded-2xl px-4 py-3 text-base font-semibold transition ${isActive
                       ? "bg-[var(--color-ink)] shadow-[0_10px_24px_rgba(31,26,22,0.18)]"
                       : "bg-white/60 hover:bg-white"
-                  }`}
+                    }`}
                   style={
                     isActive
                       ? {
-                          color: "var(--color-paper)",
-                        }
+                        color: "var(--color-paper)",
+                      }
                       : undefined
                   }
                   onClick={() => setIsOpen(false)}

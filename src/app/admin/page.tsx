@@ -112,11 +112,10 @@ export default async function AdminDashboardPage({
                   type="submit"
                   name="aiModel"
                   value={option.value}
-                  className={`rounded-[1.5rem] border px-4 py-3 text-left text-sm transition ${
-                    isActive
+                  className={`rounded-[1.5rem] border px-4 py-3 text-left text-sm transition ${isActive
                       ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)]"
                       : "border-[var(--color-border)] bg-white hover:border-[var(--color-ink)]"
-                  }`}
+                    }`}
                 >
                   <span className="block font-semibold">{option.label}</span>
                   <span className={`mt-1 block text-xs leading-5 ${isActive ? "text-[var(--color-paper)]/70" : "text-[var(--color-muted)]"}`}>

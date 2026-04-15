@@ -56,11 +56,10 @@ export function AdminShell({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    isActive
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${isActive
                       ? "bg-[var(--color-ink)] text-[var(--color-paper)]"
                       : "border border-[var(--color-border)] bg-white/65 hover:bg-white"
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Link>
