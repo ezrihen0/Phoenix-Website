@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { GenerateAiArticleForm } from "@/components/admin/generate-ai-article-form";
 import { requireAdmin } from "@/lib/auth/options";
 import { formatArticleDate } from "@/lib/cms/helpers";
-import { listArticles } from "@/lib/cms/storage";
+import { getCmsStorageStatus, listArticles } from "@/lib/cms/storage";
 import { deleteArticleAction, generateAiArticleAction } from "@/app/admin/actions";
 
 export const dynamic = "force-dynamic";
@@ -15,10 +16,33 @@ export default async function AdminArticlesPage({
   searchParams: Promise<{ skipped?: string; error?: string }>;
 }) {
   const session = await requireAdmin();
-  const [articles, params] = await Promise.all([
-    listArticles({ includeDrafts: true }),
-    searchParams,
-  ]);
+  const storageStatus = getCmsStorageStatus();
+  const params = await searchParams;
+
+  if (!storageStatus.healthy) {
+    return (
+      <AdminShell
+        title="Articles"
+        description="Create, edit, publish, or delete blog posts. You can also trigger the AI writer manually here."
+        currentPath="/admin/articles"
+        userLabel={session.username}
+        storageStatus={storageStatus}
+      >
+        {params.error ? (
+          <div className="rounded-[1.75rem] border border-red-200 bg-red-50 px-5 py-4 text-sm leading-7 text-red-800">
+            {params.error}
+          </div>
+        ) : null}
+
+        <AdminStorageUnavailablePanel
+          title="Article publishing is disabled on this deployment."
+          description="AI generation, article saves, and deletes should stay paused until shared Blob storage is healthy again."
+        />
+      </AdminShell>
+    );
+  }
+
+  const articles = await listArticles({ includeDrafts: true });
 
   return (
     <AdminShell
@@ -26,6 +50,7 @@ export default async function AdminArticlesPage({
       description="Create, edit, publish, or delete blog posts. You can also trigger the AI writer manually here."
       currentPath="/admin/articles"
       userLabel={session.username}
+      storageStatus={storageStatus}
     >
       {params.skipped ? (
         <div className="rounded-[1.75rem] border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">

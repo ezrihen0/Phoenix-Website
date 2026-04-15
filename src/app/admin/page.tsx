@@ -3,23 +3,43 @@ import { CalendarDays, FileText, Inbox, Settings } from "lucide-react";
 
 import { updateAiModelAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { requireAdmin } from "@/lib/auth/options";
 import { AI_MODEL_OPTIONS, getAiModelLabel } from "@/lib/ai/model-options";
-import { getSiteSettings, listArticles, listLeads } from "@/lib/cms/storage";
+import { getCmsStorageStatus, getSiteSettings, listArticles, listLeads } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ aiModelSaved?: string }>;
+  searchParams: Promise<{ aiModelSaved?: string; error?: string }>;
 }) {
   const session = await requireAdmin();
-  const [articles, leads, settings, params] = await Promise.all([
+  const storageStatus = getCmsStorageStatus();
+  const params = await searchParams;
+
+  if (!storageStatus.healthy) {
+    return (
+      <AdminShell
+        title="Website admin"
+        description="Manage articles, update website settings, and control the daily AI publishing pipeline from one protected workspace."
+        currentPath="/admin"
+        userLabel={session.username}
+        storageStatus={storageStatus}
+      >
+        <AdminStorageUnavailablePanel
+          title="Dashboard content actions are paused."
+          description="Shared Blob storage needs attention before dashboard metrics, AI article generation, and settings changes can be trusted on this deployment."
+        />
+      </AdminShell>
+    );
+  }
+
+  const [articles, leads, settings] = await Promise.all([
     listArticles({ includeDrafts: true }),
     listLeads(),
     getSiteSettings(),
-    searchParams,
   ]);
   const publishedCount = articles.filter((article) => article.status === "published").length;
 
@@ -29,7 +49,14 @@ export default async function AdminDashboardPage({
       description="Manage articles, update website settings, and control the daily AI publishing pipeline from one protected workspace."
       currentPath="/admin"
       userLabel={session.username}
+      storageStatus={storageStatus}
     >
+      {params.error ? (
+        <div className="rounded-[1.75rem] border border-red-200 bg-red-50 px-5 py-4 text-sm leading-7 text-red-800">
+          {params.error}
+        </div>
+      ) : null}
+
       {params.aiModelSaved ? (
         <div className="rounded-[1.75rem] border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
           AI model updated.

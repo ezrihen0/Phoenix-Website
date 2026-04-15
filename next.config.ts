@@ -1,9 +1,15 @@
 import type { NextConfig } from "next";
 
+const isVercelDeployment = Boolean(process.env.VERCEL);
+const deploymentId =
+  process.env.VERCEL_DEPLOYMENT_ID?.trim() ||
+  process.env.DEPLOYMENT_VERSION?.trim() ||
+  undefined;
+
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: isVercelDeployment ? undefined : "standalone",
   poweredByHeader: false,
-  deploymentId: process.env.DEPLOYMENT_VERSION,
+  deploymentId,
   async headers() {
     return [
       {

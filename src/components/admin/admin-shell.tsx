@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AdminSignOutButton } from "@/components/admin/admin-sign-out-button";
+import { AdminStorageStatusBanner } from "@/components/admin/admin-storage-status";
+import type { CmsStorageStatus } from "@/lib/cms/storage";
 
 type AdminShellProps = {
   children: ReactNode;
@@ -9,6 +11,7 @@ type AdminShellProps = {
   description: string;
   currentPath: string;
   userLabel: string;
+  storageStatus?: CmsStorageStatus;
 };
 
 const navLinks = [
@@ -24,6 +27,7 @@ export function AdminShell({
   description,
   currentPath,
   userLabel,
+  storageStatus,
 }: AdminShellProps) {
   return (
     <section className="pb-14 pt-4 sm:pb-18 sm:pt-6">
@@ -64,6 +68,8 @@ export function AdminShell({
             })}
           </nav>
         </div>
+
+        {storageStatus ? <AdminStorageStatusBanner status={storageStatus} /> : null}
 
         {children}
       </div>

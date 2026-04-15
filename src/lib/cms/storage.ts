@@ -1,23 +1,71 @@
 import "server-only";
 
-import { list, put } from "@vercel/blob";
+import { get, put } from "@vercel/blob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { defaultArticles, defaultSiteSettings } from "@/lib/cms/defaults";
 import { protectJson, unprotectJson } from "@/lib/cms/secure-json";
 import type { Article, Lead, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
 
-const LOCAL_DATA_DIR = path.join(process.cwd(), "data", "cms");
+const LOCAL_DATA_DIR = Boolean(process.env.VERCEL)
+  ? path.join(process.env.TMPDIR || "/tmp", "papoon_fireplacerepair", "cms")
+  : path.join(process.cwd(), "data", "cms");
 const LOCAL_ARTICLES_FILE = path.join(LOCAL_DATA_DIR, "articles.json");
 const LOCAL_LEADS_FILE = path.join(LOCAL_DATA_DIR, "leads.json");
 const LOCAL_SETTINGS_FILE = path.join(LOCAL_DATA_DIR, "settings.json");
 const REMOTE_ARTICLES_KEY = "cms/articles.json";
 const REMOTE_LEADS_KEY = "cms/leads.json";
 const REMOTE_SETTINGS_KEY = "cms/settings.json";
+const REMOTE_BLOB_ACCESS = process.env.BLOB_STORE_ACCESS === "public" ? "public" : "private";
+const JSON_BLOB_CACHE_TTL_SECONDS = 60;
+const IS_VERCEL_RUNTIME = Boolean(process.env.VERCEL);
+const ALLOW_LOCAL_CMS_STORAGE = !IS_VERCEL_RUNTIME || process.env.ALLOW_LOCAL_CMS_STORAGE === "1";
+
+export type CmsStorageMode = "blob" | "local" | "local-fallback" | "misconfigured";
+
+export type CmsStorageStatus = {
+  mode: CmsStorageMode;
+  healthy: boolean;
+  tone: "success" | "warning" | "error";
+  label: string;
+  title: string;
+  message: string;
+};
+
+function getBlobReadWriteToken() {
+  const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
+
+  return token || undefined;
+}
 
 function hasBlobStorage() {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+  return Boolean(getBlobReadWriteToken());
+}
+
+function assertCmsStorageConfigured() {
+  if (!hasBlobStorage() && !ALLOW_LOCAL_CMS_STORAGE) {
+    throw new Error("BLOB_READ_WRITE_TOKEN is required for CMS storage in Vercel deployments.");
+  }
+}
+
+function getBlobBaseOptions() {
+  const token = getBlobReadWriteToken();
+  const access: "public" | "private" = REMOTE_BLOB_ACCESS;
+
+  return token
+    ? { access, token }
+    : { access };
+}
+
+function getBlobReadOptions() {
+  const options = getBlobBaseOptions();
+
+  // CMS JSON files are overwritten in place, so cached reads can serve stale data.
+  return REMOTE_BLOB_ACCESS === "private"
+    ? { ...options, useCache: false }
+    : options;
 }
 
 async function ensureLocalDataDir() {
@@ -45,22 +93,15 @@ async function readRemoteJson<T>(
   fallback: T,
   options?: { protectedData?: boolean },
 ): Promise<T> {
-  const { blobs } = await list({ prefix: key, limit: 10 });
-  const blob = blobs.find((item) => item.pathname === key) ?? blobs[0];
+  const blob = await get(key, getBlobReadOptions());
 
-  if (!blob) {
+  if (!blob || blob.statusCode !== 200 || !blob.stream) {
     await writeRemoteJson(key, fallback, options);
     return fallback;
   }
 
-  const response = await fetch(blob.url, { cache: "no-store" });
-
-  if (!response.ok) {
-    return fallback;
-  }
-
   try {
-    const payload = (await response.json()) as unknown;
+    const payload = (await new Response(blob.stream).json()) as unknown;
 
     if (options?.protectedData) {
       return unprotectJson<T>(payload) ?? (payload as T);
@@ -81,7 +122,9 @@ async function writeRemoteJson(
 
   await put(key, JSON.stringify(payload, null, 2), {
     addRandomSuffix: false,
-    access: "public",
+    allowOverwrite: true,
+    cacheControlMaxAge: JSON_BLOB_CACHE_TTL_SECONDS,
+    ...getBlobBaseOptions(),
     contentType: "application/json; charset=utf-8",
   });
 }
@@ -122,7 +165,60 @@ function sanitizeBookingLabel(label: string) {
   return trimmed;
 }
 
+export function getCmsStorageStatus(): CmsStorageStatus {
+  if (hasBlobStorage()) {
+    return {
+      mode: "blob",
+      healthy: true,
+      tone: "success",
+      label: "Blob connected",
+      title: "Shared Blob storage is healthy.",
+      message: "Admin content is using shared Vercel Blob storage, so article and settings changes persist across requests.",
+    };
+  }
+
+  if (ALLOW_LOCAL_CMS_STORAGE) {
+    if (IS_VERCEL_RUNTIME) {
+      return {
+        mode: "local-fallback",
+        healthy: false,
+        tone: "warning",
+        label: "Local fallback",
+        title: "Shared Blob storage is unavailable.",
+        message:
+          "This Vercel deployment is using instance-local fallback storage. Generated articles and saved changes can disappear between requests, so admin write actions should stay paused until Blob storage is restored.",
+      };
+    }
+
+    return {
+      mode: "local",
+      healthy: true,
+      tone: "success",
+      label: "Local development",
+      title: "Local CMS storage is active.",
+      message: "This is expected in local development, where admin content is stored on the local filesystem.",
+    };
+  }
+
+  return {
+    mode: "misconfigured",
+    healthy: false,
+    tone: "error",
+    label: "Blob missing",
+    title: "Blob storage is misconfigured.",
+    message:
+      "BLOB_READ_WRITE_TOKEN is missing on this Vercel deployment. Admin reads and writes are blocked until Blob storage is configured and the site is redeployed.",
+  };
+}
+
+export function getCmsStorageMode() {
+  return getCmsStorageStatus().mode;
+}
+
 export async function getSiteSettings(): Promise<SiteSettings> {
+  assertCmsStorageConfigured();
+  noStore();
+
   if (hasBlobStorage()) {
     const remoteSettings = await readRemoteJson(REMOTE_SETTINGS_KEY, defaultSiteSettings, {
       protectedData: true,
@@ -166,6 +262,8 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
 }
 
 export async function saveSiteSettings(settings: SiteSettings) {
+  assertCmsStorageConfigured();
+
   if (hasBlobStorage()) {
     await writeRemoteJson(REMOTE_SETTINGS_KEY, settings, { protectedData: true });
     return;
@@ -175,6 +273,9 @@ export async function saveSiteSettings(settings: SiteSettings) {
 }
 
 export async function listArticles(options?: { includeDrafts?: boolean }) {
+  assertCmsStorageConfigured();
+  noStore();
+
   const fallback = sortArticles(defaultArticles);
 
   const articles = hasBlobStorage()
@@ -194,6 +295,9 @@ export async function getArticleBySlug(
   slug: string,
   options?: { includeDrafts?: boolean },
 ) {
+  assertCmsStorageConfigured();
+  noStore();
+
   const articles = await listArticles({ includeDrafts: true });
   const article = articles.find((entry) => entry.slug === slug);
 
@@ -209,6 +313,8 @@ export async function getArticleBySlug(
 }
 
 export async function saveArticle(article: Article) {
+  assertCmsStorageConfigured();
+
   const articles = await listArticles({ includeDrafts: true });
   const existingIndex = articles.findIndex((entry) => entry.slug === article.slug);
   const nextArticles = [...articles];
@@ -230,6 +336,8 @@ export async function saveArticle(article: Article) {
 }
 
 export async function deleteArticle(slug: string) {
+  assertCmsStorageConfigured();
+
   const articles = await listArticles({ includeDrafts: true });
   const nextArticles = articles.filter((article) => article.slug !== slug);
 
@@ -242,6 +350,9 @@ export async function deleteArticle(slug: string) {
 }
 
 export async function listLeads() {
+  assertCmsStorageConfigured();
+  noStore();
+
   const fallback: Lead[] = [];
   const leads = hasBlobStorage()
     ? await readRemoteJson(REMOTE_LEADS_KEY, fallback, { protectedData: true })
@@ -251,6 +362,8 @@ export async function listLeads() {
 }
 
 export async function saveLead(lead: Lead) {
+  assertCmsStorageConfigured();
+
   const leads = await listLeads();
   const nextLeads = sortLeads([lead, ...leads.filter((entry) => entry.id !== lead.id)]);
 

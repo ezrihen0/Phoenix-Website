@@ -9,7 +9,7 @@ import { clearAdminSession, requireAdmin } from "@/lib/auth/options";
 import { generateDailyArticle } from "@/lib/ai/generate-article";
 import { defaultSiteSettings } from "@/lib/cms/defaults";
 import { slugify } from "@/lib/cms/helpers";
-import { deleteArticle, getArticleBySlug, getSiteSettings, saveArticle, saveSiteSettings } from "@/lib/cms/storage";
+import { deleteArticle, getArticleBySlug, getCmsStorageStatus, getSiteSettings, saveArticle, saveSiteSettings } from "@/lib/cms/storage";
 
 const articleSchema = z.object({
   slug: z.string().optional(),
@@ -80,6 +80,29 @@ function revalidatePublicContent(slug?: string) {
   }
 }
 
+function redirectWithActionError(path: string, message: string): never {
+  redirect(`${path}?error=${encodeURIComponent(message)}`);
+}
+
+function ensureHealthyCmsStorage(path: string) {
+  const storageStatus = getCmsStorageStatus();
+
+  if (!storageStatus.healthy) {
+    redirectWithActionError(
+      path,
+      "CMS storage is unavailable on this deployment. Fix Blob storage in Vercel, redeploy, and refresh admin before trying again.",
+    );
+  }
+}
+
+function getActionErrorMessage(error: unknown, fallback: string) {
+  if (error instanceof Error && error.message.trim()) {
+    return error.message;
+  }
+
+  return fallback;
+}
+
 export async function logoutAdminAction() {
   await clearAdminSession();
   redirect("/admin/login?loggedOut=1");
@@ -87,41 +110,50 @@ export async function logoutAdminAction() {
 
 export async function saveArticleAction(formData: FormData) {
   await requireAdmin();
+  ensureHealthyCmsStorage("/admin/articles");
 
   const raw = Object.fromEntries(formData.entries());
   const parsed = articleSchema.parse(raw);
   const originalSlug = String(formData.get("originalSlug") || "").trim();
   const createdAt = String(formData.get("createdAt") || "").trim();
-  const existingArticle = originalSlug
-    ? await getArticleBySlug(originalSlug, { includeDrafts: true })
-    : null;
   const now = new Date().toISOString();
   const slug = slugify(parsed.slug || parsed.title);
 
-  await saveArticle({
-    id: existingArticle?.id || crypto.randomUUID(),
-    slug,
-    title: parsed.title,
-    excerpt: parsed.excerpt,
-    body: parsed.body,
-    seoTitle: parsed.seoTitle,
-    seoDescription: parsed.seoDescription,
-    keywords: toList(parsed.keywords),
-    relatedSlugs: toList(parsed.relatedSlugs || ""),
-    status: parsed.status,
-    authorName: parsed.authorName,
-    coverImage: parsed.coverImage || undefined,
-    createdAt: existingArticle?.createdAt || createdAt || now,
-    updatedAt: now,
-    publishedAt:
-      parsed.status === "published"
-        ? existingArticle?.publishedAt || now
-        : existingArticle?.publishedAt || now,
-    aiGenerated: existingArticle?.aiGenerated || false,
-  });
+  try {
+    const existingArticle = originalSlug
+      ? await getArticleBySlug(originalSlug, { includeDrafts: true })
+      : null;
 
-  if (originalSlug && originalSlug !== slug) {
-    await deleteArticle(originalSlug);
+    await saveArticle({
+      id: existingArticle?.id || crypto.randomUUID(),
+      slug,
+      title: parsed.title,
+      excerpt: parsed.excerpt,
+      body: parsed.body,
+      seoTitle: parsed.seoTitle,
+      seoDescription: parsed.seoDescription,
+      keywords: toList(parsed.keywords),
+      relatedSlugs: toList(parsed.relatedSlugs || ""),
+      status: parsed.status,
+      authorName: parsed.authorName,
+      coverImage: parsed.coverImage || undefined,
+      createdAt: existingArticle?.createdAt || createdAt || now,
+      updatedAt: now,
+      publishedAt:
+        parsed.status === "published"
+          ? existingArticle?.publishedAt || now
+          : existingArticle?.publishedAt || now,
+      aiGenerated: existingArticle?.aiGenerated || false,
+    });
+
+    if (originalSlug && originalSlug !== slug) {
+      await deleteArticle(originalSlug);
+    }
+  } catch (error) {
+    redirectWithActionError(
+      "/admin/articles",
+      getActionErrorMessage(error, "The article could not be saved because CMS storage is unavailable."),
+    );
   }
 
   revalidatePublicContent(slug);
@@ -136,26 +168,44 @@ export async function deleteArticleAction(formData: FormData) {
     redirect("/admin/articles?error=missing-slug");
   }
 
-  await deleteArticle(slug);
+  ensureHealthyCmsStorage("/admin/articles");
+
+  try {
+    await deleteArticle(slug);
+  } catch (error) {
+    redirectWithActionError(
+      "/admin/articles",
+      getActionErrorMessage(error, "The article could not be deleted because CMS storage is unavailable."),
+    );
+  }
+
   revalidatePublicContent(slug);
   redirect("/admin/articles?deleted=1");
 }
 
 export async function saveSettingsAction(formData: FormData) {
   await requireAdmin();
+  ensureHealthyCmsStorage("/admin/settings");
 
   const raw = Object.fromEntries(formData.entries());
   const parsed = settingsSchema.parse(raw);
-  const existing = await getSiteSettings();
+  try {
+    const existing = await getSiteSettings();
 
-  await saveSiteSettings({
-    ...defaultSiteSettings,
-    ...existing,
-    ...parsed,
-    aiProvider: "openai",
-    notificationEmail: parsed.notificationEmail || parsed.email,
-    googleAppPassword: parsed.googleAppPassword || existing.googleAppPassword,
-  });
+    await saveSiteSettings({
+      ...defaultSiteSettings,
+      ...existing,
+      ...parsed,
+      aiProvider: "openai",
+      notificationEmail: parsed.notificationEmail || parsed.email,
+      googleAppPassword: parsed.googleAppPassword || existing.googleAppPassword,
+    });
+  } catch (error) {
+    redirectWithActionError(
+      "/admin/settings",
+      getActionErrorMessage(error, "Settings could not be saved because CMS storage is unavailable."),
+    );
+  }
 
   revalidatePublicContent();
   redirect("/admin/settings?saved=1");
@@ -163,17 +213,25 @@ export async function saveSettingsAction(formData: FormData) {
 
 export async function updateAiModelAction(formData: FormData) {
   await requireAdmin();
+  ensureHealthyCmsStorage("/admin");
 
   const parsed = aiModelSchema.parse({
     aiModel: String(formData.get("aiModel") || ""),
   });
-  const settings = await getSiteSettings();
+  try {
+    const settings = await getSiteSettings();
 
-  await saveSiteSettings({
-    ...defaultSiteSettings,
-    ...settings,
-    aiModel: parsed.aiModel,
-  });
+    await saveSiteSettings({
+      ...defaultSiteSettings,
+      ...settings,
+      aiModel: parsed.aiModel,
+    });
+  } catch (error) {
+    redirectWithActionError(
+      "/admin",
+      getActionErrorMessage(error, "The AI model could not be updated because CMS storage is unavailable."),
+    );
+  }
 
   revalidatePath("/admin");
   revalidatePath("/admin/settings");
@@ -182,6 +240,7 @@ export async function updateAiModelAction(formData: FormData) {
 
 export async function generateAiArticleAction() {
   await requireAdmin();
+  ensureHealthyCmsStorage("/admin/articles");
 
   let result;
 

@@ -16,6 +16,7 @@ type SiteHeaderProps = {
 export function SiteHeader({ settings }: SiteHeaderProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const mobileBookingLabel = settings.bookingLabel.length > 14 ? "Book online" : settings.bookingLabel;
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[rgba(244,236,223,0.82)] backdrop-blur-xl">
@@ -121,10 +122,10 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             href={settings.workizUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--color-forest)] px-4 py-3 text-sm font-semibold text-[var(--color-paper)]"
+            className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-[var(--color-forest)] px-3 py-3 text-[0.82rem] font-semibold text-[var(--color-paper)] sm:px-4 sm:text-sm"
           >
             <CalendarDays className="h-4 w-4" />
-            {settings.bookingLabel}
+            {mobileBookingLabel}
           </a>
           <button
             type="button"
@@ -182,7 +183,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               rel="noreferrer"
               className="rounded-2xl bg-[var(--color-ember)] px-4 py-3 text-center font-semibold text-white"
             >
-              {settings.bookingLabel}
+              {mobileBookingLabel}
             </a>
           </div>
         </div>

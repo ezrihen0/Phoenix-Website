@@ -7,6 +7,12 @@ type MetadataOptions = {
   description: string;
   path?: string;
   keywords?: string[];
+  imagePath?: string;
+  imageAlt?: string;
+  openGraphType?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
+  authors?: string[];
 };
 
 type BreadcrumbItem = {
@@ -18,13 +24,43 @@ export function absoluteUrl(path = "/") {
   return new URL(path, siteConfig.url).toString();
 }
 
+function buildShareImages(imagePath?: string, imageAlt?: string) {
+  if (imagePath) {
+    return [
+      {
+        url: absoluteUrl(imagePath),
+        alt: imageAlt || `${siteConfig.name} image`,
+      },
+    ];
+  }
+
+  return [
+    {
+      url: absoluteUrl("/opengraph-image"),
+      width: 1200,
+      height: 630,
+      alt:
+        imageAlt ||
+        "Phoenix Chimney & Fireplace Services logo and Calgary service overview",
+    },
+  ];
+}
+
 export function createPageMetadata({
   title,
   description,
   path = "/",
   keywords = [],
+  imagePath,
+  imageAlt,
+  openGraphType = "website",
+  publishedTime,
+  modifiedTime,
+  authors = [],
 }: MetadataOptions): Metadata {
   const canonical = absoluteUrl(path);
+  const shareImages = buildShareImages(imagePath, imageAlt || title);
+  const twitterImage = absoluteUrl(imagePath || "/twitter-image");
 
   return {
     title,
@@ -34,26 +70,26 @@ export function createPageMetadata({
       canonical,
     },
     openGraph: {
-      type: "website",
+      type: openGraphType,
       title,
       description,
       url: canonical,
       siteName: siteConfig.name,
       locale: "en_CA",
-      images: [
-        {
-          url: absoluteUrl("/opengraph-image"),
-          width: 1200,
-          height: 630,
-          alt: `${siteConfig.name} preview image`,
-        },
-      ],
+      images: shareImages,
+      ...(openGraphType === "article"
+        ? {
+            publishedTime,
+            modifiedTime,
+            authors,
+          }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [absoluteUrl("/twitter-image")],
+      images: [twitterImage],
     },
   };
 }
@@ -89,12 +125,15 @@ export function buildFaqSchema(
 }
 
 export function buildLocalBusinessSchema() {
+  const logoUrl = absoluteUrl("/images/brand/favicon-512.png");
+
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: siteConfig.legalName,
     url: siteConfig.url,
     image: absoluteUrl(siteConfig.socialPreview),
+    logo: logoUrl,
     telephone: siteConfig.phoneHref,
     email: siteConfig.email,
     areaServed: ["Calgary", ...siteConfig.serviceAreas],
@@ -128,11 +167,21 @@ export function buildServiceSchema(
 }
 
 export function buildWebsiteSchema() {
+  const logoUrl = absoluteUrl("/images/brand/favicon-512.png");
+
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
     url: siteConfig.url,
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: logoUrl,
+      },
+    },
     potentialAction: {
       "@type": "SearchAction",
       target: `${siteConfig.url}/services`,

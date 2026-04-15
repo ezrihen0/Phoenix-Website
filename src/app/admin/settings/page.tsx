@@ -1,18 +1,39 @@
 import { AI_MODEL_OPTIONS } from "@/lib/ai/model-options";
 import { saveSettingsAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { requireAdmin } from "@/lib/auth/options";
-import { getSiteSettings } from "@/lib/cms/storage";
+import { getCmsStorageStatus, getSiteSettings } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; error?: string }>;
 }) {
   const session = await requireAdmin();
-  const [settings, params] = await Promise.all([getSiteSettings(), searchParams]);
+  const storageStatus = getCmsStorageStatus();
+  const params = await searchParams;
+
+  if (!storageStatus.healthy) {
+    return (
+      <AdminShell
+        title="Site settings"
+        description="Manage business details, booking links, and the AI article configuration that powers daily content generation."
+        currentPath="/admin/settings"
+        userLabel={session.username}
+        storageStatus={storageStatus}
+      >
+        <AdminStorageUnavailablePanel
+          title="Settings changes are paused."
+          description="Restore shared Blob storage before editing business details, booking links, or AI content configuration on this deployment."
+        />
+      </AdminShell>
+    );
+  }
+
+  const settings = await getSiteSettings();
 
   return (
     <AdminShell
@@ -20,7 +41,14 @@ export default async function AdminSettingsPage({
       description="Manage business details, booking links, and the AI article configuration that powers daily content generation."
       currentPath="/admin/settings"
       userLabel={session.username}
+      storageStatus={storageStatus}
     >
+      {params.error ? (
+        <div className="rounded-[1.75rem] border border-red-200 bg-red-50 px-5 py-4 text-sm leading-7 text-red-800">
+          {params.error}
+        </div>
+      ) : null}
+
       {params.saved ? (
         <div className="rounded-[1.75rem] border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">
           Settings saved.
@@ -32,7 +60,7 @@ export default async function AdminSettingsPage({
           <Field label="Business name" name="businessName" defaultValue={settings.businessName} required />
           <Field label="Legal name" name="legalName" defaultValue={settings.legalName} required />
           <Field label="Site URL" name="siteUrl" defaultValue={settings.siteUrl} required />
-          <Field label="Email" name="email" defaultValue={settings.email} required />
+          <Field label="Public business email / sending email" name="email" defaultValue={settings.email} required />
           <Field label="Phone display" name="phoneDisplay" defaultValue={settings.phoneDisplay} required />
           <Field label="Phone href" name="phoneHref" defaultValue={settings.phoneHref} required />
           <Field label="Hours label" name="hoursLabel" defaultValue={settings.hoursLabel} required />
@@ -67,17 +95,17 @@ export default async function AdminSettingsPage({
               className="mt-1 h-4 w-4 rounded border-[var(--color-border)]"
             />
             <span>
-              <span className="block font-semibold text-[var(--color-ink)]">Email new leads to inbox</span>
-              Send each contact-form submission to the notification inbox below.
+              <span className="block font-semibold text-[var(--color-ink)]">Email new leads to the recipient inbox</span>
+              Send each contact-form submission to the receiving inbox below using the sender email and Google app password.
             </span>
           </label>
-          <Field label="Notification inbox email" name="notificationEmail" defaultValue={settings.notificationEmail} required />
+          <Field label="Recipient inbox email (receives notifications)" name="notificationEmail" defaultValue={settings.notificationEmail} required />
           <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
-            <span>Google app password</span>
+            <span>Google app password for the sending email</span>
             <input
               type="password"
               name="googleAppPassword"
-              placeholder="Leave blank to keep the current app password"
+              placeholder="Leave blank to keep the current sender app password"
               className="rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm outline-none"
             />
           </label>
@@ -94,7 +122,7 @@ export default async function AdminSettingsPage({
         </div>
 
         <p className="text-xs leading-6 text-[var(--color-muted)]">
-          The notification inbox email is where contact-form alerts are sent. Gmail delivery uses the public email above as the sender account and the app password here for SMTP authentication.
+          The public business email above is also the sending Gmail account used for SMTP delivery. The recipient inbox email is the address that receives new lead notifications. The Google app password must belong to the sending Gmail account.
         </p>
 
         <button

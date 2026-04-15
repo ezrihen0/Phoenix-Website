@@ -34,6 +34,12 @@ export async function generateMetadata({
     description: article.seoDescription,
     path: `/articles/${article.slug}`,
     keywords: article.keywords,
+    imagePath: article.coverImage || undefined,
+    imageAlt: article.title,
+    openGraphType: "article",
+    publishedTime: article.publishedAt,
+    modifiedTime: article.updatedAt,
+    authors: [article.authorName],
   });
 }
 

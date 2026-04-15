@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 
 import { saveArticleAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { requireAdmin } from "@/lib/auth/options";
-import { getArticleBySlug } from "@/lib/cms/storage";
+import { getArticleBySlug, getCmsStorageStatus } from "@/lib/cms/storage";
 import type { Article } from "@/lib/cms/types";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +18,26 @@ export default async function EditArticlePage({
   searchParams: Promise<{ generated?: string; saved?: string }>;
 }) {
   const session = await requireAdmin();
+  const storageStatus = getCmsStorageStatus();
   const [{ slug }, pageState] = await Promise.all([params, searchParams]);
+
+  if (!storageStatus.healthy) {
+    return (
+      <AdminShell
+        title="Edit article"
+        description="Update article copy, SEO fields, internal links, and publish status."
+        currentPath="/admin/articles"
+        userLabel={session.username}
+        storageStatus={storageStatus}
+      >
+        <AdminStorageUnavailablePanel
+          title="Article editing is paused."
+          description="Restore shared Blob storage before loading or saving article drafts on this deployment."
+        />
+      </AdminShell>
+    );
+  }
+
   const article = await getArticleBySlug(slug, { includeDrafts: true });
 
   if (!article) {
@@ -30,6 +50,7 @@ export default async function EditArticlePage({
       description="Update article copy, SEO fields, internal links, and publish status."
       currentPath="/admin/articles"
       userLabel={session.username}
+      storageStatus={storageStatus}
     >
       {pageState.generated ? (
         <div className="rounded-[1.75rem] border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-800">

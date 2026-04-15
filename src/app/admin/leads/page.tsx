@@ -1,13 +1,33 @@
 import { Mail, Phone, Send, ShieldCheck } from "lucide-react";
 
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { requireAdmin } from "@/lib/auth/options";
-import { listLeads } from "@/lib/cms/storage";
+import { getCmsStorageStatus, listLeads } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminLeadsPage() {
   const session = await requireAdmin();
+  const storageStatus = getCmsStorageStatus();
+
+  if (!storageStatus.healthy) {
+    return (
+      <AdminShell
+        title="Lead inbox"
+        description="Every contact-form submission is captured here, along with booking-sync and email-delivery status."
+        currentPath="/admin/leads"
+        userLabel={session.username}
+        storageStatus={storageStatus}
+      >
+        <AdminStorageUnavailablePanel
+          title="Lead inbox data is temporarily unavailable."
+          description="Shared Blob storage needs to be healthy before admin can rely on stored lead history for this deployment."
+        />
+      </AdminShell>
+    );
+  }
+
   const leads = await listLeads();
 
   return (
@@ -16,6 +36,7 @@ export default async function AdminLeadsPage() {
       description="Every contact-form submission is captured here, along with booking-sync and email-delivery status."
       currentPath="/admin/leads"
       userLabel={session.username}
+      storageStatus={storageStatus}
     >
       {leads.length ? (
         <div className="space-y-4">

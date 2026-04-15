@@ -5,6 +5,7 @@ import { MobileActionDock } from "@/components/mobile-action-dock";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { StructuredData } from "@/components/structured-data";
+import { VercelAnalytics } from "@/components/vercel-analytics";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { absoluteUrl } from "@/lib/seo";
 import {
@@ -14,6 +15,20 @@ import {
 } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-data";
 import "./globals.css";
+
+const homeMetadata = createPageMetadata({
+  title: "Fireplace Repair Calgary | Chimney, WETT & Gas Fireplace Service",
+  description:
+    "Book Calgary fireplace and chimney specialists for gas fireplace repair, WETT inspections, chimney sweeping, relining, and masonry work.",
+  path: "/",
+  keywords: [
+    "fireplace repair Calgary",
+    "chimney repair Calgary",
+    "WETT inspection Calgary",
+    "gas fireplace repair Calgary",
+    "chimney sweep Calgary",
+  ],
+});
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -27,6 +42,7 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
+  ...homeMetadata,
   metadataBase: new URL(siteConfig.url),
   applicationName: siteConfig.name,
   category: "home services",
@@ -48,23 +64,11 @@ export const metadata: Metadata = {
     apple: [{ url: "/images/brand/favicon-180.png", sizes: "180x180", type: "image/png" }],
   },
   alternates: {
+    ...homeMetadata.alternates,
     types: {
       "application/rss+xml": absoluteUrl("/feed.xml"),
     },
   },
-  ...createPageMetadata({
-    title: "Fireplace Repair Calgary | Chimney, WETT & Gas Fireplace Service",
-    description:
-      "Book Calgary fireplace and chimney specialists for gas fireplace repair, WETT inspections, chimney sweeping, relining, and masonry work.",
-    path: "/",
-    keywords: [
-      "fireplace repair Calgary",
-      "chimney repair Calgary",
-      "WETT inspection Calgary",
-      "gas fireplace repair Calgary",
-      "chimney sweep Calgary",
-    ],
-  }),
 };
 
 export default async function RootLayout({
@@ -89,6 +93,7 @@ export default async function RootLayout({
           <SiteFooter settings={settings} />
           <MobileActionDock settings={settings} />
         </div>
+        <VercelAnalytics />
       </body>
     </html>
   );
