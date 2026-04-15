@@ -4,8 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarDays, Clock3, Flame, Menu, Phone, X } from "lucide-react";
-import { useState } from "react";
+import type { MouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import {
+  PhoenixLogoEasterEgg,
+  type PhoenixFlightState,
+} from "@/components/phoenix-logo-easter-egg";
 import type { PublicSiteSettings } from "@/lib/cms/types";
 import { navigationLinks } from "@/lib/site-data";
 
@@ -13,13 +18,98 @@ type SiteHeaderProps = {
   settings: PublicSiteSettings;
 };
 
+const REQUIRED_LOGO_CLICKS = 5;
+const CLICK_STREAK_WINDOW_MS = 650;
+const CLICK_STREAK_RESET_MS = 950;
+const PHOENIX_MESSAGE_COUNT = 4;
+
 export function SiteHeader({ settings }: SiteHeaderProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [phoenixFlight, setPhoenixFlight] = useState<PhoenixFlightState | null>(null);
+  const [logoFlareKey, setLogoFlareKey] = useState(0);
+  const logoLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const logoClickCountRef = useRef(0);
+  const lastLogoClickAtRef = useRef(0);
+  const clickResetTimerRef = useRef<number | null>(null);
+  const lastPhoenixMessageIndexRef = useRef(-1);
   const mobileBookingLabel = settings.bookingLabel.length > 14 ? "Book online" : settings.bookingLabel;
 
+  useEffect(() => {
+    return () => {
+      if (clickResetTimerRef.current) {
+        clearTimeout(clickResetTimerRef.current);
+      }
+    };
+  }, []);
+
+  function clearLogoClickStreak() {
+    logoClickCountRef.current = 0;
+    lastLogoClickAtRef.current = 0;
+
+    if (clickResetTimerRef.current) {
+      clearTimeout(clickResetTimerRef.current);
+      clickResetTimerRef.current = null;
+    }
+  }
+
+  function triggerPhoenixFlight() {
+    if (phoenixFlight || !logoLinkRef.current) {
+      return;
+    }
+
+    const logoBounds = logoLinkRef.current.getBoundingClientRect();
+    const size = Math.max(118, Math.min(186, window.innerWidth * 0.16));
+    const nextMessageIndex = (lastPhoenixMessageIndexRef.current + 1) % PHOENIX_MESSAGE_COUNT;
+
+    lastPhoenixMessageIndexRef.current = nextMessageIndex;
+
+    setLogoFlareKey((value) => value + 1);
+    setPhoenixFlight({
+      id: Date.now(),
+      startX: logoBounds.left + Math.min(logoBounds.width * 0.23, 44),
+      startY: logoBounds.top + logoBounds.height * 0.52,
+      size,
+      messageIndex: nextMessageIndex,
+    });
+  }
+
+  function handleLogoClick(event: MouseEvent<HTMLAnchorElement>) {
+    setIsOpen(false);
+
+    if (pathname !== "/") {
+      return;
+    }
+
+    const now = performance.now();
+    const nextClickCount =
+      now - lastLogoClickAtRef.current <= CLICK_STREAK_WINDOW_MS
+        ? logoClickCountRef.current + 1
+        : 1;
+
+    logoClickCountRef.current = nextClickCount;
+    lastLogoClickAtRef.current = now;
+
+    if (clickResetTimerRef.current) {
+      clearTimeout(clickResetTimerRef.current);
+    }
+
+    clickResetTimerRef.current = window.setTimeout(() => {
+      clearLogoClickStreak();
+    }, CLICK_STREAK_RESET_MS);
+
+    if (nextClickCount < REQUIRED_LOGO_CLICKS) {
+      return;
+    }
+
+    event.preventDefault();
+    clearLogoClickStreak();
+    triggerPhoenixFlight();
+  }
+
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[rgba(244,236,223,0.82)] backdrop-blur-xl">
+    <>
+      <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[rgba(244,236,223,0.82)] backdrop-blur-xl">
       <div className="hidden border-b border-[var(--color-border)] bg-[var(--color-ink)] text-[0.78rem] text-[var(--color-paper)] md:block">
         <div className="page-bleed flex flex-wrap items-center justify-between gap-3 px-4 py-3">
           <div className="flex flex-wrap items-center gap-4">
@@ -54,7 +144,19 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
       </div>
 
       <div className="page-bleed flex items-center justify-between gap-3 px-4 py-3 lg:gap-6 lg:py-4">
-        <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
+        <Link
+          ref={logoLinkRef}
+          href="/"
+          className="phoenix-logo-trigger relative flex items-center"
+          onClick={handleLogoClick}
+        >
+          {logoFlareKey ? (
+            <span
+              key={logoFlareKey}
+              className="phoenix-logo-radiance"
+              aria-hidden="true"
+            />
+          ) : null}
           <Image
             src="/images/brand/logo.webp"
             alt="Phoenix Chimney & Fireplace Services logo"
@@ -186,6 +288,14 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
           </div>
         </div>
       ) : null}
-    </header>
+      </header>
+      <PhoenixLogoEasterEgg
+        flight={phoenixFlight}
+        onComplete={() => {
+          setPhoenixFlight(null);
+          setLogoFlareKey((value) => value + 1);
+        }}
+      />
+    </>
   );
 }

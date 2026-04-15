@@ -68,19 +68,19 @@ export function SiteFooter({ settings }: SiteFooterProps) {
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--color-gold)]">
             Contact
           </p>
-          <p className="inline-flex items-center gap-3">
+          <p className="flex items-center gap-3">
             <Phone className="h-4 w-4 text-[var(--color-gold)]" />
             <a href={`tel:${settings.phoneHref}`}>{settings.phoneDisplay}</a>
           </p>
-          <p className="inline-flex items-center gap-3">
+          <p className="flex items-center gap-3">
             <Mail className="h-4 w-4 text-[var(--color-gold)]" />
             <a href={`mailto:${settings.email}`}>{settings.email}</a>
           </p>
-          <p className="inline-flex items-center gap-3">
+          <p className="flex items-center gap-3">
             <Clock3 className="h-4 w-4 text-[var(--color-gold)]" />
             {settings.hoursLabel} · {settings.hoursDetail}
           </p>
-          <p className="inline-flex items-start gap-3 leading-7">
+          <p className="flex items-start gap-3 leading-7">
             <MapPinned className="mt-1 h-4 w-4 shrink-0 text-[var(--color-gold)]" />
             {settings.serviceRadius}
           </p>

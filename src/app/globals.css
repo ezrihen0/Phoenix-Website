@@ -153,6 +153,187 @@ a:not([class]) {
   backdrop-filter: blur(10px);
 }
 
+.phoenix-logo-trigger {
+  isolation: isolate;
+}
+
+.phoenix-logo-radiance {
+  pointer-events: none;
+  position: absolute;
+  inset: -0.7rem -1rem;
+  z-index: -1;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle, rgba(255, 191, 120, 0.6) 0%, rgba(203, 152, 82, 0.32) 30%, transparent 76%),
+    radial-gradient(circle, rgba(185, 71, 29, 0.28) 0%, transparent 72%);
+  filter: blur(16px);
+  animation: phoenix-logo-radiance 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.phoenix-easter-egg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.phoenix-easter-egg-sky {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 183, 97, 0.1), transparent 18%),
+    radial-gradient(circle at 72% 24%, rgba(185, 71, 29, 0.1), transparent 22%),
+    radial-gradient(circle at 46% 58%, rgba(255, 226, 171, 0.08), transparent 24%);
+  animation: phoenix-sky-glow var(--phoenix-flight-duration, 7800ms) ease-out both;
+}
+
+.phoenix-easter-egg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--phoenix-size);
+  height: var(--phoenix-size);
+  transform: translate3d(0, 0, 0);
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.phoenix-easter-egg-aura,
+.phoenix-easter-egg-core,
+.phoenix-easter-egg-trail,
+.phoenix-easter-egg-speech-bubble,
+.phoenix-easter-egg-return-burst,
+.phoenix-easter-egg-ember,
+.phoenix-easter-egg-mark {
+  position: absolute;
+}
+
+.phoenix-easter-egg-aura {
+  inset: -28%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 208, 131, 0.72) 0%, rgba(255, 161, 75, 0.2) 42%, transparent 74%);
+  filter: blur(22px);
+  animation: phoenix-aura-pulse 320ms ease-in-out infinite alternate;
+}
+
+.phoenix-easter-egg-trail {
+  left: -80%;
+  top: 38%;
+  height: 24%;
+  width: 185%;
+  border-radius: 9999px;
+  background:
+    linear-gradient(90deg, rgba(255, 212, 149, 0) 0%, rgba(255, 212, 149, 0.08) 26%, rgba(255, 180, 93, 0.3) 56%, rgba(185, 71, 29, 0.58) 78%, rgba(185, 71, 29, 0) 100%),
+    radial-gradient(circle at 72% 50%, rgba(255, 226, 170, 0.48), transparent 26%);
+  filter: blur(12px);
+  transform: rotate(-4deg);
+  transform-origin: right center;
+  animation: phoenix-trail-flicker 210ms linear infinite alternate;
+}
+
+.phoenix-easter-egg-core {
+  inset: 28%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 239, 205, 0.95) 0%, rgba(255, 183, 94, 0.18) 42%, transparent 70%);
+  filter: blur(6px);
+  animation: phoenix-core-pulse 340ms ease-in-out infinite alternate;
+}
+
+.phoenix-easter-egg-mark {
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  user-select: none;
+  filter:
+    drop-shadow(0 0 18px rgba(255, 180, 93, 0.34))
+    drop-shadow(0 18px 34px rgba(185, 71, 29, 0.28));
+  animation:
+    phoenix-wing-beat 280ms ease-in-out infinite alternate,
+    phoenix-bank 900ms ease-in-out infinite alternate;
+  transform-origin: center 56%;
+}
+
+.phoenix-easter-egg-speech-bubble {
+  left: 50%;
+  top: -128%;
+  display: flex;
+  min-width: clamp(12rem, 18vw, 15rem);
+  max-width: clamp(13rem, 22vw, 16rem);
+  flex-direction: column;
+  gap: 0.25rem;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(255, 233, 194, 0.82);
+  background:
+    linear-gradient(180deg, rgba(41, 26, 17, 0.96), rgba(20, 14, 10, 0.92)),
+    radial-gradient(circle at top right, rgba(255, 188, 97, 0.18), transparent 55%);
+  padding: 0.85rem 1rem;
+  color: rgba(255, 244, 220, 0.98);
+  box-shadow:
+    0 22px 50px rgba(18, 10, 7, 0.45),
+    0 0 28px rgba(255, 183, 94, 0.2);
+  backdrop-filter: blur(12px);
+  line-height: 1.35;
+  opacity: 0;
+  transform: translate3d(-50%, 0.6rem, 0) scale(0.78);
+  transform-origin: center bottom;
+  animation: phoenix-speech-bubble var(--phoenix-flight-duration, 7800ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.phoenix-easter-egg-speech-bubble::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 0.5rem);
+  bottom: -0.7rem;
+  height: 1rem;
+  width: 1rem;
+  transform: rotate(45deg);
+  border-right: 1px solid rgba(255, 233, 194, 0.82);
+  border-bottom: 1px solid rgba(255, 233, 194, 0.82);
+  background: rgba(28, 18, 12, 0.94);
+}
+
+.phoenix-easter-egg-speech-bubble strong {
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 219, 168, 1);
+}
+
+.phoenix-easter-egg-speech-bubble span {
+  font-size: 0.86rem;
+}
+
+.phoenix-easter-egg-speech-glint {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.22), transparent 28%, transparent 72%, rgba(255, 204, 131, 0.12));
+  opacity: 0.65;
+}
+
+.phoenix-easter-egg-return-burst {
+  inset: -10%;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 223, 173, 0.68);
+  opacity: 0;
+  animation: phoenix-return-burst var(--phoenix-flight-duration, 7800ms) ease-out both;
+}
+
+.phoenix-easter-egg-ember {
+  left: calc(8% + (var(--ember-index) * 5%));
+  top: calc(48% + ((var(--ember-index) % 2) * 8%));
+  height: 0.6rem;
+  width: 0.6rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 241, 213, 1) 0%, rgba(255, 184, 92, 0.92) 42%, rgba(185, 71, 29, 0) 74%);
+  box-shadow: 0 0 12px rgba(255, 183, 94, 0.45);
+  opacity: 0;
+  animation: phoenix-ember-drift 1200ms linear infinite;
+  animation-delay: calc(var(--ember-index) * -130ms);
+}
+
 @keyframes hero-float {
 
   0%,
@@ -162,6 +343,154 @@ a:not([class]) {
 
   50% {
     transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes phoenix-logo-radiance {
+  0% {
+    opacity: 0;
+    transform: scale(0.62);
+  }
+
+  35% {
+    opacity: 0.95;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.36);
+  }
+}
+
+@keyframes phoenix-sky-glow {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes phoenix-speech-bubble {
+  0%,
+  33% {
+    opacity: 0;
+    transform: translate3d(-50%, 0.7rem, 0) scale(0.78);
+  }
+
+  38% {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(-50%, -0.18rem, 0) scale(1.03);
+  }
+
+  67%,
+  100% {
+    opacity: 0;
+    transform: translate3d(-50%, 0.35rem, 0) scale(0.86);
+  }
+}
+
+@keyframes phoenix-aura-pulse {
+  0% {
+    opacity: 0.62;
+    transform: scale(0.92);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes phoenix-core-pulse {
+  0% {
+    opacity: 0.58;
+    transform: scale(0.9);
+  }
+
+  100% {
+    opacity: 0.94;
+    transform: scale(1.16);
+  }
+}
+
+@keyframes phoenix-trail-flicker {
+  0% {
+    opacity: 0.52;
+    transform: rotate(-6deg) scaleX(0.96);
+  }
+
+  100% {
+    opacity: 0.96;
+    transform: rotate(3deg) scaleX(1.04);
+  }
+}
+
+@keyframes phoenix-wing-beat {
+  0% {
+    transform: scale(0.94) rotate(-6deg);
+  }
+
+  100% {
+    transform: scale(1.06) rotate(7deg);
+  }
+}
+
+@keyframes phoenix-bank {
+  0% {
+    filter:
+      drop-shadow(0 0 16px rgba(255, 180, 93, 0.28))
+      drop-shadow(0 18px 34px rgba(185, 71, 29, 0.24));
+  }
+
+  100% {
+    filter:
+      drop-shadow(0 0 24px rgba(255, 180, 93, 0.46))
+      drop-shadow(0 22px 38px rgba(185, 71, 29, 0.34));
+  }
+}
+
+@keyframes phoenix-ember-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.4);
+  }
+
+  18% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-2.8rem, -0.8rem, 0) scale(1.16);
+  }
+}
+
+@keyframes phoenix-return-burst {
+  0%,
+  86% {
+    opacity: 0;
+    transform: scale(0.24);
+  }
+
+  92% {
+    opacity: 0.82;
+    transform: scale(0.74);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.48);
   }
 }
 
@@ -228,7 +557,16 @@ a:not([class]) {
   .hero-orb-primary,
   .hero-orb-secondary,
   .reveal,
-  .reveal-visible {
+  .reveal-visible,
+  .phoenix-logo-radiance,
+  .phoenix-easter-egg-sky,
+  .phoenix-easter-egg-aura,
+  .phoenix-easter-egg-trail,
+  .phoenix-easter-egg-core,
+  .phoenix-easter-egg-speech-bubble,
+  .phoenix-easter-egg-mark,
+  .phoenix-easter-egg-return-burst,
+  .phoenix-easter-egg-ember {
     opacity: 1;
     transform: none;
     transition: none;

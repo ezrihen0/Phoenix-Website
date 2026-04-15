@@ -123,26 +123,22 @@ export default async function ArticlePage({
 
       <section className="pb-20">
         <div className="page-frame grid gap-10 lg:grid-cols-[1fr_0.72fr] lg:items-start">
-          <Reveal>
-            <div className="rounded-[2rem] border border-[var(--color-border)] bg-white/78 p-6 sm:p-8">
-              <ArticleBody markdown={article.body} />
-            </div>
-          </Reveal>
+          <div className="rounded-[2rem] border border-[var(--color-border)] bg-white/78 p-6 sm:p-8">
+            <ArticleBody markdown={article.body} />
+          </div>
 
-          <Reveal delay={120}>
-            <aside className="space-y-6 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
-              <SectionHeading
-                eyebrow="Related reading"
-                title="More guidance for similar issues."
-                description="Browse a few related articles if you want more context before you book service."
-              />
-              <div className="grid gap-4">
-                {relatedArticles.map((relatedArticle) => (
-                  <ArticleCard key={relatedArticle.id} article={relatedArticle} />
-                ))}
-              </div>
-            </aside>
-          </Reveal>
+          <aside className="space-y-6 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
+            <SectionHeading
+              eyebrow="Related reading"
+              title="More guidance for similar issues."
+              description="Browse a few related articles if you want more context before you book service."
+            />
+            <div className="grid gap-4">
+              {relatedArticles.map((relatedArticle) => (
+                <ArticleCard key={relatedArticle.id} article={relatedArticle} />
+              ))}
+            </div>
+          </aside>
         </div>
       </section>
     </>
