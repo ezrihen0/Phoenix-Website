@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { siteConfig } from "@/lib/site";
+export function Header() { return <header className="sticky top-0 z-30 border-b border-[var(--border-soft)] bg-[rgba(247,242,234,0.95)] backdrop-blur"><div className="container-shell flex h-16 items-center justify-between"><Link href="/" className="font-semibold tracking-wide">Phoenix Chimney & Fireplace</Link><nav className="hidden gap-6 text-sm md:flex"><Link href="/services/gas-fireplace-repair">Services</Link><Link href="/calgary">Service Areas</Link><Link href="/contact">Contact</Link><Link href="/book">Book</Link></nav><a className="rounded-full bg-[var(--button-primary-bg)] px-4 py-2 text-sm text-[var(--button-primary-text)]" href={siteConfig.phoneHref}>Call Now</a></div></header>; }

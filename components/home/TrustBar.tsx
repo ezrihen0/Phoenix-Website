@@ -1,0 +1,1 @@
+export function TrustBar() { return <section className="border-y border-[var(--border-soft)] bg-[var(--surface-section)] py-4"><div className="container-shell flex flex-wrap items-center justify-center gap-6 text-sm text-[var(--text-secondary)]"><span>Premium Home Service</span><span>Insurance-Ready Reporting</span><span>Respectful In-Home Work</span></div></section>; }

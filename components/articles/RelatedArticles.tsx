@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { listArticles } from "@/lib/articles";
+export function RelatedArticles({ current }: { current: string }) { const related = listArticles().filter((a) => a.slug !== current).slice(0, 3); return <section className="mt-10"><h2 className="text-2xl font-semibold">Related Articles</h2><div className="mt-4 grid gap-3 md:grid-cols-3">{related.map((a) => <Link key={a.slug} href={`/articles/${a.slug}`} className="rounded-xl border border-[var(--border-soft)] bg-white p-4"><p className="font-medium">{a.title}</p></Link>)}</div></section>; }

@@ -1,0 +1,3 @@
+export const localBusinessSchema = () => ({ "@context": "https://schema.org", "@type": "LocalBusiness", name: "Phoenix Chimney & Fireplace", areaServed: ["Calgary", "Edmonton", "Red Deer"], telephone: "+1-403-000-0000", url: "https://phoenixfireplace.ca" });
+export const serviceSchema = (name: string) => ({ "@context": "https://schema.org", "@type": "Service", serviceType: name, areaServed: "Alberta", provider: { "@type": "LocalBusiness", name: "Phoenix Chimney & Fireplace" } });
+export const faqSchema = (items: { q: string; a: string }[]) => ({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: items.map((x) => ({ "@type": "Question", name: x.q, acceptedAnswer: { "@type": "Answer", text: x.a } })) });

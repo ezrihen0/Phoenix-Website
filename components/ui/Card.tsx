@@ -1,0 +1,1 @@
+export function Card({ title, body }: { title: string; body: string }) { return <article className="rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] p-5 shadow-sm"><h3 className="text-lg font-semibold">{title}</h3><p className="mt-2 text-sm text-[var(--text-secondary)]">{body}</p></article>; }

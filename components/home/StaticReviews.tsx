@@ -1,0 +1,3 @@
+import { Section } from "@/components/ui/Section";
+import { Card } from "@/components/ui/Card";
+export function StaticReviews() { const cards = [["Clear Diagnostics", "Homeowners get plain-language findings and next steps."],["Professional Service", "Respectful, clean service with reliable arrival communication."],["Insurance-Ready", "WETT and service reporting prepared for practical decisions."]] as const; return <Section><h2 className="text-3xl font-semibold">Trusted by Alberta Homeowners</h2><div className="mt-6 grid gap-4 md:grid-cols-3">{cards.map(([t,b]) => <Card key={t} title={t} body={b} />)}</div></Section>; }

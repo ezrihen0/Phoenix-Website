@@ -1,0 +1,1 @@
+export function ShortAnswerBox({ answer }: { answer: string }) { return <section className="mt-8 rounded-2xl border border-[var(--border-soft)] bg-white p-5"><p className="text-xs uppercase tracking-wide text-[var(--text-muted)]">Short Answer</p><p className="mt-2 text-[var(--text-secondary)]">{answer}</p></section>; }

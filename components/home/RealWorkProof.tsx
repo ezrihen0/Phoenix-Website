@@ -1,0 +1,2 @@
+import { Section } from "@/components/ui/Section";
+export function RealWorkProof() { return <Section className="bg-[var(--surface-section)]"><h2 className="text-3xl font-semibold">Real Work Proof</h2><p className="mt-3 max-w-2xl text-[var(--text-secondary)]">Field photos and before/after proof blocks will be inserted here after media curation.</p></Section>; }
