@@ -3,6 +3,29 @@ import { buildServicePage } from "@/lib/seo";
 import { ServiceHero } from "@/components/services/ServiceHero";
 import { ServiceFAQ } from "@/components/services/ServiceFAQ";
 import { RelatedServices } from "@/components/services/RelatedServices";
+import { serviceSchema, faqSchema } from "@/lib/schema";
+import { FinalCTA } from "@/components/home/FinalCTA";
 const s = servicePages.gasFireplaceRepair;
 export const metadata = buildServicePage(s);
-export default function Page() { return <><ServiceHero title={s.title} description={s.description} /><section className="container-shell py-12"><h2 className="text-2xl font-semibold">Common Problems</h2><p className="mt-3 text-[var(--text-secondary)]">Homeowners often notice ignition problems, weak draft, odors, or visible wear before failure.</p></section><ServiceFAQ items={s.faq} /><RelatedServices currentSlug={s.slug} /></>; }
+export default function Page() {
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema(s.title)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(s.faq)) }} />
+      <ServiceHero title={s.title} description={s.description} />
+      <section className="container-shell py-12">
+        <h2 className="text-2xl font-semibold">Common Problems</h2>
+        <p className="mt-3 text-[var(--text-secondary)]">Pilot failure, delayed ignition, weak flame, and repeated restart attempts are common service triggers.</p>
+        <h2 className="mt-8 text-2xl font-semibold">What Phoenix Does</h2>
+        <p className="mt-3 text-[var(--text-secondary)]">We isolate root causes, confirm safe operation, and explain repair options in plain language.</p>
+        <h2 className="mt-8 text-2xl font-semibold">Why This Matters</h2>
+        <p className="mt-3 text-[var(--text-secondary)]">Early diagnostics reduce repeat failure risk and help avoid avoidable component damage.</p>
+        <h2 className="mt-8 text-2xl font-semibold">Why Choose Phoenix</h2>
+        <p className="mt-3 text-[var(--text-secondary)]">Alberta-focused field experience, clean in-home process, and concise reporting.</p>
+      </section>
+      <RelatedServices currentSlug={s.slug} />
+      <ServiceFAQ items={s.faq} />
+      <FinalCTA />
+    </>
+  );
+}

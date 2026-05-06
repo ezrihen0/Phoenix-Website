@@ -1,4 +1,16 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = { title: "Book Online", description: "Securely book your Phoenix service appointment online." };
-export default function BookPage() { return <section className="container-shell py-16"><h1 className="text-4xl font-semibold">Book Your Fireplace Service</h1><p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">For faster scheduling, use our secure booking system.</p><a className="mt-8 inline-block rounded-full bg-[var(--button-primary-bg)] px-6 py-3 text-[var(--button-primary-text)] premium-glow" href={siteConfig.booking.url} target="_blank" rel="noopener noreferrer">Continue to Booking</a></section>; }
+export default function BookPage() {
+  return (
+    <section className="container-shell py-16">
+      <h1 className="text-4xl font-semibold">Book Your Fireplace Service</h1>
+      <p className="mt-4 max-w-2xl text-lg text-[var(--text-secondary)]">For faster scheduling, use our secure booking system.</p>
+      <p className="mt-2 max-w-2xl text-sm text-[var(--text-muted)]">You will open our external booking partner in a new tab and can return here anytime.</p>
+      <a className="mt-8 inline-block rounded-full bg-[var(--button-primary-bg)] px-6 py-3 text-[var(--button-primary-text)] premium-glow" href={siteConfig.booking.url} target="_blank" rel="noopener noreferrer">Continue to Booking</a>
+      <div className="mt-5">
+        <a className="rounded-full border border-[var(--border-soft)] px-6 py-3" href={siteConfig.phoneHref}>Prefer phone? Call Now</a>
+      </div>
+    </section>
+  );
+}
