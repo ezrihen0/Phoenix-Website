@@ -9,7 +9,7 @@ export function ServiceHero({ title, description }: { title: string; description
     >
       <div className="absolute inset-0 bg-[var(--service-hero-overlay)]" />
       <div className="container-shell relative">
-        <p className="section-kicker text-[var(--foundation-gold)]">Alberta Local Experts</p>
+        <p className="section-kicker text-[var(--hero-detail-text)]">Alberta Local Experts</p>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight md:text-5xl">{title}</h1>
         <p className="mt-4 max-w-3xl leading-7 text-[var(--hero-body-text)]">{description}</p>
         <div className="mt-6 flex flex-wrap gap-4">

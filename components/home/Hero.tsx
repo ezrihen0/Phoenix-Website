@@ -13,10 +13,10 @@ export function Hero() {
       <div className="hero-lux-glow hero-lux-glow-b" />
       <div className="container-shell relative grid items-center gap-10 md:grid-cols-[1.06fr_0.94fr]">
         <div className="relative z-10">
-          <p className="text-sm uppercase tracking-[0.22em] text-[var(--foundation-gold)]">Alberta Local Experts</p>
+          <p className="text-sm uppercase tracking-[0.22em] text-[var(--hero-detail-text)]">Alberta Local Experts</p>
           <h1 className="mt-4 max-w-[14ch] text-4xl font-semibold leading-[1.06] md:text-[3.45rem]">Premium Chimney and Fireplace Services in Alberta</h1>
           <p className="mt-5 max-w-[52ch] text-lg text-[var(--hero-body-text)]">Gas fireplace repair, WETT inspections, chimney sweeping, and chimney repairs for homeowners in Calgary, Edmonton, Red Deer, and surrounding areas.</p>
-          <p className="mt-4 text-sm text-[var(--foundation-gold)]">Local Alberta Service | Clear Diagnostics | Professional Reporting</p>
+          <p className="mt-4 text-sm text-[var(--hero-detail-text)]">Local Alberta Service | Clear Diagnostics | Professional Reporting</p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button href={siteConfig.phoneHref}>Call Now</Button>
             <Button href={siteConfig.booking.url} variant="secondary" external>Book Online</Button>
