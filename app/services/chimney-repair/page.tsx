@@ -8,24 +8,47 @@ import { FinalCTA } from "@/components/home/FinalCTA";
 const s = servicePages.chimneyRepair;
 export const metadata = buildServicePage(s);
 export default function Page() {
+  const highlights = [
+    { title: "Scope-First Repair Planning", text: "We identify priority repair areas and sequence work to reduce avoidable rework." },
+    { title: "Moisture and Wear Review", text: "Field checks focus on the signs that most often drive long-term chimney issues." },
+    { title: "Clear Homeowner Guidance", text: "You receive concise recommendations with practical timing and safety context." }
+  ];
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema(s.title)) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(s.faq)) }} />
       <ServiceHero title={s.title} description={s.description} />
       <section className="container-shell py-12">
-        <h2 className="text-2xl font-semibold">Common Problems</h2>
-        <p className="mt-3 text-[var(--text-secondary)]">Visible deterioration, moisture effects, and venting-related concerns.</p>
-        <h2 className="mt-8 text-2xl font-semibold">What Phoenix Does</h2>
-        <p className="mt-3 text-[var(--text-secondary)]">Targeted chimney repair planning with clear scope and practical safety priorities.</p>
-        <h2 className="mt-8 text-2xl font-semibold">Why This Matters</h2>
-        <p className="mt-3 text-[var(--text-secondary)]">Addressing issues early helps avoid escalation and protects long-term system use.</p>
-        <h2 className="mt-8 text-2xl font-semibold">Why Choose Phoenix</h2>
-        <p className="mt-3 text-[var(--text-secondary)]">Concise diagnostics, field-proven workflow, and homeowner-friendly communication.</p>
+        <div className="premium-panel p-6 md:p-8">
+          <h2 className="text-2xl font-semibold">Common Problems</h2>
+          <p className="mt-3 text-[var(--text-secondary)]">Visible deterioration, moisture effects, and venting-related concerns.</p>
+          <div className="inner-page-section grid gap-4 md:grid-cols-3">
+            {highlights.map((item) => (
+              <article key={item.title} className="rounded-2xl border border-[var(--card-border)] bg-white/90 p-4">
+                <h3 className="text-base font-semibold text-[var(--inner-page-title)]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+        <div className="inner-page-section grid gap-4 md:grid-cols-2">
+          <article className="premium-panel p-5 md:p-6">
+            <h2 className="text-xl font-semibold">What Phoenix Does</h2>
+            <p className="mt-2 text-[var(--text-secondary)]">Targeted chimney repair planning with clear scope and practical safety priorities.</p>
+          </article>
+          <article className="premium-panel p-5 md:p-6">
+            <h2 className="text-xl font-semibold">Why This Matters</h2>
+            <p className="mt-2 text-[var(--text-secondary)]">Addressing issues early helps avoid escalation and protects long-term system use.</p>
+          </article>
+        </div>
+        <article className="inner-page-section premium-panel p-5 md:p-6">
+          <h2 className="text-xl font-semibold">Why Choose Phoenix</h2>
+          <p className="mt-2 text-[var(--text-secondary)]">Concise diagnostics, field-proven workflow, and homeowner-friendly communication.</p>
+        </article>
       </section>
       <RelatedServices currentSlug={s.slug} />
       <ServiceFAQ items={s.faq} />
-      <FinalCTA className="mt-14 mb-16 md:mt-10 md:mb-10" />
+      <FinalCTA className="mt-24 mb-16 md:mt-10 md:mb-10" />
     </>
   );
 }
