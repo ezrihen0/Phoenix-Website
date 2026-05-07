@@ -15,7 +15,7 @@ export function Hero() {
         <div className="relative z-10">
           <p className="text-sm uppercase tracking-[0.22em] text-[var(--foundation-gold)]">Alberta Local Experts</p>
           <h1 className="mt-4 max-w-[14ch] text-4xl font-semibold leading-[1.06] md:text-[3.45rem]">Premium Chimney and Fireplace Services in Alberta</h1>
-          <p className="mt-5 max-w-[52ch] text-lg text-[#dce2ec]">Gas fireplace repair, WETT inspections, chimney sweeping, and chimney repairs for homeowners in Calgary, Edmonton, Red Deer, and surrounding areas.</p>
+          <p className="mt-5 max-w-[52ch] text-lg text-[var(--hero-body-text)]">Gas fireplace repair, WETT inspections, chimney sweeping, and chimney repairs for homeowners in Calgary, Edmonton, Red Deer, and surrounding areas.</p>
           <p className="mt-4 text-sm text-[var(--foundation-gold)]">Local Alberta Service | Clear Diagnostics | Professional Reporting</p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button href={siteConfig.phoneHref}>Call Now</Button>
@@ -23,17 +23,17 @@ export function Hero() {
           </div>
         </div>
         <div className="relative z-10">
-          <div className="hero-glass-shell rounded-3xl border border-[rgba(255,255,255,0.16)] p-4 md:p-6">
+          <div className="hero-glass-shell rounded-3xl border border-[var(--border-glass)] p-4 md:p-6">
             <div className="hero-main-card rounded-2xl p-6 md:p-8">
-              <div className="rounded-xl border border-[rgba(239,185,122,0.38)] bg-[linear-gradient(120deg,rgba(255,197,125,0.14),rgba(54,39,30,0.45))] p-4 md:p-5">
+              <div className="rounded-xl border border-[var(--hero-detail-border)] bg-[var(--hero-detail-bg)] p-4 md:p-5">
                 <p className="text-sm text-[var(--hero-subtitle)]">Luxury Indoor Fireplace Scene</p>
                 <p className="mt-1 text-xl font-semibold md:text-2xl">Warm premium ambiance with trusted local service</p>
               </div>
             </div>
-            <div className="hero-micro-card hero-micro-card-a hidden rounded-xl border border-[rgba(255,255,255,0.2)] bg-[rgba(7,9,12,0.58)] p-3 text-sm text-[var(--hero-subtitle)] md:block">
+            <div className="hero-micro-card hero-micro-card-a hidden rounded-xl border border-[var(--border-contrast)] bg-[var(--hero-micro-a-bg)] p-3 text-sm text-[var(--hero-subtitle)] md:block">
               Copper-grade diagnostics
             </div>
-            <div className="hero-micro-card hero-micro-card-b hidden rounded-xl border border-[rgba(255,255,255,0.22)] bg-[rgba(190,112,64,0.2)] p-3 text-sm text-[#f3dfc5] md:block">
+            <div className="hero-micro-card hero-micro-card-b hidden rounded-xl border border-[var(--border-contrast-strong)] bg-[var(--hero-micro-b-bg)] p-3 text-sm text-[var(--hero-detail-text)] md:block">
               Insurance-ready clarity
             </div>
           </div>

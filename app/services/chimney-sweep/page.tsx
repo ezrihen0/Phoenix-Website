@@ -24,7 +24,7 @@ export default function Page() {
           <p className="mt-3 text-[var(--text-secondary)]">Draft inconsistency, buildup concerns, and seasonal performance decline.</p>
           <div className="inner-page-section grid gap-4 md:grid-cols-3">
             {highlights.map((item) => (
-              <article key={item.title} className="rounded-2xl border border-[var(--card-border)] bg-white/90 p-4">
+              <article key={item.title} className="rounded-2xl border border-[var(--card-border)] bg-[var(--surface-overlay-strong)] p-4">
                 <h3 className="text-base font-semibold text-[var(--inner-page-title)]">{item.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">{item.text}</p>
               </article>
@@ -52,3 +52,4 @@ export default function Page() {
     </>
   );
 }
+

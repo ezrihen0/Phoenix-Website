@@ -12,7 +12,7 @@ export function ArticleLayout({ article }: { article: Article }) {
     <h1 className="mt-2 text-4xl font-semibold tracking-tight md:text-5xl">{article.title}</h1>
     <p className="mt-4 text-lg leading-8 text-[var(--text-secondary)]">{article.intro}</p>
     <ShortAnswerBox answer={article.shortAnswer} />
-    <section className="mt-8 space-y-4 rounded-2xl border border-[var(--card-border)] bg-white/70 p-6 text-[var(--text-secondary)]">
+    <section className="mt-8 space-y-4 rounded-2xl border border-[var(--card-border)] bg-[var(--surface-overlay-soft)] p-6 text-[var(--text-secondary)]">
       <h2 className="text-2xl font-semibold text-[var(--text-primary)]">When to Call Phoenix</h2>
       <p className="leading-7">{article.whenToCall}</p>
       <h2 className="text-2xl font-semibold text-[var(--text-primary)]">Alberta Context</h2>
