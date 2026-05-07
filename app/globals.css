@@ -31,7 +31,7 @@
   --button-secondary-text: #f9efe1;
   --card-bg: var(--surface-card);
   --card-border: rgba(34, 39, 47, 0.09);
-  --mobile-sticky-cta-height: 84px;
+  --mobile-sticky-cta-height: 72px;
 }
 * { box-sizing: border-box; }
 html, body { padding: 0; margin: 0; }
@@ -41,11 +41,19 @@ a { color: inherit; text-decoration: none; }
 .premium-glow { box-shadow: 0 0 0 1px rgba(214,171,103,.2), 0 16px 45px var(--accent-glow); }
 
 main {
-  padding-bottom: calc(var(--mobile-sticky-cta-height) + 32px);
+  padding-bottom: calc(var(--mobile-sticky-cta-height) + 96px);
+}
+
+footer {
+  padding-bottom: calc(var(--mobile-sticky-cta-height) + 56px) !important;
 }
 
 @media (min-width: 768px) {
   main {
     padding-bottom: 0;
+  }
+
+  footer {
+    padding-bottom: 3rem !important;
   }
 }

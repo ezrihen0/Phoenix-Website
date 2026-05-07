@@ -25,7 +25,7 @@ export default function Page() {
       </section>
       <RelatedServices currentSlug={s.slug} />
       <ServiceFAQ items={s.faq} />
-      <FinalCTA />
+      <FinalCTA className="mt-14 mb-16 md:mt-10 md:mb-10" />
     </>
   );
 }

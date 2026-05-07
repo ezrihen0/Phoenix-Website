@@ -20,7 +20,7 @@ export default function EdmontonPage() {
         <h2 className="mt-8 text-2xl font-semibold">Common Local Issues</h2>
         <p className="mt-3 text-[var(--text-secondary)]">Edmonton homeowners often call for pilot-light reliability issues, draft performance checks, and seasonal chimney maintenance support.</p>
       </section>
-      <FinalCTA className="mt-12 md:mt-16" />
+      <FinalCTA className="mt-16 mb-16 md:mt-16 md:mb-10" />
     </>
   );
 }

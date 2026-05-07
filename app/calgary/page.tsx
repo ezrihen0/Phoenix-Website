@@ -20,7 +20,7 @@ export default function CalgaryPage() {
         <h2 className="mt-8 text-2xl font-semibold">Common Local Issues</h2>
         <p className="mt-3 text-[var(--text-secondary)]">Seasonal startup failures, aging gas components, and chimney draft concerns are frequent service requests in Calgary homes.</p>
       </section>
-      <FinalCTA className="mt-12 md:mt-16" />
+      <FinalCTA className="mt-16 mb-16 md:mt-16 md:mb-10" />
     </>
   );
 }
