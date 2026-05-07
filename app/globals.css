@@ -40,6 +40,106 @@ a { color: inherit; text-decoration: none; }
 .container-shell { width: min(1120px, calc(100% - 2rem)); margin-inline: auto; }
 .premium-glow { box-shadow: 0 0 0 1px rgba(214,171,103,.2), 0 16px 45px var(--accent-glow); }
 
+.hero-lux-plane {
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+  opacity: 0.45;
+}
+
+.hero-lux-plane-a {
+  background: linear-gradient(112deg, rgba(24, 29, 36, 0.82) 0%, rgba(24, 29, 36, 0) 52%);
+}
+
+.hero-lux-plane-b {
+  background: linear-gradient(150deg, rgba(190, 112, 64, 0.14) 0%, rgba(19, 23, 29, 0) 58%);
+}
+
+.hero-lux-glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(60px);
+  animation: hero-drift 13s ease-in-out infinite;
+}
+
+.hero-lux-glow-a {
+  width: 16rem;
+  height: 16rem;
+  right: 7%;
+  top: 12%;
+  background: rgba(230, 129, 62, 0.26);
+}
+
+.hero-lux-glow-b {
+  width: 13rem;
+  height: 13rem;
+  left: 14%;
+  bottom: 8%;
+  background: rgba(214, 171, 103, 0.2);
+  animation-duration: 16s;
+}
+
+.hero-glass-shell {
+  position: relative;
+  backdrop-filter: blur(2px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(30, 33, 39, 0.28));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 44px rgba(0, 0, 0, 0.34);
+}
+
+.hero-main-card {
+  background: linear-gradient(145deg, #2b3038 0%, #4e392d 46%, #2a2422 100%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+.hero-micro-card {
+  position: absolute;
+  animation: hero-float 9s ease-in-out infinite;
+}
+
+.hero-micro-card-a {
+  top: -0.8rem;
+  right: -0.8rem;
+}
+
+.hero-micro-card-b {
+  bottom: -0.9rem;
+  left: -0.8rem;
+  animation-delay: 1.8s;
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes hero-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(8px, -6px, 0); }
+}
+
+@media (max-width: 767px) {
+  .hero-lux-glow {
+    filter: blur(38px);
+    animation: none;
+    opacity: 0.75;
+  }
+
+  .hero-lux-glow-a {
+    width: 10rem;
+    height: 10rem;
+    right: 2%;
+    top: 7%;
+  }
+
+  .hero-lux-glow-b {
+    width: 8rem;
+    height: 8rem;
+    left: 2%;
+    bottom: 12%;
+  }
+}
+
 main {
   padding-bottom: calc(var(--mobile-sticky-cta-height) + 96px);
 }
