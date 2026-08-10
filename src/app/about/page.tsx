@@ -9,6 +9,7 @@ import { StructuredData } from "@/components/structured-data";
 import { getSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { aboutPoints, services, siteConfig } from "@/lib/site-data";
+import { resolvePublicServiceHref } from "@/lib/internal-links";
 
 export const metadata: Metadata = createPageMetadata({
   title: "About Phoenix Chimney & Fireplace Services | Calgary Team",
@@ -118,16 +119,24 @@ export default async function AboutPage() {
             </Reveal>
             <div className="grid gap-3">
               {services.map((service) => (
-                <div
+                <Link
                   key={service.slug}
-                  className="rounded-[1.5rem] border border-[var(--color-border)] bg-white/72 px-5 py-4 text-sm leading-7 text-[var(--color-muted)]"
+                  href={resolvePublicServiceHref(service.slug, "calgary")}
+                  className="rounded-[1.5rem] border border-[var(--color-border)] bg-white/72 px-5 py-4 text-sm leading-7 text-[var(--color-muted)] transition hover:border-[var(--color-forest)]/30"
                 >
                   <span className="font-semibold text-[var(--color-ink)]">{service.title}</span>
                   {" · "}
                   {service.tagline}
-                </div>
+                </Link>
               ))}
             </div>
+            <Link
+              href="/articles"
+              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]"
+            >
+              Read Calgary homeowner articles
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -158,7 +167,8 @@ export default async function AboutPage() {
             <p className="mt-5 text-sm leading-8 text-[var(--color-muted)] sm:text-base">
               Whether the solution is a quick service call, a larger masonry repair,
               or a WETT report with follow-up work, the goal is the same: make the
-              condition of the system understandable and actionable.
+              condition of the system understandable and actionable. Articles are published by{" "}
+              {siteConfig.legalName} under editorial review—not posted automatically.
             </p>
           </div>
         </div>

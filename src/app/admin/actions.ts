@@ -440,7 +440,9 @@ export async function saveArticleAction(formData: FormData) {
       aiGenerated: existingArticle?.aiGenerated || aiGeneratedFlag,
     };
 
-    assertPublishableArticle(nextArticle);
+    const allArticles = await listArticles({ includeDrafts: true });
+
+    assertPublishableArticle(nextArticle, allArticles);
 
     await saveArticle(nextArticle);
   } catch (error) {

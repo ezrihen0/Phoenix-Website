@@ -1,4 +1,5 @@
 import type { Article } from "@/lib/cms/types";
+import { cities } from "@/lib/cities";
 
 export type ArticleQualityIssue = {
   code: string;
@@ -85,20 +86,6 @@ export function assessArticleQuality(article: Pick<
   return issues;
 }
 
-export function assertPublishableArticle(
-  article: Pick<Article, "title" | "excerpt" | "body" | "coverImage" | "coverImageAlt" | "status">,
-) {
-  if (article.status !== "published") {
-    return;
-  }
-
-  const errors = assessArticleQuality(article).filter((issue) => issue.severity === "error");
-
-  if (errors.length > 0) {
-    throw new Error(errors.map((issue) => issue.message).join(" "));
-  }
-}
-
 export function normalizeBodyFingerprint(body: string, cityNames: string[] = []) {
   let normalized = stripMarkdown(body).toLowerCase();
 
@@ -134,4 +121,111 @@ export function calculateTextSimilarity(first: string, second: string) {
   }
 
   return intersection / Math.max(firstTokens.size, secondTokens.size);
+}
+
+const HIGH_SIMILARITY_THRESHOLD = 0.85;
+const BORDERLINE_SIMILARITY_THRESHOLD = 0.72;
+
+function getTopicKey(article: Pick<Article, "slug">) {
+  let normalized = article.slug.toLowerCase();
+
+  for (const city of cities) {
+    normalized = normalized.replaceAll(city.slug, "{city}");
+    normalized = normalized.replaceAll(city.name.toLowerCase(), "{city}");
+  }
+
+  return normalized;
+}
+
+function getSiblingArticles(
+  article: Pick<Article, "id" | "slug" | "city">,
+  articles: Article[],
+) {
+  const topicKey = getTopicKey(article);
+
+  return articles.filter((candidate) => {
+    if (candidate.id === article.id || candidate.city === article.city) {
+      return false;
+    }
+
+    return getTopicKey(candidate) === topicKey;
+  });
+}
+
+export function assessCrossCityOriginality(
+  article: Pick<Article, "id" | "slug" | "city" | "body" | "status">,
+  articles: Article[],
+): ArticleQualityIssue[] {
+  if (article.status !== "published") {
+    return [];
+  }
+
+  const siblings = getSiblingArticles(article, articles);
+
+  if (siblings.length === 0) {
+    return [];
+  }
+
+  const cityNames = cities.map((city) => city.name);
+  const fingerprint = normalizeBodyFingerprint(article.body, cityNames);
+  const siblingScore = siblings.reduce((maxScore, sibling) => {
+    const siblingFingerprint = normalizeBodyFingerprint(sibling.body, cityNames);
+    return Math.max(maxScore, calculateTextSimilarity(fingerprint, siblingFingerprint));
+  }, 0);
+
+  if (siblingScore >= HIGH_SIMILARITY_THRESHOLD) {
+    return [
+      {
+        code: "cross_city_duplicate",
+        message:
+          "This article body is too similar to the same-topic article in another city. Rewrite city-specific sections or differentiate the opening and examples before publishing.",
+        severity: "error",
+      },
+    ];
+  }
+
+  if (siblingScore >= BORDERLINE_SIMILARITY_THRESHOLD) {
+    return [
+      {
+        code: "cross_city_borderline",
+        message:
+          "This article is borderline similar to the same-topic article in another city. Review city-specific examples and section framing before publishing.",
+        severity: "warning",
+      },
+    ];
+  }
+
+  return [];
+}
+
+export function assertPublishableArticle(
+  article: Pick<
+    Article,
+    "id" | "slug" | "city" | "title" | "excerpt" | "body" | "coverImage" | "coverImageAlt" | "status"
+  >,
+  articles: Article[] = [],
+  options?: { allowBorderlineSimilarity?: boolean },
+) {
+  if (article.status !== "published") {
+    return;
+  }
+
+  const errors = [
+    ...assessArticleQuality(article).filter((issue) => issue.severity === "error"),
+    ...assessCrossCityOriginality(article, articles).filter((issue) => issue.severity === "error"),
+  ];
+
+  if (errors.length > 0) {
+    throw new Error(errors.map((issue) => issue.message).join(" "));
+  }
+
+  if (!options?.allowBorderlineSimilarity) {
+    const warnings = assessCrossCityOriginality(article, articles).filter(
+      (issue) => issue.severity === "warning",
+    );
+
+    if (warnings.length > 0) {
+      throw new Error(warnings.map((issue) => issue.message).join(" "));
+    }
+  }
 }

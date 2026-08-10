@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -11,7 +12,7 @@ import { StructuredData } from "@/components/structured-data";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, buildFaqSchema, buildLocalBusinessSchema, buildServiceSchema, createPageMetadata } from "@/lib/seo";
-import { getHomeFaqs, services } from "@/lib/site-data";
+import { getHomeFaqs, getServiceDetailPath, services } from "@/lib/site-data";
 
 export async function generateMetadata({
   params,
@@ -154,7 +155,7 @@ export default async function CityServicesPage({
                   <div className="relative min-h-[20rem]">
                     <Image
                       src={service.image}
-                      alt={`${service.title} service photo`}
+                      alt={`${service.title} — ${service.tagline}`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover"
@@ -177,6 +178,13 @@ export default async function CityServicesPage({
                       ))}
                     </div>
                     <div className="mt-8 flex flex-wrap gap-3">
+                      <Link
+                        href={getCityHref(city.slug, getServiceDetailPath(service.slug))}
+                        className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
+                      >
+                        Open service page
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
                       <a
                         href={siteSettings.workizUrl}
                         target="_blank"

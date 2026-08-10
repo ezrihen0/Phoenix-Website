@@ -441,6 +441,11 @@ export type ServiceLandingPage = {
   semanticSections: readonly ServiceLandingSemanticSection[];
   faqs: readonly ServiceLandingFaq[];
   relatedServices: readonly string[];
+  contextualLinks?: readonly {
+    title: string;
+    description: string;
+    path: string;
+  }[];
   cityHighlights: Record<CitySlug, string>;
   cityCoverage?: {
     title: (cityName: string) => string;
@@ -584,6 +589,14 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
       },
     ],
     relatedServices: ["gas-fireplace-installation", "chimney-sweeping-inspection"],
+    contextualLinks: [
+      {
+        title: "Gas fireplace repair",
+        description:
+          "Diagnostics and component work when the unit will not ignite, keeps shutting off, or fails after maintenance is overdue.",
+        path: "/gas-fireplace-repair",
+      },
+    ],
     cityHighlights: {
       calgary:
         "Calgary homeowners often book maintenance before shoulder-season startup, especially when chinook swings and long idle periods make ignition behavior inconsistent.",
@@ -729,6 +742,14 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
       },
     ],
     relatedServices: ["chimney-repair-masonry"],
+    contextualLinks: [
+      {
+        title: "WETT inspections",
+        description:
+          "When insurance or a real-estate file requires wood-burning documentation beyond a routine sweep—not every sweep visit includes WETT reporting.",
+        path: "/wett",
+      },
+    ],
     cityHighlights: {
       calgary:
         "In Calgary, sweeping is often paired with inspections after heavy winter use, smoke complaints, or a real-estate file that needs clearer chimney documentation.",
@@ -875,6 +896,14 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
       },
     ],
     relatedServices: ["chimney-sweeping-inspection"],
+    contextualLinks: [
+      {
+        title: "WETT inspections",
+        description:
+          "Documentation for insurers or closings when wood-burning system review is required separately from masonry repair work.",
+        path: "/wett",
+      },
+    ],
     cityHighlights: {
       calgary:
         "Calgary chimneys commonly show freeze-thaw mortar wear, crown cracking, and water intrusion after repeated weather swings and roofline exposure.",
@@ -1022,6 +1051,14 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
       },
     ],
     relatedServices: ["gas-fireplace-maintenance"],
+    contextualLinks: [
+      {
+        title: "Gas fireplace repair",
+        description:
+          "When an existing unit fails before replacement planning is complete, repair diagnostics may be needed alongside install consults.",
+        path: "/gas-fireplace-repair",
+      },
+    ],
     cityHighlights: {
       calgary:
         "Calgary renovation projects often focus on replacing dated fireplace fronts with cleaner gas units that suit newer living-room layouts and finish packages.",

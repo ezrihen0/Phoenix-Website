@@ -4,12 +4,14 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Flame, Phone, Wrench } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { ContextualLinksGrid } from "@/components/internal-links/contextual-links-grid";
 import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
+import { getGasRepairContextualLinks } from "@/lib/internal-links";
 import {
   buildBreadcrumbSchema,
   buildFaqSchema,
@@ -175,7 +177,7 @@ export default async function CityGasFireplaceRepairPage({
             <div className="relative min-h-[24rem] lg:min-h-full">
               <Image
                 src={service.image}
-                alt={`${service.title} service photo`}
+                alt="Technician servicing a gas fireplace firebox during a repair visit"
                 fill
                 sizes="(max-width: 1024px) 100vw, 48vw"
                 className="object-cover"
@@ -226,6 +228,14 @@ export default async function CityGasFireplaceRepairPage({
           </div>
         </div>
       </section>
+
+      <ContextualLinksGrid
+        eyebrow="Related service paths"
+        title="Maintenance, installation, or troubleshooting guidance"
+        description="Repair stays the primary intent on this page. These links help when the problem may be preventive, upgrade-related, or still being diagnosed."
+        links={getGasRepairContextualLinks(city.slug)}
+        city={city.slug}
+      />
 
       <section className="section-pad bg-[rgba(255,255,255,0.45)]">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">

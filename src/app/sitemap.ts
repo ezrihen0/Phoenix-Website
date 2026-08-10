@@ -10,6 +10,20 @@ export const revalidate = 3600;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articles = await listArticles();
 
+  const rootLegacyRoutes: MetadataRoute.Sitemap = [
+    "/",
+    "/about",
+    "/wett",
+    "/contact",
+    "/articles",
+    "/gas-fireplace-repair",
+  ].map((route) => ({
+    url: absoluteUrl(route),
+    lastModified: new Date(),
+    changeFrequency: route === "/" ? "weekly" : "monthly",
+    priority: route === "/" ? 0.78 : route === "/gas-fireplace-repair" ? 0.9 : 0.75,
+  }));
+
   const rootServiceRoutes = [
     "/services",
     ...serviceLandingPages.map((servicePage) => getServiceLandingHref(servicePage.slug)),
@@ -64,14 +78,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
   });
 
-  const articleRoutes: MetadataRoute.Sitemap = articles
-    .filter((article) => citySupportsArticles(article.city))
-    .map((article) => ({
-      url: absoluteUrl(getCityHref(article.city, `/articles/${article.slug}`)),
-      lastModified: new Date(article.updatedAt || article.publishedAt),
-      changeFrequency: "monthly" as const,
-      priority: 0.75,
-    }));
+  const articleRoutes: MetadataRoute.Sitemap = [
+    ...articles
+      .filter((article) => article.city === "calgary")
+      .map((article) => ({
+        url: absoluteUrl(`/articles/${article.slug}`),
+        lastModified: new Date(article.updatedAt || article.publishedAt),
+        changeFrequency: "monthly" as const,
+        priority: 0.72,
+      })),
+    ...articles
+      .filter((article) => citySupportsArticles(article.city) && article.city !== "calgary")
+      .map((article) => ({
+        url: absoluteUrl(getCityHref(article.city, `/articles/${article.slug}`)),
+        lastModified: new Date(article.updatedAt || article.publishedAt),
+        changeFrequency: "monthly" as const,
+        priority: 0.75,
+      })),
+    ...articles
+      .filter((article) => article.city === "calgary")
+      .map((article) => ({
+        url: absoluteUrl(getCityHref("calgary", `/articles/${article.slug}`)),
+        lastModified: new Date(article.updatedAt || article.publishedAt),
+        changeFrequency: "monthly" as const,
+        priority: 0.75,
+      })),
+  ];
 
-  return [...rootRoutes, ...staticRoutes, ...articleRoutes];
+  return [...rootLegacyRoutes, ...rootRoutes, ...staticRoutes, ...articleRoutes];
 }

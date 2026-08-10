@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { ArticleBody } from "@/components/articles/article-body";
 import { ArticleCard } from "@/components/articles/article-card";
+import { ArticleRelatedServices } from "@/components/articles/article-related-services";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
@@ -120,16 +121,19 @@ export default async function ArticlePage({
             <ArticleBody markdown={article.body} city={defaultCitySlug} />
           </div>
 
-          <aside className="space-y-6 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
+          <aside className="space-y-6">
+            <ArticleRelatedServices article={article} city={defaultCitySlug} />
+            <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
             <SectionHeading
               eyebrow="Related reading"
               title="More guidance for similar issues."
               description="Browse a few related articles if you want more context before you book service."
             />
-            <div className="grid gap-4">
+            <div className="mt-4 grid gap-4">
               {relatedArticles.map((relatedArticle) => (
                 <ArticleCard key={relatedArticle.id} article={relatedArticle} city={defaultCitySlug} />
               ))}
+            </div>
             </div>
           </aside>
         </div>

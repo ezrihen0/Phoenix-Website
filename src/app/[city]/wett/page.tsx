@@ -3,12 +3,14 @@ import Image from "next/image";
 import { CheckCircle2, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { ContextualLinksGrid } from "@/components/internal-links/contextual-links-grid";
 import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
+import { getWettContextualLinks } from "@/lib/internal-links";
 import { buildBreadcrumbSchema, buildFaqSchema, buildLocalBusinessSchema, buildServiceSchema, createPageMetadata } from "@/lib/seo";
 import { getWettFaqs, wettBenefits } from "@/lib/site-data";
 
@@ -188,6 +190,14 @@ export default async function CityWettPage({
           </div>
         </div>
       </section>
+
+      <ContextualLinksGrid
+        eyebrow="When findings point elsewhere"
+        title="Related chimney and guidance paths"
+        description="A WETT inspection documents wood-burning system conditions. These pages cover separate visits when sweeping, masonry, or informational guidance is the next step—not automatic add-ons."
+        links={getWettContextualLinks(city.slug)}
+        city={city.slug}
+      />
 
       <section className="section-pad bg-[rgba(255,255,255,0.45)]">
         <div className="page-frame overflow-hidden rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-card)]">

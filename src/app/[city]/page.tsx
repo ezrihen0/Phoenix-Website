@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, CheckCircle2, MapPinned, Phone, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 
+import { ContextualLinksGrid } from "@/components/internal-links/contextual-links-grid";
 import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { ContactForm } from "@/components/forms/contact-form";
 import { Reveal } from "@/components/motion/reveal";
@@ -13,6 +14,7 @@ import { ServiceCard } from "@/components/service-card";
 import { StructuredData } from "@/components/structured-data";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
+import { getCityHubLinks } from "@/lib/internal-links";
 import {
   buildBreadcrumbSchema,
   buildFaqSchema,
@@ -256,6 +258,14 @@ export default async function CityHomePage({
         eyebrow={`${city.name} service guides`}
         title={`Dedicated pages for maintenance, sweeping, masonry, and installation in ${city.name}.`}
         description={`Use these pages when you already know the service you need and want more detail before booking in ${city.name}.`}
+        city={city.slug}
+      />
+
+      <ContextualLinksGrid
+        eyebrow={`${city.name} next steps`}
+        title="Useful paths from the city home page"
+        description="These links point to the service directory, transactional pages, articles, and business information without repeating the main navigation."
+        links={getCityHubLinks(city.slug)}
         city={city.slug}
       />
 

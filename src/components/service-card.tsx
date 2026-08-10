@@ -16,6 +16,10 @@ type ServiceCardProps = {
   city?: CitySlug;
 };
 
+function getServiceImageAlt(title: string, tagline: string) {
+  return `${title} — ${tagline}`;
+}
+
 export function ServiceCard({
   slug,
   title,
@@ -31,14 +35,14 @@ export function ServiceCard({
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={image}
-          alt={`${title} service photo`}
+          alt={getServiceImageAlt(title, tagline)}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(31,26,22,0.65)] via-transparent to-transparent" />
         <div className="absolute left-5 top-5 rounded-2xl bg-white/86 p-3 shadow-lg backdrop-blur">
-          <Image src={icon} alt="Service icon" width={36} height={36} className="h-9 w-9 object-contain" />
+          <Image src={icon} alt="" aria-hidden width={36} height={36} className="h-9 w-9 object-contain" />
         </div>
       </div>
       <div className="space-y-4 p-6">

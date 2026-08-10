@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, MapPinned, Phone } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { FromTheField } from "@/components/services/from-the-field";
+import { ServiceLocalContext } from "@/components/services/service-local-context";
 import {
   cities,
   getCityBySlug,
@@ -12,6 +13,7 @@ import {
   type CitySlug,
 } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
+import { resolveContextualLinkHref } from "@/lib/internal-links";
 import {
   getServiceLandingHref,
   getServiceLandingPage,
@@ -53,6 +55,7 @@ export async function ServiceLandingPageView({
     : servicePage.heroTitle;
   const directAnswer = resolveDirectAnswer(servicePage, cityConfig?.name);
   const relatedServices = resolveRelatedServices(servicePage);
+  const contextualLinks = servicePage.contextualLinks ?? [];
   const finalCtaTitle = cityConfig
     ? servicePage.finalCta.cityTitle(cityConfig.name)
     : servicePage.finalCta.provinceTitle;
@@ -210,7 +213,9 @@ export async function ServiceLandingPageView({
         </div>
       </section>
 
-      {relatedServices.length > 0 ? (
+      {city ? <ServiceLocalContext servicePage={servicePage} city={city} /> : null}
+
+      {relatedServices.length > 0 || contextualLinks.length > 0 ? (
         <section className="section-pad bg-[rgba(255,255,255,0.45)]">
           <div className="page-frame">
             <Reveal>
@@ -235,6 +240,21 @@ export async function ServiceLandingPageView({
                         ? relatedPage.directAnswer.city(cityConfig.name)[0]
                         : relatedPage.directAnswer.province[0]}
                     </p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]">
+                      Open service page
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </Link>
+                </Reveal>
+              ))}
+              {contextualLinks.map((link, index) => (
+                <Reveal key={link.path} delay={(relatedServices.length + index) * 70}>
+                  <Link
+                    href={resolveContextualLinkHref(link.path, city)}
+                    className="flex h-full flex-col rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6 shadow-[0_18px_40px_rgba(31,26,22,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_52px_rgba(31,26,22,0.1)]"
+                  >
+                    <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">{link.title}</h2>
+                    <p className="mt-3 flex-1 text-sm leading-7 text-[var(--color-muted)]">{link.description}</p>
                     <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]">
                       Open service page
                       <ArrowRight className="h-4 w-4" />
