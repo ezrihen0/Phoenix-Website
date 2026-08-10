@@ -4,6 +4,7 @@ import { ArticleCard } from "@/components/articles/article-card";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { defaultCitySlug } from "@/lib/cities";
 import { createPageMetadata, buildBreadcrumbSchema } from "@/lib/seo";
 import { listArticles, getSiteSettings } from "@/lib/cms/storage";
 
@@ -19,7 +20,7 @@ export const metadata: Metadata = createPageMetadata({
 
 export default async function ArticlesPage() {
   const [articles, settings] = await Promise.all([
-    listArticles(),
+    listArticles({ city: defaultCitySlug }),
     getSiteSettings(),
   ]);
 
@@ -44,7 +45,7 @@ export default async function ArticlesPage() {
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {articles.map((article, index) => (
               <Reveal key={article.id} delay={index * 90}>
-                <ArticleCard article={article} />
+                <ArticleCard article={article} city={defaultCitySlug} />
               </Reveal>
             ))}
           </div>

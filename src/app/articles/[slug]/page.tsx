@@ -7,6 +7,7 @@ import { ArticleCard } from "@/components/articles/article-card";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { defaultCitySlug } from "@/lib/cities";
 import { buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { buildRelatedArticles, estimateReadingTime, formatArticleDate } from "@/lib/cms/helpers";
 import { getArticleBySlug, listArticles } from "@/lib/cms/storage";
@@ -19,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug, { city: defaultCitySlug });
 
   if (!article) {
     return createPageMetadata({
@@ -50,8 +51,8 @@ export default async function ArticlePage({
 }) {
   const { slug } = await params;
   const [article, articles] = await Promise.all([
-    getArticleBySlug(slug),
-    listArticles(),
+    getArticleBySlug(slug, { city: defaultCitySlug }),
+    listArticles({ city: defaultCitySlug }),
   ]);
 
   if (!article) {
@@ -124,7 +125,7 @@ export default async function ArticlePage({
       <section className="pb-20">
         <div className="page-frame grid gap-10 lg:grid-cols-[1fr_0.72fr] lg:items-start">
           <div className="rounded-[2rem] border border-[var(--color-border)] bg-white/78 p-6 sm:p-8">
-            <ArticleBody markdown={article.body} />
+            <ArticleBody markdown={article.body} city={defaultCitySlug} />
           </div>
 
           <aside className="space-y-6 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
@@ -135,7 +136,7 @@ export default async function ArticlePage({
             />
             <div className="grid gap-4">
               {relatedArticles.map((relatedArticle) => (
-                <ArticleCard key={relatedArticle.id} article={relatedArticle} />
+                <ArticleCard key={relatedArticle.id} article={relatedArticle} city={defaultCitySlug} />
               ))}
             </div>
           </aside>

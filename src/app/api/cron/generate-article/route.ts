@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { getCityBySlug } from "@/lib/cities";
 import { generateDailyArticle } from "@/lib/ai/generate-article";
 
 function isAuthorized(request: Request) {
@@ -20,7 +21,8 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await generateDailyArticle();
+    const city = getCityBySlug(new URL(request.url).searchParams.get("city") || "")?.slug;
+    const result = await generateDailyArticle(city ? { city } : undefined);
     return NextResponse.json({ ok: true, ...result });
   } catch (error) {
     console.error("[cron-generate-article] Failed", error);

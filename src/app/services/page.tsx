@@ -1,33 +1,34 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, CheckCircle2, Phone } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
-import { getSiteSettings } from "@/lib/cms/storage";
+import { getPublicSiteSettings } from "@/lib/cms/storage";
 import {
   buildBreadcrumbSchema,
   buildServiceSchema,
   createPageMetadata,
 } from "@/lib/seo";
-import { services } from "@/lib/site-data";
+import { getServiceLandingHref, serviceLandingPages, services } from "@/lib/site-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Fireplace & Chimney Services Calgary | Gas, Wood, WETT & Masonry",
+  title: "Fireplace & Chimney Services Alberta | Calgary, Edmonton & Red Deer",
   description:
-    "Explore Calgary gas fireplace repair, wood stove service, chimney sweeping, WETT inspections, relining, and masonry repair from one local team.",
+    "Explore Alberta gas fireplace maintenance, chimney sweeping, masonry repair, installation, and fireplace service coverage for Calgary, Edmonton, and Red Deer.",
   path: "/services",
   keywords: [
-    "chimney services Calgary",
-    "gas fireplace maintenance Calgary",
-    "wood stove repair Calgary",
-    "chimney masonry Calgary",
+    "chimney services Alberta",
+    "gas fireplace maintenance Calgary Edmonton Red Deer",
+    "expert chimney sweep Alberta",
+    "gas fireplace installation Alberta",
   ],
 });
 
 export default async function ServicesPage() {
-  const siteSettings = await getSiteSettings();
+  const siteSettings = await getPublicSiteSettings();
 
   return (
     <>
@@ -47,9 +48,9 @@ export default async function ServicesPage() {
         <div className="page-frame grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
           <Reveal>
             <SectionHeading
-              eyebrow="Calgary service scope"
-              title="Repair, inspection, sweeping, and masonry without hopping between contractors."
-              description="Fireplace repair, WETT inspections, chimney sweeping, and masonry service handled by one local team with clear next steps for each visit."
+              eyebrow="Alberta service scope"
+              title="Repair, inspection, sweeping, and installation coverage for Calgary, Edmonton, and Red Deer without hopping between contractors."
+              description="Use this page as the Alberta service index, then drill into the dedicated maintenance, chimney, masonry, and installation pages that match what the homeowner actually needs booked."
             />
           </Reveal>
           <Reveal delay={120}>
@@ -77,6 +78,37 @@ export default async function ServicesPage() {
               </a>
             </div>
           </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="pb-16">
+        <div className="page-frame">
+          <Reveal>
+            <div className="grid gap-4 lg:grid-cols-4">
+              {serviceLandingPages.map((servicePage, index) => (
+                <Reveal key={servicePage.slug} delay={index * 70}>
+                  <Link
+                    href={getServiceLandingHref(servicePage.slug)}
+                    className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6 shadow-[0_18px_40px_rgba(31,26,22,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_52px_rgba(31,26,22,0.1)]"
+                  >
+                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-ember)]">
+                      Dedicated page
+                    </p>
+                    <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
+                      {servicePage.title}
+                    </h2>
+                    <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
+                      {servicePage.cardDescription}
+                    </p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]">
+                      Open service page
+                      <ArrowUpRight className="h-4 w-4" />
+                    </span>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
           </Reveal>
         </div>
       </section>

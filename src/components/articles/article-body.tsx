@@ -2,11 +2,14 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { getScopedPath, type CitySlug } from "@/lib/cities";
+
 type ArticleBodyProps = {
   markdown: string;
+  city?: CitySlug;
 };
 
-export function ArticleBody({ markdown }: ArticleBodyProps) {
+export function ArticleBody({ markdown, city }: ArticleBodyProps) {
   return (
     <div className="article-markdown max-w-none text-[var(--color-muted)]">
       <ReactMarkdown
@@ -18,7 +21,7 @@ export function ArticleBody({ markdown }: ArticleBodyProps) {
             }
 
             if (href.startsWith("/")) {
-              return <Link href={href}>{children}</Link>;
+              return <Link href={getScopedPath(href, city)}>{children}</Link>;
             }
 
             return (

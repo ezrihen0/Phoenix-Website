@@ -97,6 +97,34 @@ a:not([class]) {
   box-shadow: 0 22px 50px var(--color-shadow);
 }
 
+.nav-dropdown-panel,
+.nav-mobile-panel {
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(248, 242, 234, 0.74);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.nav-dropdown-panel {
+  box-shadow: 0 20px 48px rgba(31, 26, 22, 0.14);
+}
+
+.nav-mobile-panel {
+  box-shadow: 0 12px 30px rgba(31, 26, 22, 0.08);
+}
+
+.nav-dropdown-bridge {
+  pointer-events: auto;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+
+  .nav-dropdown-panel,
+  .nav-mobile-panel {
+    background: rgba(248, 242, 234, 0.94);
+  }
+}
+
 .text-balance {
   text-wrap: balance;
 }

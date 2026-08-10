@@ -10,6 +10,40 @@ const nextConfig: NextConfig = {
   output: isVercelDeployment ? undefined : "standalone",
   poweredByHeader: false,
   deploymentId,
+  async redirects() {
+    return [
+      {
+        source: "/services",
+        destination: "/calgary/services",
+        permanent: true,
+      },
+      {
+        source: "/wett",
+        destination: "/calgary/wett",
+        permanent: true,
+      },
+      {
+        source: "/about",
+        destination: "/calgary/about",
+        permanent: true,
+      },
+      {
+        source: "/contact",
+        destination: "/calgary/contact",
+        permanent: true,
+      },
+      {
+        source: "/articles",
+        destination: "/calgary/articles",
+        permanent: true,
+      },
+      {
+        source: "/articles/:slug",
+        destination: "/calgary/articles/:slug",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

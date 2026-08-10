@@ -5,7 +5,7 @@ import { ImageResponse } from "next/og";
 
 import { siteConfig } from "@/lib/site-data";
 
-export const alt = "Phoenix Chimney & Fireplace Services logo and Calgary service overview";
+export const alt = "Phoenix Chimney & Fireplace Services brand and service overview";
 
 export const size = {
   width: 1200,
@@ -107,7 +107,7 @@ export default async function OpenGraphImage() {
                 color: "#f5dcb8",
               }}
             >
-              Calgary & Area
+              Calgary, Edmonton, Red Deer
             </div>
           </div>
 
@@ -130,7 +130,7 @@ export default async function OpenGraphImage() {
                 color: "#f3e1c7",
               }}
             >
-              Safety-first service, chimney sweeping, masonry repair, and insurance-ready reporting for Calgary homeowners.
+              Safety-first service, chimney sweeping, masonry repair, and city-specific dispatch for homeowners across central Alberta.
             </div>
           </div>
 

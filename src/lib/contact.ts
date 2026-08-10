@@ -3,11 +3,13 @@ import "server-only";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 
+import { CITY_SLUGS, defaultCitySlug, getCityBySlug } from "@/lib/cities";
 import { getSiteSettings, saveLead } from "@/lib/cms/storage";
 import { CONTACT_FORM_RECAPTCHA_ACTION, DEFAULT_RECAPTCHA_MIN_SCORE } from "@/lib/recaptcha";
 import type { LeadDeliveryStatus } from "@/lib/cms/types";
 
 export const contactRequestSchema = z.object({
+  city: z.enum(CITY_SLUGS).optional().default(defaultCitySlug),
   firstName: z.string().trim().min(2, "First name is required."),
   lastName: z.string().trim().min(2, "Last name is required."),
   phone: z.string().trim().min(10, "Phone number is required."),
@@ -139,6 +141,8 @@ async function verifyRecaptchaToken(
 }
 
 function buildWorkizPayload(payload: ContactRequest) {
+  const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
+
   return {
     firstName: payload.firstName,
     lastName: payload.lastName,
@@ -147,8 +151,8 @@ function buildWorkizPayload(payload: ContactRequest) {
     service: payload.service,
     preferredDay: payload.preferredDay,
     preferredTime: payload.preferredTime,
-    message: payload.message,
-    source: "website",
+    message: city ? `[City: ${city.name}]\n${payload.message}` : payload.message,
+    source: city ? `website-${city.slug}` : "website",
   };
 }
 
@@ -182,6 +186,7 @@ async function dispatchToWorkiz(payload: ContactRequest) {
 
 async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryResult> {
   const settings = await getSiteSettings();
+  const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
 
   if (!settings.sendLeadEmails) {
     return {
@@ -211,8 +216,9 @@ async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryR
     },
   });
 
-  const subject = `New fireplace lead: ${payload.firstName} ${payload.lastName}`;
+  const subject = `New ${city?.name || "website"} fireplace lead: ${payload.firstName} ${payload.lastName}`;
   const lines = [
+    `City: ${city?.name || "Unknown"}`,
     `Name: ${payload.firstName} ${payload.lastName}`,
     `Phone: ${payload.phone}`,
     `Email: ${payload.email}`,
@@ -233,6 +239,7 @@ async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryR
       text: lines.join("\n"),
       html: `
         <h2>${subject}</h2>
+        <p><strong>City:</strong> ${city?.name || "Unknown"}</p>
         <p><strong>Name:</strong> ${payload.firstName} ${payload.lastName}</p>
         <p><strong>Phone:</strong> ${payload.phone}</p>
         <p><strong>Email:</strong> ${payload.email}</p>
@@ -318,9 +325,11 @@ export async function routeLeadSubmission(
   const emailDelivery = await sendNotificationEmail(payload);
   const createdAt = new Date().toISOString();
   const leadId = crypto.randomUUID();
+  const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
 
   await saveLead({
     id: leadId,
+    city: city?.slug || defaultCitySlug,
     source: "contact-form",
     firstName: payload.firstName,
     lastName: payload.lastName,
@@ -339,7 +348,7 @@ export async function routeLeadSubmission(
 
   return {
     ok: true,
-    message: "Thanks. Your request has been received.",
+    message: `Thanks. Your ${city?.name || "service"} request has been received.`,
     leadId,
     bookingDeliveryStatus: bookingDelivery.status,
     emailDeliveryStatus: emailDelivery.status,

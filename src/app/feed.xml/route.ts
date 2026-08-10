@@ -1,3 +1,4 @@
+import { getCityHref } from "@/lib/cities";
 import { listArticles } from "@/lib/cms/storage";
 import { absoluteUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-data";
@@ -9,21 +10,25 @@ export async function GET() {
   const lastBuildDate = articles[0]?.updatedAt || new Date().toISOString();
   const items = articles
     .map((article) => {
-      const url = absoluteUrl(`/articles/${article.slug}`);
+      const url = absoluteUrl(getCityHref(article.city, `/articles/${article.slug}`));
+      const coverImage = article.coverImage ? absoluteUrl(article.coverImage) : "";
 
       return `
         <item>
           <title>${escapeXml(article.title)}</title>
           <link>${url}</link>
           <guid>${url}</guid>
+          <language>en-ca</language>
           <pubDate>${new Date(article.publishedAt).toUTCString()}</pubDate>
           <description>${escapeXml(article.excerpt)}</description>
+          <author>${escapeXml(article.authorName)}</author>
+          ${coverImage ? `<media:content url="${escapeXml(coverImage)}" medium="image" />` : ""}
         </item>`;
     })
     .join("");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-    <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
       <channel>
         <title>${escapeXml(siteConfig.name)}</title>
         <link>${siteConfig.url}</link>

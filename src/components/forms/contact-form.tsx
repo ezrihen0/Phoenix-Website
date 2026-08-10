@@ -4,6 +4,7 @@ import Script from "next/script";
 import { LoaderCircle, Send } from "lucide-react";
 import { useState } from "react";
 
+import { defaultCitySlug, type CitySlug } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
 import { CONTACT_FORM_RECAPTCHA_ACTION } from "@/lib/recaptcha";
 import { contactServiceOptions, siteConfig } from "@/lib/site-data";
@@ -21,6 +22,7 @@ const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY?.trim() || "
 
 type ContactFormProps = {
   className?: string;
+  city?: CitySlug;
   settings?: Pick<PublicSiteSettings, "phoneDisplay" | "workizUrl">;
 };
 
@@ -33,7 +35,7 @@ declare global {
   }
 }
 
-export function ContactForm({ className = "", settings }: ContactFormProps) {
+export function ContactForm({ className = "", city = defaultCitySlug, settings }: ContactFormProps) {
   const [state, setState] = useState<FormState>(initialState);
   const phoneDisplay = settings?.phoneDisplay || siteConfig.phoneDisplay;
   const workizUrl = settings?.workizUrl || siteConfig.workizUrl;
@@ -125,6 +127,7 @@ export function ContactForm({ className = "", settings }: ContactFormProps) {
         <div className="grid gap-5 sm:grid-cols-2">
         <Field label="First name" name="firstName" placeholder="First name" required />
         <Field label="Last name" name="lastName" placeholder="Last name" required />
+        <input type="hidden" name="city" value={city} />
         <Field
           label="Phone"
           name="phone"

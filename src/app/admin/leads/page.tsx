@@ -3,13 +3,20 @@ import { Mail, Phone, Send, ShieldCheck } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { requireAdmin } from "@/lib/auth/options";
+import { cities, getCityBySlug } from "@/lib/cities";
 import { getCmsStorageStatus, listLeads } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminLeadsPage() {
+export default async function AdminLeadsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ city?: string }>;
+}) {
   const session = await requireAdmin();
   const storageStatus = getCmsStorageStatus();
+  const params = await searchParams;
+  const selectedCity = getCityBySlug(params.city || "")?.slug;
 
   if (!storageStatus.healthy) {
     return (
@@ -28,7 +35,7 @@ export default async function AdminLeadsPage() {
     );
   }
 
-  const leads = await listLeads();
+  const leads = await listLeads({ city: selectedCity });
 
   return (
     <AdminShell
@@ -38,6 +45,24 @@ export default async function AdminLeadsPage() {
       userLabel={session.username}
       storageStatus={storageStatus}
     >
+      <div className="flex flex-wrap gap-3">
+        <a
+          href="/admin/leads"
+          className={`rounded-full px-4 py-2 text-sm font-semibold transition ${selectedCity ? "border border-[var(--color-border)] bg-white/65 hover:bg-white" : "bg-[var(--color-ink)] text-[var(--color-paper)]"}`}
+        >
+          All cities
+        </a>
+        {cities.map((city) => (
+          <a
+            key={city.slug}
+            href={`/admin/leads?city=${city.slug}`}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${selectedCity === city.slug ? "bg-[var(--color-ink)] text-[var(--color-paper)]" : "border border-[var(--color-border)] bg-white/65 hover:bg-white"}`}
+          >
+            {city.name}
+          </a>
+        ))}
+      </div>
+
       {leads.length ? (
         <div className="space-y-4">
           {leads.map((lead) => (
@@ -49,6 +74,7 @@ export default async function AdminLeadsPage() {
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
                     <span>{formatLeadDate(lead.createdAt)}</span>
+                    <span>{lead.city}</span>
                     <StatusPill label="Booking sync" status={lead.bookingDeliveryStatus} />
                     <StatusPill label="Email" status={lead.emailDeliveryStatus} />
                   </div>

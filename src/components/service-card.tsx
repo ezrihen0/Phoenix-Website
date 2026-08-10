@@ -3,21 +3,27 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
+import { getScopedPath, type CitySlug } from "@/lib/cities";
+import { getServiceDetailPath } from "@/lib/site-data";
 
 type ServiceCardProps = {
+  slug: string;
   title: string;
   tagline: string;
   description: string;
   image: string;
   icon: string;
+  city?: CitySlug;
 };
 
 export function ServiceCard({
+  slug,
   title,
   tagline,
   description,
   image,
   icon,
+  city,
 }: ServiceCardProps) {
   return (
     <Reveal>
@@ -44,7 +50,7 @@ export function ServiceCard({
         </div>
         <p className="text-sm leading-7 text-[var(--color-muted)]">{description}</p>
         <Link
-          href="/services"
+          href={getScopedPath(getServiceDetailPath(slug), city)}
           className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]"
         >
           Explore service details

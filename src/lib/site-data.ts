@@ -1,10 +1,12 @@
+import { getCityHref, type CitySlug } from "@/lib/cities";
+
 export const siteConfig = {
   name: "Phoenix Chimney & Fireplace Services",
   shortName: "Phoenix Fireplace",
   legalName: "Phoenix Chimney & Fireplace Services",
   description:
-    "Calgary chimney and fireplace specialists for gas fireplace repair, WETT inspections, chimney sweeping, masonry repair, and safety-first maintenance.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://fireplacerepairscalgary.ca",
+    "Phoenix Chimney & Fireplace Services routes fireplace repair, chimney care, and WETT inspection service across Calgary, Edmonton, and Red Deer.",
+  url: process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://phoenixfireplace.ca",
   phoneDisplay: "(825) 425-0050",
   phoneHref: "+18254250050",
   email: "phoenixfireplace0@gmail.com",
@@ -51,6 +53,14 @@ export const trustMetrics = [
   { value: "100km", label: "Coverage radius around Calgary" },
 ] as const;
 
+export function getTrustMetrics(cityName: string) {
+  return [
+    { value: "10+", label: `Years serving ${cityName} homes` },
+    { value: "24h", label: "Turnaround for urgent WETT reporting" },
+    { value: "100km", label: `Coverage radius around ${cityName}` },
+  ] as const;
+}
+
 export const valuePillars = [
   {
     title: "Insurance-ready documentation",
@@ -68,6 +78,26 @@ export const valuePillars = [
       "From a routine sweep to masonry rebuilds, you work with one accountable Calgary crew.",
   },
 ] as const;
+
+export function getValuePillars(cityName: string) {
+  return [
+    {
+      title: "Insurance-ready documentation",
+      description:
+        "Clear reporting, photo evidence, and code-minded recommendations for insurers, buyers, sellers, and homeowners.",
+    },
+    {
+      title: "Field-tested diagnostics",
+      description:
+        "We use live camera inspection, combustion troubleshooting, and practical repair plans instead of guesswork.",
+    },
+    {
+      title: "One local team, start to finish",
+      description:
+        `From a routine sweep to masonry rebuilds, you work with one accountable ${cityName} crew.`,
+    },
+  ] as const;
+}
 
 export const services = [
   {
@@ -188,6 +218,31 @@ export const aboutPoints = [
   },
 ] as const;
 
+export function getAboutPoints(cityName: string) {
+  return [
+    {
+      title: "Licensed, careful technicians",
+      description:
+        "Every visit is built around safety, clean workmanship, and realistic advice instead of unnecessary upsells.",
+    },
+    {
+      title: "Scheduling that respects the homeowner",
+      description:
+        "Fast responses, clear appointment windows, and online booking that works after hours.",
+    },
+    {
+      title: "Repair-first mindset",
+      description:
+        "We focus on the safest effective fix, whether that is a tune-up, targeted repair, or rebuild plan.",
+    },
+    {
+      title: `Work built for ${cityName}`,
+      description:
+        `${cityName} winter wear, freeze-thaw masonry stress, and seasonal startup problems are treated as local realities, not edge cases.`,
+    },
+  ] as const;
+}
+
 export const galleryImages = [
   {
     src: "/images/photos/gallery-01.jpg",
@@ -253,14 +308,391 @@ export const homeFaqs = [
   },
 ] as const;
 
+export function getHomeFaqs(cityName: string, serviceAreas: readonly string[]) {
+  const nearbyAreas = serviceAreas.slice(0, 5).join(", ");
+
+  return [
+    {
+      question: `Do I need a WETT inspection for a home sale in ${cityName}?`,
+      answer:
+        `Often yes. Buyers, insurers, and real-estate agents commonly request a certified WETT inspection for wood-burning appliances and connected chimney systems in ${cityName}.`,
+    },
+    {
+      question: "Can you repair a gas fireplace that will not ignite?",
+      answer:
+        "Yes. Ignition failure, pilot issues, dirty burners, and worn components are part of our standard gas fireplace repair work.",
+    },
+    {
+      question: `How far outside ${cityName} do you travel?`,
+      answer:
+        `We serve ${cityName} and surrounding communities within roughly a 100-kilometre radius, including nearby areas such as ${nearbyAreas}.`,
+    },
+    {
+      question: "What is the fastest way to schedule service?",
+      answer:
+        "Use the online booking link for 24/7 scheduling, or call the office if you need help choosing the right service type.",
+    },
+  ] as const;
+}
+
 export const contactServiceOptions = services.map((service) => service.title);
+
+export function getServicesFaqs(cityName: string) {
+  return [
+    {
+      question: `Do you handle gas fireplace repair in ${cityName}?`,
+      answer:
+        `Yes. Phoenix handles gas fireplace repair in ${cityName}, including pilot issues, ignition failures, weak flame performance, dirty components, and overdue maintenance concerns.`,
+    },
+    {
+      question: `Can I book both gas fireplace repair and a WETT inspection in ${cityName}?`,
+      answer:
+        `Yes. If a property in ${cityName} needs both troubleshooting and formal documentation, Phoenix can guide you into the right service flow instead of sending you to separate contractors first.`,
+    },
+    {
+      question: `What are the common signs I need fireplace repair in ${cityName}?`,
+      answer:
+        `Common warning signs include a fireplace that will not ignite, delayed startup, soot, unusual odors, poor draft, visible chimney wear, or a system that has gone too long without service.`,
+    },
+    {
+      question: `Do you travel outside ${cityName} for chimney and fireplace service?`,
+      answer:
+        `Yes. Phoenix serves ${cityName} plus nearby communities within roughly 100 kilometres, subject to scheduling and service type.`,
+    },
+  ] as const;
+}
+
+export function getWettFaqs(cityName: string) {
+  return [
+    {
+      question: `When do I need a WETT inspection in ${cityName}?`,
+      answer:
+        `The most common triggers are home sales, insurance reviews, newly installed wood-burning appliances, and any situation where a homeowner needs formal documentation before using the system with confidence.`,
+    },
+    {
+      question: `Is a WETT inspection in ${cityName} the same as a repair visit?`,
+      answer:
+        `No. A WETT inspection is a reporting and system-review service. If defects are found, Phoenix can also outline the repair path so the homeowner understands what needs correction next.`,
+    },
+    {
+      question: `How fast can I book a WETT inspection in ${cityName}?`,
+      answer:
+        `Timing depends on season and urgency, but Phoenix treats insurance files, real-estate closings, and safety-sensitive requests as priority scheduling cases whenever possible.`,
+    },
+    {
+      question: `What does a WETT inspection in ${cityName} usually review?`,
+      answer:
+        `The inspection typically reviews the appliance, clearances, venting path, visible chimney condition, installation context, and other code-related or safety-related concerns relevant to the system.`,
+    },
+  ] as const;
+}
+
+export type ServiceLandingPage = {
+  slug: string;
+  title: string;
+  navLabel: string;
+  menuDescription: string;
+  cardDescription: string;
+  metaTitle: string;
+  metaDescription: string;
+  keywords: readonly string[];
+  eyebrow: string;
+  heroTitle: string;
+  heroDescription: string;
+  image: string;
+  imageAlt: string;
+  secondaryImage: string;
+  secondaryImageAlt: string;
+  included: readonly string[];
+  supportingPoints: ReadonlyArray<{
+    title: string;
+    description: string;
+  }>;
+  cityHighlights: Record<CitySlug, string>;
+  ctaLabel: string;
+};
+
+export const serviceLandingPages: readonly ServiceLandingPage[] = [
+  {
+    slug: "gas-fireplace-maintenance",
+    title: "Gas Fireplace Maintenance",
+    navLabel: "Gas Fireplace Maintenance",
+    menuDescription: "Annual safety checks, cleaning, and pilot light troubleshooting.",
+    cardDescription:
+      "Annual gas fireplace safety checks, cleaning, and pilot service for Calgary, Edmonton, and Red Deer homes.",
+    metaTitle:
+      "Gas Fireplace Maintenance Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+    metaDescription:
+      "Annual gas fireplace safety checks, cleaning, pilot light troubleshooting, and performance tuning from certified technicians serving Calgary, Edmonton, and Red Deer.",
+    keywords: [
+      "gas fireplace maintenance Calgary",
+      "gas fireplace maintenance Edmonton",
+      "gas fireplace maintenance Red Deer",
+      "gas fireplace repair Alberta",
+      "certified technicians Calgary Edmonton Red Deer",
+    ],
+    eyebrow: "Annual fireplace safety service",
+    heroTitle:
+      "Gas fireplace maintenance that keeps Alberta homes safer before heating season stress shows up.",
+    heroDescription:
+      "Phoenix handles annual safety checks, burner cleaning, pilot light issues, and combustion tuning for homeowners in Calgary, Edmonton, and Red Deer who want dependable ignition and cleaner performance before the cold hits.",
+    image: "/images/photos/gallery-03.jpeg",
+    imageAlt: "Open gas fireplace firebox during seasonal cleaning and maintenance service",
+    secondaryImage: "/images/photos/service-gasfireplace.jpg",
+    secondaryImageAlt: "Gas fireplace interior opened for cleaning and annual maintenance work",
+    included: [
+      "Burner, pilot, and ignition cleaning to remove soot and debris buildup",
+      "Inspection of controls, safety switches, and shutdown behavior",
+      "Pilot light and flame-pattern troubleshooting for weak or unstable burn",
+      "Glass, gasket, and firebox cleaning where serviceable",
+      "Combustion and venting review for safe operation",
+      "Clear maintenance notes with repair recommendations if worn parts are found",
+    ],
+    supportingPoints: [
+      {
+        title: "Annual safety checks",
+        description:
+          "We inspect the components that most often lead to nuisance shutoffs, ignition failure, and unsafe operation when a fireplace has been sitting idle.",
+      },
+      {
+        title: "Cleaning that improves reliability",
+        description:
+          "Dust, pet hair, lint, and soot buildup can interfere with pilot assemblies and flame quality long before a full repair is obvious.",
+      },
+      {
+        title: "Pilot light issue diagnosis",
+        description:
+          "If the pilot will not stay lit or the main burner behaves inconsistently, we identify whether the problem is maintenance-related or a component failure.",
+      },
+    ],
+    cityHighlights: {
+      calgary:
+        "Calgary homeowners often book maintenance before shoulder-season startup, especially when chinook swings and long idle periods make ignition behavior inconsistent.",
+      edmonton:
+        "Edmonton's longer heating season makes annual cleaning and combustion checks more important for fireplaces that see extended winter use.",
+      "red-deer":
+        "Red Deer and central-Alberta homes benefit from preventive tune-ups before repeated cold starts expose weak pilots, dirty burners, or sluggish controls.",
+    },
+    ctaLabel: "Book fireplace maintenance",
+  },
+  {
+    slug: "chimney-sweeping-inspection",
+    title: "Chimney Sweeping & Inspection",
+    navLabel: "Chimney Sweeping & Inspection",
+    menuDescription: "Expert chimney sweep visits, creosote removal, and WETT-aware inspections.",
+    cardDescription:
+      "Expert chimney sweep service with creosote removal, inspection reporting, and safety guidance for Alberta homeowners.",
+    metaTitle:
+      "Expert Chimney Sweep Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+    metaDescription:
+      "Book expert chimney sweeping, creosote removal, WETT-aware inspections, and safety reporting with certified technicians serving Calgary, Edmonton, and Red Deer.",
+    keywords: [
+      "expert chimney sweep Calgary",
+      "expert chimney sweep Edmonton",
+      "expert chimney sweep Red Deer",
+      "chimney sweeping inspection Alberta",
+      "WETT inspection Alberta",
+    ],
+    eyebrow: "Sweep, inspect, and document",
+    heroTitle:
+      "Expert chimney sweep service with inspections that show what is clean, what is damaged, and what needs attention next.",
+    heroDescription:
+      "Phoenix combines creosote removal, system inspection, and practical safety reporting for homeowners in Calgary, Edmonton, and Red Deer who need lower fire risk, better draft, and clearer documentation.",
+    image: "/images/photos/service-masonry.jpg",
+    imageAlt: "Chimney inspection camera cable and equipment set up on a roof during a flue inspection",
+    secondaryImage: "/images/photos/wett-report.jpg",
+    secondaryImageAlt: "Roof-level chimney inspection tools and camera equipment prepared for sweep and safety review",
+    included: [
+      "Pre-sweep review of system condition, appliance type, and visible venting concerns",
+      "Creosote, soot, and blockage removal from serviceable chimney paths",
+      "Visual inspection of liner, cap, crown, flashing, and accessible masonry",
+      "Draft and safety observations tied to real burn performance concerns",
+      "WETT-aware notes when insurance, sale, or compliance documentation is likely needed",
+      "Clear repair or follow-up recommendations if structural or venting defects are found",
+    ],
+    supportingPoints: [
+      {
+        title: "Creosote removal before it becomes a fire risk",
+        description:
+          "A sweep is not just about cleanliness. It reduces the fuel load sitting inside the chimney and can restore safer airflow through the system.",
+      },
+      {
+        title: "Inspection while the system is open",
+        description:
+          "The best time to spot cap damage, liner wear, and moisture-related defects is while the service visit is already focused on the chimney path.",
+      },
+      {
+        title: "Safety guidance that is easy to act on",
+        description:
+          "Homeowners get straight answers on whether the next step is routine maintenance, a WETT inspection, or a repair visit.",
+      },
+    ],
+    cityHighlights: {
+      calgary:
+        "In Calgary, sweeping is often paired with inspections after heavy winter use, smoke complaints, or a real-estate file that needs clearer chimney documentation.",
+      edmonton:
+        "Edmonton homes with longer burn seasons benefit from routine creosote removal and inspection before deep-winter draft issues become safety problems.",
+      "red-deer":
+        "Red Deer and surrounding acreage properties often need combined sweeping and inspection visits when wood-burning systems carry heavier seasonal workloads.",
+    },
+    ctaLabel: "Book chimney sweeping",
+  },
+  {
+    slug: "chimney-repair-masonry",
+    title: "Chimney Repair & Masonry",
+    navLabel: "Chimney Repair & Masonry",
+    menuDescription: "Tuckpointing, brickwork, liner replacement, and leak control.",
+    cardDescription:
+      "Tuckpointing, chimney brick repair, liner replacement, and leak diagnosis built for Alberta freeze-thaw wear.",
+    metaTitle:
+      "Chimney Repair & Masonry Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+    metaDescription:
+      "Book tuckpointing, chimney brick repair, liner replacement, crown work, and leak diagnosis with certified technicians serving Calgary, Edmonton, and Red Deer.",
+    keywords: [
+      "chimney repair masonry Calgary",
+      "chimney repair masonry Edmonton",
+      "chimney repair masonry Red Deer",
+      "chimney liner replacement Alberta",
+      "chimney leak repair Alberta",
+    ],
+    eyebrow: "Structural chimney repair",
+    heroTitle:
+      "Chimney repair and masonry work that stops leaks, stabilizes brickwork, and fixes the parts winter weather keeps stressing.",
+    heroDescription:
+      "Phoenix repairs chimney crowns, mortar joints, brick faces, liners, and water-entry points for homeowners in Calgary, Edmonton, and Red Deer who need a targeted repair scope instead of guesswork.",
+    image: "/images/photos/service-sweep.jpeg",
+    imageAlt: "Fresh chimney crown repair and exterior masonry restoration on a brick chimney",
+    secondaryImage: "/images/photos/gallery-04.jpeg",
+    secondaryImageAlt: "Outdoor chimney structure after masonry repair and crown restoration work",
+    included: [
+      "Assessment of cracked mortar, spalled brick, crown failure, and visible structural movement",
+      "Leak-source review around crowns, caps, flashing, and exterior water-entry points",
+      "Tuckpointing and masonry repair planning based on actual deterioration patterns",
+      "Chimney liner and venting review when interior protection may also be compromised",
+      "Repair recommendations for waterproofing, rebuilding, or selective brick replacement",
+      "Clear scope notes so homeowners understand what is urgent and what can be phased",
+    ],
+    supportingPoints: [
+      {
+        title: "Tuckpointing before moisture gets deeper",
+        description:
+          "When mortar joints open up, freeze-thaw cycles accelerate damage. Early repair protects more of the structure from needing full rebuild work.",
+      },
+      {
+        title: "Brick and crown repairs tied to the source of failure",
+        description:
+          "We look at how water is entering, where brick faces are failing, and whether the crown or liner condition is contributing to faster deterioration.",
+      },
+      {
+        title: "Liner replacement when the inside is part of the problem",
+        description:
+          "Visible exterior damage often overlaps with venting or liner issues, so the repair path should account for both the shell and the flue.",
+      },
+    ],
+    cityHighlights: {
+      calgary:
+        "Calgary chimneys commonly show freeze-thaw mortar wear, crown cracking, and water intrusion after repeated weather swings and roofline exposure.",
+      edmonton:
+        "In Edmonton, longer cold stretches and accumulated winter moisture can turn minor chimney leaks into widespread masonry and liner problems if left alone.",
+      "red-deer":
+        "Red Deer homes and acreages often need targeted masonry repair plans that address both exterior deterioration and the venting path behind it.",
+    },
+    ctaLabel: "Book chimney repair",
+  },
+  {
+    slug: "gas-fireplace-installation",
+    title: "Gas Fireplace Installation",
+    navLabel: "Gas Fireplace Installation",
+    menuDescription: "New installs, retrofits, replacements, and upgrade planning.",
+    cardDescription:
+      "New gas fireplace installs, retrofit replacements, and upgrade planning for Calgary, Edmonton, and Red Deer projects.",
+    metaTitle:
+      "Gas Fireplace Installation Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+    metaDescription:
+      "Book new gas fireplace installations, retrofits, replacements, and venting upgrades with certified technicians serving Calgary, Edmonton, and Red Deer.",
+    keywords: [
+      "gas fireplace installation Calgary",
+      "gas fireplace installation Edmonton",
+      "gas fireplace installation Red Deer",
+      "gas fireplace retrofit Alberta",
+      "gas fireplace upgrade Alberta",
+    ],
+    eyebrow: "Install, retrofit, and upgrade",
+    heroTitle:
+      "Gas fireplace installation planned around venting, retrofit constraints, and the finished look homeowners actually want.",
+    heroDescription:
+      "Phoenix helps Calgary, Edmonton, and Red Deer homeowners plan new gas fireplace installations, replace aging units, and retrofit existing openings with a cleaner, more dependable heating feature.",
+    image: "/images/photos/team-fireplace.jpg",
+    imageAlt: "Modern linear gas fireplace installed into a contemporary living room wall",
+    secondaryImage: "/images/photos/hero-fireplace.jpg",
+    secondaryImageAlt: "Finished gas fireplace installation with a clean surround and wood mantel",
+    included: [
+      "Room and appliance assessment for new installs, replacements, or retrofit opportunities",
+      "Review of venting path, framing constraints, and clearance requirements",
+      "Guidance on insert, direct-vent, linear, or traditional unit options",
+      "Coordination notes for gas connection, finishing work, and control upgrades",
+      "Startup, commissioning, and operational walkthrough after installation",
+      "Clear expectations on upgrade scope, appearance changes, and maintenance needs",
+    ],
+    supportingPoints: [
+      {
+        title: "New installs that fit the room properly",
+        description:
+          "The right installation starts with sizing, venting, and viewing-angle decisions that match how the room is actually used.",
+      },
+      {
+        title: "Retrofits for outdated or inefficient units",
+        description:
+          "Older fireplaces and builder-grade setups can often be upgraded with better controls, cleaner finishes, and more dependable performance.",
+      },
+      {
+        title: "Upgrade planning before construction starts",
+        description:
+          "Homeowners get a clearer picture of appliance choices, venting implications, and the steps needed to move from concept to install.",
+      },
+    ],
+    cityHighlights: {
+      calgary:
+        "Calgary renovation projects often focus on replacing dated fireplace fronts with cleaner gas units that suit newer living-room layouts and finish packages.",
+      edmonton:
+        "Edmonton homeowners frequently plan upgrades around longer heating seasons, improved efficiency, and retrofits that replace unreliable older appliances.",
+      "red-deer":
+        "Red Deer and central-Alberta projects often blend installation planning with renovation work, insert upgrades, and direct-vent solutions for existing openings.",
+    },
+    ctaLabel: "Book installation consult",
+  },
+] as const;
+
+export function getServiceLandingHref(slug: string, city?: CitySlug | null) {
+  if (city) {
+    return getCityHref(city, `/services/${slug}`);
+  }
+
+  return `/services/${slug}`;
+}
+
+export function getServiceLandingPage(slug: string) {
+  return serviceLandingPages.find((page) => page.slug === slug);
+}
+
+export function getServiceDetailPath(serviceSlug: string) {
+  if (serviceSlug === "gas-fireplace-repair") {
+    return "/gas-fireplace-repair";
+  }
+
+  if (serviceSlug === "wett-inspections") {
+    return "/wett";
+  }
+
+  return `/services#${serviceSlug}`;
+}
 
 export const footerLinks = [
   {
     title: "Services",
     items: services.slice(0, 4).map((service) => ({
       label: service.title,
-      href: "/services",
+      href: getServiceDetailPath(service.slug),
     })),
   },
   {

@@ -5,7 +5,8 @@ import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { requireAdmin } from "@/lib/auth/options";
-import { getArticleBySlug, getCmsStorageStatus } from "@/lib/cms/storage";
+import { cities, defaultCitySlug } from "@/lib/cities";
+import { getArticleById, getCmsStorageStatus } from "@/lib/cms/storage";
 import type { Article } from "@/lib/cms/types";
 
 export const dynamic = "force-dynamic";
@@ -19,7 +20,7 @@ export default async function EditArticlePage({
 }) {
   const session = await requireAdmin();
   const storageStatus = getCmsStorageStatus();
-  const [{ slug }, pageState] = await Promise.all([params, searchParams]);
+  const [{ slug: articleId }, pageState] = await Promise.all([params, searchParams]);
 
   if (!storageStatus.healthy) {
     return (
@@ -38,7 +39,7 @@ export default async function EditArticlePage({
     );
   }
 
-  const article = await getArticleBySlug(slug, { includeDrafts: true });
+  const article = await getArticleById(articleId, { includeDrafts: true });
 
   if (!article) {
     notFound();
@@ -72,10 +73,25 @@ export default async function EditArticlePage({
 export function ArticleEditor({ article }: { article?: Article }) {
   return (
     <form action={saveArticleAction} className="space-y-6 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6 sm:p-8">
+      <input type="hidden" name="originalId" value={article?.id || ""} />
       <input type="hidden" name="originalSlug" value={article?.slug || ""} />
-      <input type="hidden" name="createdAt" value={article?.createdAt || ""} />
+      <input type="hidden" name="originalCity" value={article?.city || ""} />
 
       <div className="grid gap-5 md:grid-cols-2">
+        <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
+          <span>City</span>
+          <select
+            name="city"
+            defaultValue={article?.city || defaultCitySlug}
+            className="rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm outline-none"
+          >
+            {cities.map((city) => (
+              <option key={city.slug} value={city.slug}>
+                {city.name}
+              </option>
+            ))}
+          </select>
+        </label>
         <Field label="Title" name="title" defaultValue={article?.title} required />
         <Field label="Slug" name="slug" defaultValue={article?.slug} placeholder="auto-from-title" />
         <Field label="Excerpt" name="excerpt" defaultValue={article?.excerpt} required className="md:col-span-2" />

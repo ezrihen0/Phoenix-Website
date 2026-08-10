@@ -1,9 +1,12 @@
+import type { CitySlug } from "@/lib/cities";
+
 export type ArticleStatus = "draft" | "published";
 
 export type LeadDeliveryStatus = "sent" | "skipped" | "failed";
 
 export type Article = {
   id: string;
+  city: CitySlug;
   slug: string;
   title: string;
   excerpt: string;
@@ -69,6 +72,7 @@ export type PublicSiteSettings = Pick<
 
 export type Lead = {
   id: string;
+  city: CitySlug;
   source: "contact-form";
   firstName: string;
   lastName: string;

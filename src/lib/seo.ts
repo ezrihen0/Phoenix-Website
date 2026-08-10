@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 
+import { countWords } from "@/lib/cms/helpers";
+import type { Article } from "@/lib/cms/types";
+import { getCityBySlug, getCityHref, type CitySlug } from "@/lib/cities";
 import { siteConfig } from "@/lib/site-data";
 
 type MetadataOptions = {
@@ -41,7 +44,7 @@ function buildShareImages(imagePath?: string, imageAlt?: string) {
       height: 630,
       alt:
         imageAlt ||
-        "Phoenix Chimney & Fireplace Services logo and Calgary service overview",
+        "Phoenix Chimney & Fireplace Services brand and service overview",
     },
   ];
 }
@@ -124,22 +127,44 @@ export function buildFaqSchema(
   };
 }
 
-export function buildLocalBusinessSchema() {
+export function buildLocalBusinessSchema(city?: CitySlug) {
   const logoUrl = absoluteUrl("/images/brand/favicon-512.png");
+  const cityConfig = city ? getCityBySlug(city) : undefined;
+  const areaServed = (cityConfig ? [cityConfig.name, ...cityConfig.serviceAreas] : ["Calgary", ...siteConfig.serviceAreas]).map((area) => ({
+    "@type": "Place",
+    name: area,
+  }));
 
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": cityConfig ? absoluteUrl(getCityHref(cityConfig.slug)) : siteConfig.url,
     name: siteConfig.legalName,
-    url: siteConfig.url,
+    url: cityConfig ? absoluteUrl(getCityHref(cityConfig.slug)) : siteConfig.url,
     image: absoluteUrl(siteConfig.socialPreview),
     logo: logoUrl,
-    telephone: siteConfig.phoneHref,
+    telephone: cityConfig?.phoneHref || siteConfig.phoneHref,
     email: siteConfig.email,
-    areaServed: ["Calgary", ...siteConfig.serviceAreas],
-    description: siteConfig.description,
+    areaServed,
+    description: cityConfig
+      ? `${cityConfig.name} fireplace, chimney, and WETT dispatch from ${siteConfig.legalName}.`
+      : siteConfig.description,
     priceRange: "$$",
-    openingHours: "Su-Fr 09:00-18:00",
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+        ],
+        opens: "09:00",
+        closes: "18:00",
+      },
+    ],
     sameAs: [],
   };
 }
@@ -148,21 +173,81 @@ export function buildServiceSchema(
   name: string,
   description: string,
   path: string,
+  city?: CitySlug,
 ) {
+  const cityConfig = city ? getCityBySlug(city) : undefined;
+  const serviceUrl = absoluteUrl(path);
+  const areaServed = (cityConfig ? [cityConfig.name, ...cityConfig.serviceAreas] : ["Calgary", ...siteConfig.serviceAreas]).map((area) => ({
+    "@type": "Place",
+    name: area,
+  }));
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${serviceUrl}#${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
     serviceType: name,
     name,
     description,
-    areaServed: ["Calgary", ...siteConfig.serviceAreas],
+    areaServed,
     provider: {
       "@type": "LocalBusiness",
+      "@id": cityConfig ? absoluteUrl(getCityHref(cityConfig.slug)) : siteConfig.url,
       name: siteConfig.legalName,
-      telephone: siteConfig.phoneHref,
-      url: siteConfig.url,
+      telephone: cityConfig?.phoneHref || siteConfig.phoneHref,
+      url: cityConfig ? absoluteUrl(getCityHref(cityConfig.slug)) : siteConfig.url,
     },
-    url: absoluteUrl(path),
+    url: serviceUrl,
+  };
+}
+
+export function buildOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": siteConfig.url,
+    name: siteConfig.legalName,
+    url: siteConfig.url,
+    logo: absoluteUrl("/images/brand/favicon-512.png"),
+    email: siteConfig.email,
+    telephone: siteConfig.phoneHref,
+  };
+}
+
+export function buildArticleSchema(article: Article, city: CitySlug) {
+  const articleUrl = absoluteUrl(getCityHref(city, `/articles/${article.slug}`));
+  const imageUrl = article.coverImage ? absoluteUrl(article.coverImage) : absoluteUrl(siteConfig.socialPreview);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": articleUrl,
+    mainEntityOfPage: articleUrl,
+    headline: article.title,
+    description: article.excerpt,
+    articleBody: article.body,
+    keywords: article.keywords.join(", "),
+    wordCount: countWords(article.body),
+    datePublished: article.publishedAt,
+    dateModified: article.updatedAt,
+    author: {
+      "@type": "Person",
+      name: article.authorName,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.legalName,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/images/brand/favicon-512.png"),
+      },
+    },
+    image: {
+      "@type": "ImageObject",
+      url: imageUrl,
+      width: 1200,
+      height: 630,
+    },
   };
 }
 
@@ -181,11 +266,6 @@ export function buildWebsiteSchema() {
         "@type": "ImageObject",
         url: logoUrl,
       },
-    },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteConfig.url}/services`,
-      "query-input": "required name=service",
     },
   };
 }

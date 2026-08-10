@@ -8,27 +8,9 @@ import { StructuredData } from "@/components/structured-data";
 import { VercelAnalytics } from "@/components/vercel-analytics";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { absoluteUrl } from "@/lib/seo";
-import {
-  buildLocalBusinessSchema,
-  buildWebsiteSchema,
-  createPageMetadata,
-} from "@/lib/seo";
+import { buildOrganizationSchema, buildWebsiteSchema } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-data";
 import "./globals.css";
-
-const homeMetadata = createPageMetadata({
-  title: "Fireplace Repair Calgary | Chimney, WETT & Gas Fireplace Service",
-  description:
-    "Book Calgary fireplace and chimney specialists for gas fireplace repair, WETT inspections, chimney sweeping, relining, and masonry work.",
-  path: "/",
-  keywords: [
-    "fireplace repair Calgary",
-    "chimney repair Calgary",
-    "WETT inspection Calgary",
-    "gas fireplace repair Calgary",
-    "chimney sweep Calgary",
-  ],
-});
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -42,8 +24,12 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  ...homeMetadata,
   metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.name,
+    template: "%s",
+  },
+  description: siteConfig.description,
   applicationName: siteConfig.name,
   category: "home services",
   creator: siteConfig.name,
@@ -64,7 +50,6 @@ export const metadata: Metadata = {
     apple: [{ url: "/images/brand/favicon-180.png", sizes: "180x180", type: "image/png" }],
   },
   alternates: {
-    ...homeMetadata.alternates,
     types: {
       "application/rss+xml": absoluteUrl("/feed.xml"),
     },
@@ -81,12 +66,11 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${bricolage.variable} ${cormorant.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-[var(--color-paper)] text-[var(--color-ink)]">
-        <StructuredData
-          data={[buildWebsiteSchema(), buildLocalBusinessSchema()]}
-        />
+        <StructuredData data={[buildWebsiteSchema(), buildOrganizationSchema()]} />
         <div className="relative flex min-h-screen flex-col overflow-x-clip pb-24 lg:pb-0">
           <SiteHeader settings={settings} />
           <main className="flex-1">{children}</main>
