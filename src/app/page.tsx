@@ -6,9 +6,9 @@ import { buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
   ...createPageMetadata({
-    title: "Choose Your City | Phoenix Chimney & Fireplace Services",
+    title: "Phoenix Fireplace & Chimney | Choose Your City",
     description:
-      "Select Calgary, Edmonton, or Red Deer to get the right Phoenix fireplace and chimney service path and dispatch number.",
+      "Phoenix provides fireplace and chimney service across Alberta. Choose Calgary, Edmonton, or Red Deer to reach the right local team.",
     path: "/",
     keywords: [
       "phoenix fireplace calgary",

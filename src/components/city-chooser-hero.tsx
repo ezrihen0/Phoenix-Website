@@ -26,10 +26,18 @@ export function CityChooserHero() {
       return;
     }
 
-    if (window.sessionStorage.getItem(BLOCKED_SESSION_KEY) === "1") {
+    if (window.sessionStorage.getItem(BLOCKED_SESSION_KEY) !== "1") {
+      return;
+    }
+
+    const blockedTimer = window.setTimeout(() => {
       setGeoState("blocked");
       setGeoMessage("Phoenix city routing is only available to visitors located in North America.");
-    }
+    }, 0);
+
+    return () => {
+      window.clearTimeout(blockedTimer);
+    };
   }, []);
 
   function blockChooser() {
@@ -119,10 +127,10 @@ export function CityChooserHero() {
               <div className="space-y-5 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-12">
                 <p className="eyebrow text-[var(--color-gold)]">Choose your city</p>
                 <h1 className="display-title max-w-3xl text-balance text-4xl font-semibold leading-[0.94] sm:text-5xl lg:text-6xl">
-                  One Phoenix brand, three city paths, and the right dispatch number from the first click.
+                  Phoenix fireplace and chimney service across Alberta.
                 </h1>
                 <p className="max-w-xl text-sm leading-7 text-[var(--color-paper)]/74 sm:text-base">
-                  Choose Calgary, Edmonton, or Red Deer to reach the right local page and dispatch number.
+                  Choose Calgary, Edmonton, or Red Deer to reach the local Phoenix team, phone number, and service pages for your area.
                 </p>
 
                 {showGpsPrompt ? (

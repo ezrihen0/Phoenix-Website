@@ -63,15 +63,15 @@ export async function generateMetadata({
   }
 
   return createPageMetadata({
-    title: `Fireplace Repair ${city.name} | Chimney, WETT & Gas Fireplace Service`,
+    title: `Phoenix Fireplace & Chimney Services in ${city.name}`,
     description:
-      `Book ${city.name} fireplace and chimney service for gas fireplace repair, WETT inspections, chimney sweeping, relining, and masonry work.`,
+      `Phoenix provides ${city.name} fireplace and chimney service, including repair, WETT inspections, sweeping, relining, and masonry work from one local team.`,
     path: getCityHref(city.slug),
     keywords: [
-      `fireplace repair ${city.name}`,
-      `chimney repair ${city.name}`,
+      `fireplace service ${city.name}`,
+      `chimney service ${city.name}`,
       `WETT inspection ${city.name}`,
-      `gas fireplace repair ${city.name}`,
+      `fireplace company ${city.name}`,
       `chimney sweep ${city.name}`,
     ],
   });
@@ -135,15 +135,15 @@ export default async function CityHomePage({
                 <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center text-center">
                   <div className="space-y-6">
                     <p className="eyebrow text-[var(--color-paper)] [text-shadow:0_2px_10px_rgba(0,0,0,0.4)]">
-                      Fireplace & chimney repair in {city.name}
+                      Fireplace & chimney service in {city.name}
                     </p>
                     <h1 className="display-title text-balance text-5xl font-semibold leading-[0.92] sm:text-6xl lg:text-7xl">
-                      Gas fireplace repair, WETT inspections, chimney care, and masonry work for local homes.
+                      Phoenix fireplace and chimney service for {city.name} homes.
                     </h1>
                     <p className="mx-auto max-w-3xl text-base leading-8 text-[var(--color-paper)]/80 sm:text-lg">
-                      Phoenix handles gas fireplace repair, WETT inspections, chimney
-                      sweeping, relining, and masonry service for {city.name} homes that
-                      need the issue diagnosed and explained clearly.
+                      From gas fireplace repair and WETT inspections to chimney sweeping,
+                      relining, and masonry work, Phoenix helps {city.name} homeowners book
+                      the right service and understand what comes next.
                     </p>
                     <div className="flex flex-wrap justify-center gap-3 pb-6 pt-2 sm:pb-8">
                       <a
@@ -253,9 +253,9 @@ export default async function CityHomePage({
       </section>
 
       <ServiceGuidesGrid
-        eyebrow="Alberta service guides"
-        title={`Deeper service pages that support ${city.name} homeowners, buyers, and booking decisions.`}
-        description={`These Alberta-wide service guides strengthen the local ${city.name} pages with dedicated maintenance, sweeping, masonry, and installation content while still routing callers back into Calgary, Edmonton, and Red Deer dispatch.`}
+        eyebrow={`${city.name} service guides`}
+        title={`Dedicated pages for maintenance, sweeping, masonry, and installation in ${city.name}.`}
+        description={`Use these pages when you already know the service you need and want more detail before booking in ${city.name}.`}
         city={city.slug}
       />
 

@@ -11,7 +11,7 @@ import { StructuredData } from "@/components/structured-data";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, buildFaqSchema, buildLocalBusinessSchema, buildServiceSchema, createPageMetadata } from "@/lib/seo";
-import { getServicesFaqs, services } from "@/lib/site-data";
+import { getHomeFaqs, services } from "@/lib/site-data";
 
 export async function generateMetadata({
   params,
@@ -44,17 +44,17 @@ export async function generateMetadata({
   }
 
   return createPageMetadata({
-    title: `Gas Fireplace Repair ${city.name} | Chimney Service, WETT & Masonry`,
+    title: `Fireplace & Chimney Services in ${city.name} | Phoenix Chimney`,
     description:
-      `Book gas fireplace repair in ${city.name} plus chimney service, WETT inspections, relining, and masonry repair from one local team.`,
+      `Browse fireplace and chimney services in ${city.name}, including gas repair, WETT inspections, sweeping, maintenance, masonry, and installation.`,
     path: getCityHref(city.slug, "/services"),
     keywords: [
-      `gas fireplace repair ${city.name}`,
-      `fireplace repair ${city.name}`,
+      `fireplace services ${city.name}`,
       `chimney services ${city.name}`,
-      `wood stove repair ${city.name}`,
-      `chimney masonry ${city.name}`,
       `WETT inspection ${city.name}`,
+      `chimney sweep ${city.name}`,
+      `gas fireplace service ${city.name}`,
+      `chimney masonry ${city.name}`,
     ],
   });
 }
@@ -76,7 +76,7 @@ export default async function CityServicesPage({
   }
 
   const siteSettings = getCitySettings(await getPublicSiteSettings(), city.slug);
-  const servicesFaqs = getServicesFaqs(city.name);
+  const servicesFaqs = getHomeFaqs(city.name, city.serviceAreas);
 
   return (
     <>
@@ -102,18 +102,23 @@ export default async function CityServicesPage({
       <section className="section-pad pb-10">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
           <Reveal>
-            <SectionHeading
-              eyebrow={`${city.name} gas fireplace repair & chimney service`}
-              title={`Gas fireplace repair in ${city.name}, plus WETT inspections, chimney sweeping, and masonry work.`}
-              description="Homeowners book Phoenix when they need an exact diagnosis, clear repair direction, and one local team that can handle fireplace, chimney, and inspection work together."
-            />
+            <div className="flex max-w-3xl flex-col gap-4">
+              <p className="eyebrow">{city.name} fireplace & chimney services</p>
+              <h1 className="display-title text-balance text-4xl font-semibold leading-none sm:text-5xl">
+                Choose the right fireplace or chimney service in {city.name}.
+              </h1>
+              <p className="max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-lg">
+                Compare repair, inspection, sweeping, maintenance, masonry, and installation options,
+                then open the page that matches the problem you are trying to solve.
+              </p>
+            </div>
           </Reveal>
           <Reveal delay={120}>
             <div className="rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-card)] p-8">
               <p className="text-sm leading-7 text-[var(--color-muted)]">
-                Every visit starts with the problem you are actually seeing: ignition failure, poor draft,
-                smoke, visible masonry damage, insurance documentation, or a system that has simply gone too
-                long without cleaning.
+                Not sure where to start? Match the symptom to the service: ignition problems go to gas
+                fireplace repair, insurance or sale files go to WETT, routine cleaning goes to sweeping,
+                and structural wear goes to masonry.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
@@ -197,9 +202,9 @@ export default async function CityServicesPage({
       </section>
 
       <ServiceGuidesGrid
-        eyebrow="Alberta service guides"
-        title={`Dedicated service pages that reinforce ${city.name} repair, sweep, masonry, and installation intent.`}
-        description={`Use these deeper Alberta service guides when a homeowner needs more detail than the ${city.name} services overview alone. They strengthen internal linking while keeping Calgary, Edmonton, and Red Deer all represented.`}
+        eyebrow={`${city.name} service guides`}
+        title={`Detailed pages for maintenance, sweeping, masonry, and installation in ${city.name}.`}
+        description={`Open these guides when you need more detail on a specific service before booking in ${city.name}.`}
         city={city.slug}
       />
 
@@ -207,9 +212,9 @@ export default async function CityServicesPage({
         <div className="page-frame grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
           <Reveal>
             <SectionHeading
-              eyebrow="Gas fireplace repair FAQs"
-              title={`Questions homeowners ask before booking gas fireplace repair in ${city.name}.`}
-              description="These are the practical questions people usually want answered before they call for fireplace troubleshooting, repair, or a combined inspection visit."
+              eyebrow="Fireplace & chimney FAQs"
+              title={`Common questions before booking fireplace or chimney service in ${city.name}.`}
+              description="These answers help homeowners choose between calling, booking online, or opening a more specific service page."
             />
           </Reveal>
           <div className="grid gap-4">

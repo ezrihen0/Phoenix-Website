@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { ArticleCard } from "@/components/articles/article-card";
 import { Reveal } from "@/components/motion/reveal";
-import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
 import { citySupportsArticles, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
 import { listArticles, getPublicSiteSettings } from "@/lib/cms/storage";
@@ -43,9 +42,9 @@ export async function generateMetadata({
   }
 
   return createPageMetadata({
-    title: `Fireplace Articles ${city.name} | Phoenix Chimney & Fireplace Services`,
+    title: `Fireplace & Chimney Articles for ${city.name} | Phoenix Chimney`,
     description:
-      `Read ${city.name} fireplace, chimney, WETT, and masonry articles that help homeowners understand common issues, maintenance needs, and inspection timing.`,
+      `Read ${city.name} fireplace, chimney, WETT, and masonry articles that help homeowners understand common issues, maintenance timing, and when to book service.`,
     path: getCityHref(city.slug, "/articles"),
     keywords: [`fireplace articles ${city.name}`, `chimney blog ${city.name}`, `WETT advice ${city.name}`],
   });
@@ -85,11 +84,15 @@ export default async function CityArticlesPage({
       <section className="section-pad">
         <div className="page-frame">
           <Reveal>
-            <SectionHeading
-              eyebrow="Articles"
-              title={siteSettings.blogIndexTitle}
-              description={siteSettings.blogIndexDescription}
-            />
+            <div className="max-w-3xl">
+              <p className="eyebrow">Articles</p>
+              <h1 className="display-title mt-4 text-balance text-4xl font-semibold leading-none sm:text-5xl">
+                {siteSettings.blogIndexTitle}
+              </h1>
+              <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-lg">
+                {siteSettings.blogIndexDescription}
+              </p>
+            </div>
           </Reveal>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {articles.map((article, index) => (

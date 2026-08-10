@@ -23,7 +23,7 @@ const gasRepairHighlights = [
   "Pilot lights that will not stay lit",
   "Ignition systems that click without firing",
   "Weak flame, soot, or dirty burner performance",
-  "Annual maintenance before heavy winter use",
+  "Fireplaces that shut off unexpectedly or smell abnormal",
 ] as const;
 
 const gasRepairVisitPoints = [
@@ -75,15 +75,15 @@ export async function generateMetadata({
   }
 
   return createPageMetadata({
-    title: `Gas Fireplace Repair ${city.name} | Fireplace Diagnostics & Service`,
+    title: `Gas Fireplace Repair in ${city.name} | Phoenix Chimney`,
     description:
-      `Book gas fireplace repair in ${city.name} for ignition problems, weak flames, annual maintenance, and fireplace diagnostics from one local team.`,
+      `Book gas fireplace repair in ${city.name} for ignition failure, weak flames, clicking pilots, shutdown issues, and fireplace diagnostics.`,
     path: getCityHref(city.slug, "/gas-fireplace-repair"),
     keywords: [
       `gas fireplace repair ${city.name}`,
-      `gas fireplace service ${city.name}`,
+      `gas fireplace not working ${city.name}`,
       `fireplace diagnostics ${city.name}`,
-      `gas fireplace maintenance ${city.name}`,
+      `gas fireplace service ${city.name}`,
     ],
   });
 }
@@ -124,7 +124,7 @@ export default async function CityGasFireplaceRepairPage({
           buildFaqSchema(servicesFaqs),
           buildServiceSchema(
             "Gas Fireplace Repair",
-            `Gas fireplace repair, cleaning, diagnostics, and maintenance for ${city.name} homeowners.`,
+            `Gas fireplace repair and diagnostics for ${city.name} homeowners dealing with ignition, flame, or shutdown problems.`,
             getCityHref(city.slug, "/gas-fireplace-repair"),
             city.slug,
           ),
@@ -140,11 +140,11 @@ export default async function CityGasFireplaceRepairPage({
                 {city.name} gas fireplace repair
               </div>
               <h1 className="display-title text-balance text-5xl font-semibold leading-[0.92] sm:text-6xl">
-                Gas fireplace repair in {city.name} for ignition issues, weak flames, overdue maintenance, and cleaner heat.
+                Gas fireplace repair in {city.name}.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-[var(--color-paper)]/78 sm:text-lg">
-                Phoenix handles gas fireplace repair in {city.name} for homeowners who need the problem diagnosed properly,
-                the safety side checked seriously, and the next step explained clearly.
+                Book gas fireplace repair in {city.name} when the unit will not ignite, the flame is weak,
+                the pilot keeps dropping out, or the fireplace shuts off unexpectedly.
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 {gasRepairHighlights.map((highlight) => (

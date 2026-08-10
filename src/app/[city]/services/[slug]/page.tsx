@@ -34,6 +34,36 @@ export function generateStaticParams() {
     );
 }
 
+function getCityServiceMetadata(slug: string, cityName: string) {
+  switch (slug) {
+    case "gas-fireplace-maintenance":
+      return {
+        title: `Gas Fireplace Maintenance in ${cityName} | Phoenix Chimney`,
+        description: `Book annual gas fireplace maintenance in ${cityName} for safety checks, cleaning, pilot service, and preventive tune-ups before heating season.`,
+      };
+    case "chimney-sweeping-inspection":
+      return {
+        title: `Chimney Sweeping & Inspection in ${cityName} | Phoenix Chimney`,
+        description: `Book chimney sweeping and inspection in ${cityName} for creosote removal, draft review, and clearer safety documentation.`,
+      };
+    case "chimney-repair-masonry":
+      return {
+        title: `Chimney Repair & Masonry in ${cityName} | Phoenix Chimney`,
+        description: `Book chimney repair and masonry work in ${cityName} for mortar wear, crown damage, leaks, and structural chimney concerns.`,
+      };
+    case "gas-fireplace-installation":
+      return {
+        title: `Gas Fireplace Installation in ${cityName} | Phoenix Chimney`,
+        description: `Plan gas fireplace installation, retrofits, and replacements in ${cityName} with venting and layout guidance before work starts.`,
+      };
+    default:
+      return {
+        title: `Fireplace Service in ${cityName} | Phoenix Chimney`,
+        description: `Book fireplace and chimney service in ${cityName} with Phoenix Chimney & Fireplace Services.`,
+      };
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -51,8 +81,7 @@ export async function generateMetadata({
     });
   }
 
-  const title = `${servicePage.title} in ${city.name} | Phoenix Chimney`;
-  const description = `Book ${servicePage.title.toLowerCase()} in ${city.name} with Phoenix Chimney & Fireplace Services. Our ${servicePage.title.toLowerCase()} experts are ready to help you in ${city.name}.`;
+  const { title, description } = getCityServiceMetadata(servicePage.slug, city.name);
 
   return createPageMetadata({
     title,
@@ -86,7 +115,7 @@ export default async function CityServiceLandingPage({
   }
 
   const siteSettings = getCitySettings(await getPublicSiteSettings(), city.slug);
-  const serviceDescription = `Book ${servicePage.title.toLowerCase()} in ${city.name} with Phoenix Chimney & Fireplace Services. Our ${servicePage.title.toLowerCase()} experts are ready to help you in ${city.name}.`;
+  const { description: serviceDescription } = getCityServiceMetadata(servicePage.slug, city.name);
 
   return (
     <>

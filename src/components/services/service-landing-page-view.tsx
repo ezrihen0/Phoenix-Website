@@ -22,6 +22,38 @@ type ServiceLandingPageViewProps = {
   city?: CitySlug;
 };
 
+function getCityServiceHeroCopy(servicePage: ServiceLandingPage, cityName: string, citySlug: CitySlug) {
+  const cityHighlight = servicePage.cityHighlights[citySlug];
+
+  switch (servicePage.slug) {
+    case "gas-fireplace-maintenance":
+      return {
+        heroTitle: `Gas fireplace maintenance in ${cityName}`,
+        heroDescription: `Annual safety checks, cleaning, and pilot service for gas fireplaces in ${cityName}. ${cityHighlight}`,
+      };
+    case "chimney-sweeping-inspection":
+      return {
+        heroTitle: `Chimney sweeping and inspection in ${cityName}`,
+        heroDescription: `Creosote removal and chimney inspection visits for ${cityName} homes that need cleaner systems and clearer safety notes. ${cityHighlight}`,
+      };
+    case "chimney-repair-masonry":
+      return {
+        heroTitle: `Chimney repair and masonry in ${cityName}`,
+        heroDescription: `Mortar, crown, flashing, and masonry repair for ${cityName} chimneys showing wear, leaks, or freeze-thaw damage. ${cityHighlight}`,
+      };
+    case "gas-fireplace-installation":
+      return {
+        heroTitle: `Gas fireplace installation in ${cityName}`,
+        heroDescription: `New gas fireplace installs, retrofits, and replacements planned for ${cityName} homes and renovation projects. ${cityHighlight}`,
+      };
+    default:
+      return {
+        heroTitle: `${servicePage.title} in ${cityName}`,
+        heroDescription: cityHighlight,
+      };
+  }
+}
+
 export function ServiceLandingPageView({
   servicePage,
   settings,
@@ -29,27 +61,25 @@ export function ServiceLandingPageView({
 }: ServiceLandingPageViewProps) {
   const cityConfig = city ? getCityBySlug(city) : undefined;
   const nearbyAreas = cityConfig?.serviceAreas.slice(0, 6) || [];
-  const nearbyAreasPreview = cityConfig?.serviceAreas.slice(0, 4).join(", ");
   const heroEyebrow = cityConfig
     ? `${cityConfig.name} ${servicePage.eyebrow.toLowerCase()}`
     : servicePage.eyebrow;
-  const heroTitle = cityConfig
-    ? `${servicePage.title} in ${cityConfig.name} with local dispatch that keeps the service path clear from the first click.`
-    : servicePage.heroTitle;
-  const heroDescription = cityConfig
-    ? `${servicePage.heroDescription} Our ${servicePage.title.toLowerCase()} experts are ready to help you in ${cityConfig.name}${nearbyAreasPreview ? ` and nearby communities such as ${nearbyAreasPreview}` : ""}.`
-    : servicePage.heroDescription;
+  const cityHeroCopy = cityConfig
+    ? getCityServiceHeroCopy(servicePage, cityConfig.name, cityConfig.slug)
+    : undefined;
+  const heroTitle = cityHeroCopy?.heroTitle ?? servicePage.heroTitle;
+  const heroDescription = cityHeroCopy?.heroDescription ?? servicePage.heroDescription;
   const includedTitle = cityConfig
-    ? `${servicePage.title} visits in ${cityConfig.name} are scoped around safety, findings, and the next step a homeowner actually needs.`
+    ? `What a ${servicePage.title.toLowerCase()} visit in ${cityConfig.name} includes.`
     : `${servicePage.title} appointments are scoped around safety, findings, and the next step a homeowner actually needs.`;
   const includedDescription = cityConfig
-    ? `Every ${cityConfig.name} appointment is built to help the homeowner understand what was checked, what was found, and whether the next move is maintenance, repair, inspection, or scheduling the next phase of work.`
+    ? `Each ${cityConfig.name} visit is built to explain what was checked, what was found, and whether the next step is maintenance, repair, inspection, or follow-up work.`
     : "Every appointment is built to help the homeowner understand what was checked, what was found, and whether the next move is maintenance, repair, inspection, or scheduling the next phase of work.";
   const ctaTitle = cityConfig
     ? `Need ${servicePage.title.toLowerCase()} in ${cityConfig.name}?`
     : `Need ${servicePage.title.toLowerCase()} in Calgary, Edmonton, or Red Deer?`;
   const ctaDescription = cityConfig
-    ? `Use the Workiz booking form to send the request now. If the job is urgent or you need help deciding whether this page matches the problem, call first and we will route the ${cityConfig.name} visit correctly.`
+    ? `Book online if you are ready to schedule. If you are unsure whether this service matches the problem, call first and we will point you to the right ${cityConfig.name} visit.`
     : "Use the Workiz booking form to send the request now. If the job is urgent or you need help deciding whether this page matches the problem, call first and we will route the visit correctly.";
 
   return (
@@ -138,8 +168,8 @@ export function ServiceLandingPageView({
             <Reveal>
               <SectionHeading
                 eyebrow={`${cityConfig.name} service area`}
-                title={`${servicePage.title} support for ${cityConfig.name} homes and nearby communities.`}
-                description={`${servicePage.cityHighlights[cityConfig.slug]} Our ${servicePage.title.toLowerCase()} experts are ready to help you in ${cityConfig.name}.`}
+                title={`${servicePage.title} for ${cityConfig.name} homes and nearby communities.`}
+                description={servicePage.cityHighlights[cityConfig.slug]}
               />
             </Reveal>
             <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
@@ -147,13 +177,13 @@ export function ServiceLandingPageView({
                 <article className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
                   <div className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-ember)]">
                     <MapPinned className="h-4 w-4" />
-                    {cityConfig.name} dispatch
+                    {cityConfig.name} coverage
                   </div>
                   <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
                     {servicePage.cityHighlights[cityConfig.slug]}
                   </p>
                   <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
-                    Nearby service areas include {nearbyAreas.join(", ")}. Phoenix routes this service through the {cityConfig.name} path so the homeowner stays on the right local dispatch number and booking flow.
+                    Nearby service areas include {nearbyAreas.join(", ")}.
                   </p>
                   <div className="mt-5 flex flex-wrap gap-2">
                     {nearbyAreas.map((area) => (
@@ -171,13 +201,13 @@ export function ServiceLandingPageView({
                 <article className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
                   <p className="eyebrow">Local service context</p>
                   <h2 className="mt-4 text-balance text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
-                    Why {cityConfig.name} service calls need the right path from the start.
+                    Local conditions that affect {servicePage.title.toLowerCase()} in {cityConfig.name}.
                   </h2>
                   <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
                     {cityConfig.weatherContext}
                   </p>
                   <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
-                    Our {servicePage.title.toLowerCase()} experts are ready to help you in {cityConfig.name}. If you need broader context first, use the full city service overview before you book.
+                    If you need broader context first, use the full {cityConfig.name} services overview before you book.
                   </p>
                   <Link
                     href={getCityHref(cityConfig.slug, "/services")}
