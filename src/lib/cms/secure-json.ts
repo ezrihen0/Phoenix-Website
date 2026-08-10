@@ -19,7 +19,7 @@ function getProtectionKey() {
   return createHash("sha256").update(secret, "utf8").digest();
 }
 
-function isProtectedEnvelope(value: unknown): value is ProtectedJsonEnvelope {
+export function isProtectedJsonEnvelope(value: unknown): value is ProtectedJsonEnvelope {
   return Boolean(
     value &&
       typeof value === "object" &&
@@ -45,7 +45,7 @@ export function protectJson(value: unknown): ProtectedJsonEnvelope {
 }
 
 export function unprotectJson<T>(value: unknown): T | null {
-  if (!isProtectedEnvelope(value) || value.version !== 1) {
+  if (!isProtectedJsonEnvelope(value) || value.version !== 1) {
     return null;
   }
 

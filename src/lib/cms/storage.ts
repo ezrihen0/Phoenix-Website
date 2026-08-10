@@ -7,7 +7,7 @@ import { unstable_noStore as noStore } from "next/cache";
 
 import { defaultCitySlug, getCityBySlug, type CitySlug } from "@/lib/cities";
 import { defaultArticles, defaultSiteSettings } from "@/lib/cms/defaults";
-import { protectJson, unprotectJson } from "@/lib/cms/secure-json";
+import { isProtectedJsonEnvelope, protectJson, unprotectJson } from "@/lib/cms/secure-json";
 import type { Article, Lead, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
 
 const LOCAL_DATA_DIR = Boolean(process.env.VERCEL)
@@ -120,7 +120,21 @@ async function readRemoteJson<T>(
     const payload = (await new Response(blob.stream).json()) as unknown;
 
     if (options?.protectedData) {
-      return unprotectJson<T>(payload) ?? (payload as T);
+      const decrypted = unprotectJson<T>(payload);
+
+      if (decrypted !== null) {
+        return decrypted;
+      }
+
+      if (isProtectedJsonEnvelope(payload)) {
+        await writeRemoteJson(key, fallback, options);
+        return fallback;
+      }
+    }
+
+    if (isProtectedJsonEnvelope(payload)) {
+      await writeRemoteJson(key, fallback, options);
+      return fallback;
     }
 
     return payload as T;
@@ -143,6 +157,10 @@ async function writeRemoteJson(
     ...getBlobBaseOptions(),
     contentType: "application/json; charset=utf-8",
   });
+}
+
+function asArray<T>(value: unknown, fallback: T[]): T[] {
+  return Array.isArray(value) ? value : fallback;
 }
 
 function sortArticles(articles: Article[]) {
@@ -331,9 +349,12 @@ export async function listArticles(options?: ListArticlesOptions) {
 
   const fallback = sortArticles(defaultArticles);
 
-  const articles = hasBlobStorage()
-    ? await readRemoteJson<Array<Article & { city?: string }>>(REMOTE_ARTICLES_KEY, fallback)
-    : await readLocalJson<Array<Article & { city?: string }>>(LOCAL_ARTICLES_FILE, fallback);
+  const articles = asArray(
+    hasBlobStorage()
+      ? await readRemoteJson<Array<Article & { city?: string }>>(REMOTE_ARTICLES_KEY, fallback)
+      : await readLocalJson<Array<Article & { city?: string }>>(LOCAL_ARTICLES_FILE, fallback),
+    fallback,
+  );
   const mergedArticles = [...articles];
 
   for (const defaultArticle of fallback) {
@@ -468,9 +489,14 @@ export async function listLeads(options?: ListLeadsOptions) {
   noStore();
 
   const fallback: Lead[] = [];
-  const leads = hasBlobStorage()
-    ? await readRemoteJson<Array<Lead & { city?: string }>>(REMOTE_LEADS_KEY, fallback, { protectedData: true })
-    : await readLocalJson<Array<Lead & { city?: string }>>(LOCAL_LEADS_FILE, fallback);
+  const leads = asArray(
+    hasBlobStorage()
+      ? await readRemoteJson<Array<Lead & { city?: string }>>(REMOTE_LEADS_KEY, fallback, {
+          protectedData: true,
+        })
+      : await readLocalJson<Array<Lead & { city?: string }>>(LOCAL_LEADS_FILE, fallback),
+    fallback,
+  );
 
   const sorted = sortLeads(leads.map(normalizeLeadRecord));
 

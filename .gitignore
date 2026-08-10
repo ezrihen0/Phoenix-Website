@@ -74,5 +74,6 @@ next-env.d.ts
 
 .vercel
 .env*.local
-
-.vercel
+.vercel-env-api.json
+.vercel-*.env
+.tmp-symlink-test/
