@@ -34,7 +34,7 @@ const PHOENIX_MESSAGES = [
     },
     {
         kicker: "Calgary, behold.",
-        line: "Your WETT-certified jump scare.",
+        line: "Your WETT jump scare.",
     },
 ];
 
@@ -150,7 +150,7 @@ export function PhoenixLogoEasterEgg({
         return () => {
             flightAnimation.cancel();
         };
-    }, [flight, completeFlight]);
+    }, [flight]);
 
     if (!flight) {
         return null;

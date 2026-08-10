@@ -21,5 +21,20 @@ ARTICLE STRUCTURE RULES:
 - Do not split content into tiny fragments solely for AI retrieval.
 `.trim();
 
+export const ORIGINALITY_RULES = `
+ORIGINALITY RULES:
+- Shared industry facts are allowed.
+- Do NOT produce the same article with city-name substitution.
+- Each local article must add independently useful local decision context using only supplied facts.
+- Do NOT invent regulations, climate effects, or neighborhood details for artificial uniqueness.
+- Do not reuse paragraph structure from sibling-city articles supplied in context.
+`.trim();
+
+export const EDITORIAL_STANDARD_PROMPT = [
+  FACTUAL_BOUNDARY_RULES,
+  ARTICLE_STRUCTURE_RULES,
+  ORIGINALITY_RULES,
+].join("\n\n");
+
 export const GUIDED_JSON_ONLY_RULE =
   "Return ONLY valid JSON matching the requested output shape. Do not wrap JSON in markdown fences.";

@@ -18,7 +18,7 @@ export function ArticleCard({ article, city }: ArticleCardProps) {
         <div className="relative aspect-[16/9] overflow-hidden">
           <Image
             src={article.coverImage}
-            alt={article.title}
+            alt={article.coverImageAlt || article.title}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover"

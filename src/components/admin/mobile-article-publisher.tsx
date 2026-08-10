@@ -23,6 +23,7 @@ type FormFields = {
   keywords: string;
   relatedSlugs: string;
   coverImage: string;
+  coverImageAlt: string;
 };
 
 const emptyFields: FormFields = {
@@ -36,6 +37,7 @@ const emptyFields: FormFields = {
   keywords: "",
   relatedSlugs: "",
   coverImage: "",
+  coverImageAlt: "",
 };
 
 export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePublisherProps) {
@@ -208,6 +210,7 @@ export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePubli
       <form action={saveArticleAction} className="space-y-5 pb-4">
         <input type="hidden" name="returnTo" value="/admin/publish" />
         <input type="hidden" name="authorName" value={defaultAuthorName} />
+        <input type="hidden" name="authorType" value="organization" />
         <input type="hidden" name="aiGenerated" value={aiApplied ? "true" : "false"} />
 
         <MobileField label="City">
@@ -343,6 +346,19 @@ export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePubli
               />
             </MobileField>
 
+            <MobileField
+              label="Cover image alt"
+              hint={fields.coverImage.trim() ? "Required when publishing with a cover image" : "Optional unless a cover image is set"}
+            >
+              <input
+                name="coverImageAlt"
+                value={fields.coverImageAlt}
+                onChange={(event) => updateField("coverImageAlt", event.target.value)}
+                placeholder="Gas fireplace with clean glass and steady flame"
+                className="min-h-11 w-full rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-base outline-none"
+              />
+            </MobileField>
+
             <MobileField label="Related slugs" hint="Optional, comma-separated">
               <input
                 name="relatedSlugs"
@@ -358,6 +374,7 @@ export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePubli
             <input type="hidden" name="seoDescription" value={fields.seoDescription} />
             <input type="hidden" name="keywords" value={fields.keywords} />
             <input type="hidden" name="coverImage" value={fields.coverImage} />
+            <input type="hidden" name="coverImageAlt" value={fields.coverImageAlt} />
             <input type="hidden" name="relatedSlugs" value={fields.relatedSlugs} />
           </>
         )}

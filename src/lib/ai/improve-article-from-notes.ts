@@ -5,6 +5,7 @@ import { z } from "zod";
 import { getCityBySlug, type CitySlug } from "@/lib/cities";
 import type { GeneratedArticleDraft } from "@/lib/cms/types";
 import { requestDeepSeekJsonCompletion } from "@/lib/ai/deepseek-client";
+import { EDITORIAL_STANDARD_PROMPT, GUIDED_JSON_ONLY_RULE } from "@/lib/ai/prompt-shared";
 
 const aiDraftSchema = z.object({
   title: z.string().min(12),
@@ -29,19 +30,9 @@ Return ONLY valid JSON matching this shape:
   "keywords": ["string"]
 }
 
-CRITICAL FACT RULES — you must follow all of these:
-- Use ONLY factual information supplied in the owner's notes.
-- NEVER invent measurements, dimensions, or quantities.
-- NEVER invent customer statements or quotes.
-- NEVER invent causes, diagnoses, or findings not supplied in the notes.
-- NEVER invent certifications, permits, WETT status, gas licensing, code compliance, inspections, or approvals unless explicitly provided.
-- NEVER invent prices or cost estimates.
-- NEVER invent locations, neighborhoods, or addresses beyond the selected city context.
-- NEVER invent completed repairs or outcomes that were not supplied.
-- If important information is missing, write around the gap safely OR briefly note what additional detail would strengthen the article.
-- Preserve the owner's real-world experience and observations.
-- Do not add generic SEO filler, keyword stuffing, or repetitive city name spam.
-- Write naturally; length should match the useful information available — do not pad.
+${EDITORIAL_STANDARD_PROMPT}
+
+${GUIDED_JSON_ONLY_RULE}
 - Be professional, clear, homeowner-friendly, technically accurate, and easy to scan on mobile.
 - Do not claim to be the homeowner; write as helpful guidance from the service company's perspective based on the supplied notes.`;
 

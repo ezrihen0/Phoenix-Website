@@ -31,7 +31,7 @@ export function ServiceCard({
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={image}
-          alt={title}
+          alt={`${title} service photo`}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition duration-700 group-hover:scale-105"

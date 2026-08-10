@@ -4,9 +4,9 @@ import { ArticleCard } from "@/components/articles/article-card";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
-import { defaultCitySlug } from "@/lib/cities";
+import { defaultCitySlug, getCitySettings } from "@/lib/cities";
 import { createPageMetadata, buildBreadcrumbSchema } from "@/lib/seo";
-import { listArticles, getSiteSettings } from "@/lib/cms/storage";
+import { getPublicSiteSettings, listArticles } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";
 
@@ -21,8 +21,9 @@ export const metadata: Metadata = createPageMetadata({
 export default async function ArticlesPage() {
   const [articles, settings] = await Promise.all([
     listArticles({ city: defaultCitySlug }),
-    getSiteSettings(),
+    getPublicSiteSettings(),
   ]);
+  const citySettings = getCitySettings(settings, defaultCitySlug);
 
   return (
     <>
@@ -38,8 +39,8 @@ export default async function ArticlesPage() {
           <Reveal>
             <SectionHeading
               eyebrow="Articles"
-              title={settings.blogIndexTitle}
-              description={settings.blogIndexDescription}
+              title={citySettings.blogIndexTitle}
+              description={citySettings.blogIndexDescription}
             />
           </Reveal>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">

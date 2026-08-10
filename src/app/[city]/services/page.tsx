@@ -154,7 +154,7 @@ export default async function CityServicesPage({
                   <div className="relative min-h-[20rem]">
                     <Image
                       src={service.image}
-                      alt={service.title}
+                      alt={`${service.title} service photo`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover"

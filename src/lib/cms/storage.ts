@@ -1,6 +1,6 @@
 import "server-only";
 
-import { get, put } from "@vercel/blob";
+import { get, list, put } from "@vercel/blob";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { unstable_noStore as noStore } from "next/cache";
@@ -9,14 +9,19 @@ import { defaultCitySlug, getCityBySlug, type CitySlug } from "@/lib/cities";
 import { defaultArticles, defaultSiteSettings } from "@/lib/cms/defaults";
 import { isProtectedJsonEnvelope, protectJson, unprotectJson } from "@/lib/cms/secure-json";
 import type { Article, Lead, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
+import type { EvidenceRecord, PublicEvidence } from "@/lib/evidence";
+import { EVIDENCE_TYPE_VALUES, toPublicEvidence } from "@/lib/evidence";
 
 const LOCAL_DATA_DIR = Boolean(process.env.VERCEL)
   ? path.join(process.env.TMPDIR || "/tmp", "papoon_fireplacerepair", "cms")
   : path.join(process.cwd(), "data", "cms");
 const LOCAL_ARTICLES_FILE = path.join(LOCAL_DATA_DIR, "articles.json");
+const LOCAL_EVIDENCE_FILE = path.join(LOCAL_DATA_DIR, "evidence.json");
 const LOCAL_LEADS_FILE = path.join(LOCAL_DATA_DIR, "leads.json");
 const LOCAL_SETTINGS_FILE = path.join(LOCAL_DATA_DIR, "settings.json");
 const REMOTE_ARTICLES_KEY = "cms/articles.json";
+const REMOTE_ARTICLE_SNAPSHOT_PREFIX = "cms/articles.snapshot.";
+const REMOTE_EVIDENCE_KEY = "cms/evidence.json";
 const REMOTE_LEADS_KEY = "cms/leads.json";
 const REMOTE_SETTINGS_KEY = "cms/settings.json";
 const REMOTE_BLOB_ACCESS = process.env.BLOB_STORE_ACCESS === "public" ? "public" : "private";
@@ -44,6 +49,18 @@ type ListArticlesOptions = {
 type GetArticleOptions = {
   includeDrafts?: boolean;
   city?: CitySlug;
+};
+
+type ListEvidenceOptions = {
+  status?: EvidenceRecord["status"];
+  city?: CitySlug;
+  serviceSlug?: string;
+};
+
+type ListPublicEvidenceOptions = {
+  city?: CitySlug;
+  serviceSlug?: string;
+  limit?: number;
 };
 
 type ListLeadsOptions = {
@@ -169,6 +186,14 @@ function sortArticles(articles: Article[]) {
   });
 }
 
+function sortEvidence(evidence: EvidenceRecord[]) {
+  return [...evidence].sort((first, second) => {
+    const firstTimestamp = first.publishedAt || first.updatedAt || first.createdAt;
+    const secondTimestamp = second.publishedAt || second.updatedAt || second.createdAt;
+    return new Date(secondTimestamp).getTime() - new Date(firstTimestamp).getTime();
+  });
+}
+
 function sortLeads(leads: Lead[]) {
   return [...leads].sort((first, second) => {
     return new Date(second.createdAt).getTime() - new Date(first.createdAt).getTime();
@@ -183,13 +208,68 @@ function normalizeArticleRecord(article: Article & { city?: string }) {
     city,
     keywords: article.keywords || [],
     relatedSlugs: article.relatedSlugs || [],
+    relatedServiceSlugs: article.relatedServiceSlugs || [],
     authorName: article.authorName || defaultSiteSettings.defaultAuthorName,
+    authorType: article.authorType === "person" ? "person" : "organization",
     coverImage: article.coverImage || undefined,
+    coverImageAlt: article.coverImageAlt || undefined,
     createdAt: article.createdAt || article.publishedAt || article.updatedAt,
     updatedAt: article.updatedAt || article.publishedAt || article.createdAt,
     publishedAt: article.publishedAt || article.updatedAt || article.createdAt,
     aiGenerated: Boolean(article.aiGenerated),
   } satisfies Article;
+}
+
+function normalizeEvidenceRecord(record: Partial<EvidenceRecord> & { jobCity?: string }) {
+  const city = getCityBySlug(record.jobCity || "")?.slug || defaultCitySlug;
+  const now = new Date().toISOString();
+  const evidenceType = EVIDENCE_TYPE_VALUES.includes(
+    record.evidenceType as (typeof EVIDENCE_TYPE_VALUES)[number],
+  )
+    ? (record.evidenceType as EvidenceRecord["evidenceType"])
+    : "mixed";
+
+  return {
+    id: record.id || crypto.randomUUID(),
+    status: record.status || "draft",
+    serviceSlugs: Array.isArray(record.serviceSlugs) ? record.serviceSlugs.filter(Boolean) : [],
+    jobCity: city,
+    evidenceType,
+    publicData: {
+      summaryLabel: record.publicData?.summaryLabel?.trim() || undefined,
+      homeownerProblem: record.publicData?.homeownerProblem?.trim() || undefined,
+      inspected: record.publicData?.inspected?.trim() || undefined,
+      observed: record.publicData?.observed?.trim() || undefined,
+      found: record.publicData?.found?.trim() || undefined,
+      workPerformed: record.publicData?.workPerformed?.trim() || undefined,
+      homeownerLesson: record.publicData?.homeownerLesson?.trim() || undefined,
+    },
+    internalData: {
+      sourceNote: record.internalData?.sourceNote?.trim() || undefined,
+      verificationNote: record.internalData?.verificationNote?.trim() || undefined,
+      ownerNotes: record.internalData?.ownerNotes?.trim() || undefined,
+      internalLocationNote: record.internalData?.internalLocationNote?.trim() || undefined,
+    },
+    images: Array.isArray(record.images)
+      ? record.images.map((image) => ({
+          id: image.id || crypto.randomUUID(),
+          source: image.source || "site-asset",
+          url: image.url?.trim() || "",
+          isPrimary: Boolean(image.isPrimary),
+          publicAlt: image.publicAlt?.trim() || undefined,
+          publicCaption: image.publicCaption?.trim() || undefined,
+          internalSourceDescription: image.internalSourceDescription?.trim() || undefined,
+          approvedForPublic: Boolean(image.approvedForPublic),
+        }))
+      : [],
+    ownerVerified: Boolean(record.ownerVerified),
+    publicApproved: Boolean(record.publicApproved),
+    jobDate: record.jobDate?.trim() || undefined,
+    createdAt: record.createdAt || now,
+    updatedAt: record.updatedAt || record.createdAt || now,
+    approvedAt: record.approvedAt || undefined,
+    publishedAt: record.publishedAt || undefined,
+  } satisfies EvidenceRecord;
 }
 
 function normalizeLeadRecord(lead: Lead & { city?: string }) {
@@ -482,6 +562,224 @@ export async function deleteArticleById(id: string) {
   }
 
   await writeLocalJson(LOCAL_ARTICLES_FILE, nextArticles);
+}
+
+async function readRawArticlesJson(): Promise<Array<Article & { city?: string }>> {
+  if (hasBlobStorage()) {
+    const blob = await get(REMOTE_ARTICLES_KEY, getBlobReadOptions());
+
+    if (!blob || blob.statusCode !== 200 || !blob.stream) {
+      return [];
+    }
+
+    try {
+      const payload = (await new Response(blob.stream).json()) as unknown;
+      return asArray(payload, []);
+    } catch {
+      return [];
+    }
+  }
+
+  try {
+    const file = await fs.readFile(LOCAL_ARTICLES_FILE, "utf8");
+    return asArray(JSON.parse(file) as unknown, []);
+  } catch {
+    return [];
+  }
+}
+
+export async function readStoredArticlesRaw() {
+  assertCmsStorageConfigured();
+  noStore();
+
+  const articles = await readRawArticlesJson();
+  return sortArticles(articles.map(normalizeArticleRecord));
+}
+
+export async function writeStoredArticlesRaw(articles: Article[]) {
+  assertCmsStorageConfigured();
+
+  const sorted = sortArticles(articles.map(normalizeArticleRecord));
+
+  if (hasBlobStorage()) {
+    await writeRemoteJson(REMOTE_ARTICLES_KEY, sorted);
+    return sorted;
+  }
+
+  await writeLocalJson(LOCAL_ARTICLES_FILE, sorted);
+  return sorted;
+}
+
+function getSnapshotKey(timestamp: string) {
+  return `${REMOTE_ARTICLE_SNAPSHOT_PREFIX}${timestamp}.json`;
+}
+
+function getLocalSnapshotPath(timestamp: string) {
+  return path.join(LOCAL_DATA_DIR, `articles.snapshot.${timestamp}.json`);
+}
+
+export async function snapshotArticles() {
+  assertCmsStorageConfigured();
+
+  const articles = await readStoredArticlesRaw();
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const snapshotKey = getSnapshotKey(timestamp);
+
+  if (hasBlobStorage()) {
+    await writeRemoteJson(snapshotKey, articles);
+  } else {
+    await writeLocalJson(getLocalSnapshotPath(timestamp), articles);
+  }
+
+  return {
+    key: snapshotKey,
+    timestamp,
+    articleCount: articles.length,
+  };
+}
+
+export async function listArticleSnapshots() {
+  assertCmsStorageConfigured();
+  noStore();
+
+  if (hasBlobStorage()) {
+    const result = await list({
+      prefix: REMOTE_ARTICLE_SNAPSHOT_PREFIX,
+      ...getBlobBaseOptions(),
+    });
+
+    return result.blobs
+      .map((blob) => ({
+        key: blob.pathname,
+        uploadedAt: blob.uploadedAt.toISOString(),
+      }))
+      .sort((first, second) => second.uploadedAt.localeCompare(first.uploadedAt));
+  }
+
+  await ensureLocalDataDir();
+
+  try {
+    const files = await fs.readdir(LOCAL_DATA_DIR);
+    return files
+      .filter((file) => file.startsWith("articles.snapshot.") && file.endsWith(".json"))
+      .map((file) => ({
+        key: `cms/${file}`,
+        uploadedAt: file.replace("articles.snapshot.", "").replace(".json", ""),
+      }))
+      .sort((first, second) => second.uploadedAt.localeCompare(first.uploadedAt));
+  } catch {
+    return [];
+  }
+}
+
+async function readSnapshotArticles(snapshotKey: string) {
+  if (hasBlobStorage()) {
+    const blob = await get(snapshotKey, getBlobReadOptions());
+
+    if (!blob || blob.statusCode !== 200 || !blob.stream) {
+      throw new Error(`Snapshot "${snapshotKey}" was not found.`);
+    }
+
+    const payload = (await new Response(blob.stream).json()) as unknown;
+    return sortArticles(asArray(payload, []).map(normalizeArticleRecord));
+  }
+
+  const localFileName = path.basename(snapshotKey);
+  const filePath = path.join(LOCAL_DATA_DIR, localFileName);
+  const payload = JSON.parse(await fs.readFile(filePath, "utf8")) as unknown;
+  return sortArticles(asArray(payload, []).map(normalizeArticleRecord));
+}
+
+export async function restoreArticleSnapshot(snapshotKey: string) {
+  assertCmsStorageConfigured();
+
+  const articles = await readSnapshotArticles(snapshotKey);
+  return writeStoredArticlesRaw(articles);
+}
+
+export async function listEvidence(options?: ListEvidenceOptions) {
+  assertCmsStorageConfigured();
+  noStore();
+
+  const fallback: EvidenceRecord[] = [];
+  const evidence = asArray(
+    hasBlobStorage()
+      ? await readRemoteJson<Array<Partial<EvidenceRecord> & { jobCity?: string }>>(
+          REMOTE_EVIDENCE_KEY,
+          fallback,
+          { protectedData: true },
+        )
+      : await readLocalJson<Array<Partial<EvidenceRecord> & { jobCity?: string }>>(
+          LOCAL_EVIDENCE_FILE,
+          fallback,
+        ),
+    fallback,
+  );
+
+  const sorted = sortEvidence(evidence.map(normalizeEvidenceRecord));
+
+  return sorted.filter((record) => {
+    if (options?.status && record.status !== options.status) {
+      return false;
+    }
+
+    if (options?.city && record.jobCity !== options.city) {
+      return false;
+    }
+
+    if (options?.serviceSlug && !record.serviceSlugs.includes(options.serviceSlug)) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+export async function getEvidenceById(id: string) {
+  assertCmsStorageConfigured();
+  noStore();
+
+  const evidence = await listEvidence();
+  return evidence.find((record) => record.id === id) || null;
+}
+
+export async function listPublicEvidence(
+  options?: ListPublicEvidenceOptions,
+): Promise<PublicEvidence[]> {
+  const evidence = await listEvidence({
+    status: "public",
+    city: options?.city,
+    serviceSlug: options?.serviceSlug,
+  });
+  const projected = evidence
+    .map((record) => toPublicEvidence(record))
+    .filter((record): record is PublicEvidence => record != null);
+
+  return typeof options?.limit === "number" ? projected.slice(0, options.limit) : projected;
+}
+
+export async function saveEvidence(record: EvidenceRecord) {
+  assertCmsStorageConfigured();
+
+  const normalizedRecord = normalizeEvidenceRecord(record);
+  const evidence = await listEvidence();
+  const existingIndex = evidence.findIndex((entry) => entry.id === normalizedRecord.id);
+  const nextEvidence = [...evidence];
+
+  if (existingIndex >= 0) {
+    nextEvidence.splice(existingIndex, 1, normalizedRecord);
+  } else {
+    nextEvidence.push(normalizedRecord);
+  }
+
+  const sorted = sortEvidence(nextEvidence);
+
+  if (hasBlobStorage()) {
+    await writeRemoteJson(REMOTE_EVIDENCE_KEY, sorted, { protectedData: true });
+    return;
+  }
+
+  await writeLocalJson(LOCAL_EVIDENCE_FILE, sorted);
 }
 
 export async function listLeads(options?: ListLeadsOptions) {

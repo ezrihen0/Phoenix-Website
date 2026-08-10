@@ -25,7 +25,7 @@ export default async function AdminArticlesPage({
     return (
       <AdminShell
         title="Articles"
-        description="Create, edit, publish, or delete blog posts. You can also trigger the AI writer manually here."
+        description="Create, edit, publish, or delete blog posts. Legacy AI generation creates drafts for owner review only."
         currentPath="/admin/articles"
         userLabel={session.username}
         storageStatus={storageStatus}

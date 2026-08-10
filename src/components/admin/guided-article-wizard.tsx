@@ -4,6 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 
 import {
   checkArticleOverlapAction,
+  createEvidenceDraftFromWorkflowAction,
   generateArticleBriefAction,
   generateGuidedArticleDraftAction,
   runArticleContentReviewAction,
@@ -120,6 +121,7 @@ export function GuidedArticleWizard({ defaultAuthorName, onOpenManualEditor }: G
   const [briefApproved, setBriefApproved] = useState(false);
   const [draft, setDraft] = useState<GuidedArticleDraft | null>(null);
   const [review, setReview] = useState<ContentReviewResult | null>(null);
+  const [savedEvidenceId, setSavedEvidenceId] = useState<string | null>(null);
   const [fields, setFields] = useState<FormFields>({
     title: "",
     slug: "",
@@ -345,6 +347,34 @@ export function GuidedArticleWizard({ defaultAuthorName, onOpenManualEditor }: G
 
       setImages((current) => [...current, image]);
     }
+  }
+
+  function handleSaveEvidenceDraft() {
+    if (source !== "real-job" || !categoryId || rawNotes.trim().length < 40) {
+      setError("Add real job notes before saving an evidence draft.");
+      return;
+    }
+
+    setError(null);
+    startTransition(async () => {
+      const result = await createEvidenceDraftFromWorkflowAction(
+        JSON.stringify({
+          source,
+          city,
+          categoryId,
+          rawNotes,
+          structuredEvidence,
+          images,
+        }),
+      );
+
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+
+      setSavedEvidenceId(result.data.id);
+    });
   }
 
   function handleContinue() {
@@ -602,6 +632,35 @@ export function GuidedArticleWizard({ defaultAuthorName, onOpenManualEditor }: G
                 </div>
               </div>
             ))}
+            {source === "real-job" ? (
+              <div className="rounded-2xl border border-[var(--color-border)] bg-white/70 p-4">
+                <p className="text-sm font-semibold text-[var(--color-ink)]">
+                  Save this as a reusable evidence draft
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">
+                  This stores the notes and photo context privately so you can attach it to service
+                  pages later, even if you do not publish an article right now.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={handleSaveEvidenceDraft}
+                    disabled={isPending}
+                    className="rounded-full border border-[var(--color-border)] bg-white px-5 py-3 text-sm font-semibold text-[var(--color-ink)] disabled:opacity-50"
+                  >
+                    {isPending ? "Saving..." : "Save evidence draft"}
+                  </button>
+                  {savedEvidenceId ? (
+                    <a
+                      href={`/admin/evidence/${savedEvidenceId}`}
+                      className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
+                    >
+                      Open saved evidence
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
           </div>
         </WizardStepShell>
       ) : null}
@@ -785,8 +844,14 @@ export function GuidedArticleWizard({ defaultAuthorName, onOpenManualEditor }: G
             <form action={saveArticleAction} className="space-y-4">
               <input type="hidden" name="returnTo" value="/admin/publish" />
               <input type="hidden" name="authorName" value={defaultAuthorName} />
+              <input type="hidden" name="authorType" value="organization" />
               <input type="hidden" name="aiGenerated" value="true" />
               <input type="hidden" name="city" value={city} />
+              <input
+                type="hidden"
+                name="coverImageAlt"
+                value={images.find((image) => image.url === fields.coverImage)?.alt || ""}
+              />
 
               <WizardField label="Title">
                 <input

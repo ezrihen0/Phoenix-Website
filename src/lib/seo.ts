@@ -217,6 +217,16 @@ export function buildOrganizationSchema() {
 export function buildArticleSchema(article: Article, city: CitySlug) {
   const articleUrl = absoluteUrl(getCityHref(city, `/articles/${article.slug}`));
   const imageUrl = article.coverImage ? absoluteUrl(article.coverImage) : absoluteUrl(siteConfig.socialPreview);
+  const authorSchema =
+    article.authorType === "person"
+      ? {
+          "@type": "Person",
+          name: article.authorName,
+        }
+      : {
+          "@type": "Organization",
+          name: article.authorName,
+        };
 
   return {
     "@context": "https://schema.org",
@@ -230,10 +240,7 @@ export function buildArticleSchema(article: Article, city: CitySlug) {
     wordCount: countWords(article.body),
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
-    author: {
-      "@type": "Person",
-      name: article.authorName,
-    },
+    author: authorSchema,
     publisher: {
       "@type": "Organization",
       name: siteConfig.legalName,

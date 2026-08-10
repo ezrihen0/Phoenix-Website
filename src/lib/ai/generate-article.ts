@@ -4,6 +4,10 @@ import { z } from "zod";
 
 import { CITY_SLUGS, defaultCitySlug, getCityBySlug, getCityHref, type CitySlug } from "@/lib/cities";
 import { requestDeepSeekJsonCompletion } from "@/lib/ai/deepseek-client";
+import {
+  EDITORIAL_STANDARD_PROMPT,
+  GUIDED_JSON_ONLY_RULE,
+} from "@/lib/ai/prompt-shared";
 import { saveArticle, listArticles, getSiteSettings } from "@/lib/cms/storage";
 import { slugify } from "@/lib/cms/helpers";
 import type { Article, GeneratedArticleDraft } from "@/lib/cms/types";
@@ -35,6 +39,7 @@ function buildPromptContext(city: CitySlug, existingArticles: Article[]) {
   const recentArticles = existingArticles.slice(0, 5).map((article) => ({
     title: article.title,
     slug: article.slug,
+    excerpt: article.excerpt.slice(0, 180),
   }));
 
   const serviceLinks = services.map((service) => ({
@@ -68,22 +73,20 @@ async function requestDeepSeekArticle(
   const settings = await getSiteSettings();
 
   const content = await requestDeepSeekJsonCompletion({
-    systemPrompt: `${settings.aiSystemPrompt}\n\nReturn only valid JSON that matches the requested output shape. Do not wrap the JSON in markdown fences.`,
+    systemPrompt: `${settings.aiSystemPrompt}\n\n${EDITORIAL_STANDARD_PROMPT}\n\n${GUIDED_JSON_ONLY_RULE}`,
     userPrompt: JSON.stringify({
       goal:
-        `Write a fresh daily SEO article for a ${cityConfig.name} fireplace and chimney service website. Use clean markdown inside the body field. Include helpful internal links to service pages and natural references to related existing articles. Avoid duplicate topics. Return a JSON object only.`,
+        "Write an informational homeowner article draft for review. Use clean markdown in the body field. Include helpful internal links where natural. Avoid duplicate topics. This output is draft-only and must stay informational, not transactional.",
       city: cityConfig.name,
       topicHint,
       targetAudience: cityConfig.articleAudience,
-      localWeatherContext: cityConfig.weatherContext,
-      localRegulatoryContext: cityConfig.regulationContext,
       outputShape: {
         title: "string",
         excerpt: "string",
         seoTitle: "string",
         seoDescription: "string",
         keywords: ["string"],
-        body: "markdown with H2/H3 headings, bullet lists, FAQ section, internal links, and a practical CTA",
+        body: "markdown with descriptive H2/H3 headings, a direct answer near the top, bullet lists where helpful, and no FAQ unless genuinely useful",
       },
       recentArticles: context.recentArticles,
       serviceLinks: context.serviceLinks,
@@ -111,7 +114,7 @@ function pickNextCityForGeneration(existingArticles: Article[]) {
   const latestAiArticle = [...existingArticles]
     .filter((article) => article.aiGenerated)
     .sort((first, second) => {
-      return new Date(second.publishedAt).getTime() - new Date(first.publishedAt).getTime();
+      return new Date(second.updatedAt).getTime() - new Date(first.updatedAt).getTime();
     })[0];
 
   if (!latestAiArticle) {
@@ -135,13 +138,13 @@ export async function generateDailyArticle(options?: { force?: boolean; city?: C
   const settings = await getSiteSettings();
 
   const duplicateForToday = cityArticles.find((article) => {
-    return article.aiGenerated && article.publishedAt.slice(0, 10) === today;
+    return article.aiGenerated && article.updatedAt.slice(0, 10) === today;
   });
 
   if (duplicateForToday && !options?.force) {
     return {
       status: "skipped" as const,
-      reason: "An AI-generated article already exists for today.",
+      reason: "An AI-generated draft already exists for today in this city.",
       article: duplicateForToday,
     };
   }
@@ -171,8 +174,9 @@ export async function generateDailyArticle(options?: { force?: boolean; city?: C
     seoDescription: draft.seoDescription,
     keywords: draft.keywords,
     relatedSlugs,
-    status: "published",
+    status: "draft",
     authorName: settings.defaultAuthorName,
+    authorType: "organization",
     createdAt: now,
     updatedAt: now,
     publishedAt: now,

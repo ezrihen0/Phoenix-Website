@@ -22,7 +22,7 @@ export const metadata: Metadata = createPageMetadata({
   keywords: [
     "chimney services Alberta",
     "gas fireplace maintenance Calgary Edmonton Red Deer",
-    "expert chimney sweep Alberta",
+    "chimney sweeping Alberta",
     "gas fireplace installation Alberta",
   ],
 });
@@ -125,7 +125,7 @@ export default async function ServicesPage() {
                 <div className="relative min-h-[20rem]">
                   <Image
                     src={service.image}
-                    alt={service.title}
+                    alt={`${service.title} service photo`}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"

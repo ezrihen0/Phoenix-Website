@@ -118,7 +118,7 @@ export default async function CityAboutPage({
               <div className="relative min-h-[26rem]">
                 <Image
                   src="/images/photos/about-crew.jpg"
-                  alt="Phoenix team member performing fireplace service work"
+                  alt="Technician performing a fireplace service visit"
                   fill
                   sizes="(max-width: 1024px) 100vw, 55vw"
                   className="object-cover"
@@ -151,7 +151,7 @@ export default async function CityAboutPage({
             <div className="relative min-h-[24rem]">
               <Image
                 src="/images/photos/team-fireplace.jpg"
-                alt="Fireplace installation detail"
+                alt="Fireplace appliance detail during a home service visit"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"

@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, MapPinned, Phone } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
+import { FromTheField } from "@/components/services/from-the-field";
 import {
   cities,
   getCityBySlug,
@@ -37,7 +38,7 @@ function resolveRelatedServices(servicePage: ServiceLandingPage) {
     .filter((page): page is ServiceLandingPage => page != null);
 }
 
-export function ServiceLandingPageView({
+export async function ServiceLandingPageView({
   servicePage,
   settings,
   city,
@@ -327,7 +328,7 @@ export function ServiceLandingPageView({
         </section>
       ) : null}
 
-      {/* Macro Phase B: optional "From the Field" evidence blocks can render here. */}
+      <FromTheField serviceSlug={servicePage.slug} city={city} />
 
       <section className="pb-20 pt-16">
         <div className="page-frame overflow-hidden rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-card)]">

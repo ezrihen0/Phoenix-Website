@@ -9,8 +9,9 @@ import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
 import { citySupportsArticles, getCityBySlug, getCityHref } from "@/lib/cities";
 import { buildArticleSchema, buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
+import { getArticleByline } from "@/lib/cms/article-authorship";
 import { buildRelatedArticles, estimateReadingTime, formatArticleDate } from "@/lib/cms/helpers";
-import { getArticleBySlug, listArticles } from "@/lib/cms/storage";
+import { getArticleBySlug, getPublicSiteSettings, listArticles } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";
 
@@ -46,7 +47,7 @@ export async function generateMetadata({
     path: getCityHref(city.slug, `/articles/${article.slug}`),
     keywords: article.keywords,
     imagePath: article.coverImage || undefined,
-    imageAlt: article.title,
+    imageAlt: article.coverImageAlt || article.title,
     openGraphType: "article",
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
@@ -66,9 +67,10 @@ export default async function CityArticlePage({
     notFound();
   }
 
-  const [article, articles] = await Promise.all([
+  const [article, articles, settings] = await Promise.all([
     getArticleBySlug(slug, { city: city.slug }),
     listArticles({ city: city.slug }),
+    getPublicSiteSettings(),
   ]);
 
   if (!article) {
@@ -76,6 +78,7 @@ export default async function CityArticlePage({
   }
 
   const relatedArticles = buildRelatedArticles(article, articles);
+  const byline = getArticleByline(article, settings.legalName);
 
   return (
     <>
@@ -100,7 +103,7 @@ export default async function CityArticlePage({
             <div className="mt-5 flex flex-wrap gap-4 text-sm text-[var(--color-muted)]">
               <span>{formatArticleDate(article.publishedAt)}</span>
               <span>{estimateReadingTime(article.body)} min read</span>
-              <span>{article.authorName}</span>
+              <span>{byline}</span>
             </div>
             <p className="mt-6 text-base leading-8 text-[var(--color-muted)] sm:text-lg">
               {article.excerpt}
@@ -116,7 +119,7 @@ export default async function CityArticlePage({
               <div className="relative min-h-[22rem] overflow-hidden rounded-[2.5rem] border border-[var(--color-border)] shadow-[0_20px_50px_rgba(31,26,22,0.1)]">
                 <Image
                   src={article.coverImage}
-                  alt={article.title}
+                  alt={article.coverImageAlt || article.title}
                   fill
                   sizes="100vw"
                   className="object-cover"

@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 const mockCustomer = {
-  name: "Avery Martin",
-  address: "742 Hearthstone Drive SW, Calgary, AB",
+  name: "Demo Homeowner",
+  address: "Example property record for portal preview only",
   jobStatus: "In Progress",
   scheduledWindow: "Thursday, April 23 · 9:00 AM to 11:00 AM",
   coordinator: "Phoenix Field Team",
   services: [
     {
       name: "WETT Inspection",
-      summary: "Certification review, venting check, and appliance safety verification.",
+      summary: "Documentation-focused inspection, venting check, and appliance safety review.",
       state: "Confirmed",
     },
     {

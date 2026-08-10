@@ -4,6 +4,8 @@ export type ArticleStatus = "draft" | "published";
 
 export type LeadDeliveryStatus = "sent" | "skipped" | "failed";
 
+export type ArticleAuthorType = "organization" | "person";
+
 export type Article = {
   id: string;
   city: CitySlug;
@@ -15,9 +17,12 @@ export type Article = {
   seoDescription: string;
   keywords: string[];
   relatedSlugs: string[];
+  relatedServiceSlugs?: string[];
   status: ArticleStatus;
   authorName: string;
+  authorType: ArticleAuthorType;
   coverImage?: string;
+  coverImageAlt?: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

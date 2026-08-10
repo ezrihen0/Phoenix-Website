@@ -175,7 +175,7 @@ export default async function CityGasFireplaceRepairPage({
             <div className="relative min-h-[24rem] lg:min-h-full">
               <Image
                 src={service.image}
-                alt={service.title}
+                alt={`${service.title} service photo`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 48vw"
                 className="object-cover"

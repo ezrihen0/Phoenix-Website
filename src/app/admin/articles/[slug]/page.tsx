@@ -16,7 +16,7 @@ export default async function EditArticlePage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ generated?: string; saved?: string }>;
+  searchParams: Promise<{ generated?: string; saved?: string; error?: string }>;
 }) {
   const session = await requireAdmin();
   const storageStatus = getCmsStorageStatus();
@@ -65,6 +65,12 @@ export default async function EditArticlePage({
         </div>
       ) : null}
 
+      {pageState.error ? (
+        <div className="rounded-[1.75rem] border border-red-200 bg-red-50 px-5 py-4 text-sm leading-7 text-red-800">
+          {pageState.error}
+        </div>
+      ) : null}
+
       <ArticleEditor article={article} />
     </AdminShell>
   );
@@ -98,9 +104,21 @@ export function ArticleEditor({ article }: { article?: Article }) {
         <Field label="SEO title" name="seoTitle" defaultValue={article?.seoTitle} required className="md:col-span-2" />
         <Field label="SEO description" name="seoDescription" defaultValue={article?.seoDescription} required className="md:col-span-2" />
         <Field label="Cover image path" name="coverImage" defaultValue={article?.coverImage} placeholder="/images/photos/hero-fireplace.jpg" className="md:col-span-2" />
+        <Field label="Cover image alt" name="coverImageAlt" defaultValue={article?.coverImageAlt} placeholder="Technician inspecting a fireplace venting issue" className="md:col-span-2" />
         <Field label="Keywords" name="keywords" defaultValue={article?.keywords.join(", ")} required className="md:col-span-2" />
         <Field label="Related slugs" name="relatedSlugs" defaultValue={article?.relatedSlugs.join(", ")} className="md:col-span-2" />
         <Field label="Author" name="authorName" defaultValue={article?.authorName || "Phoenix Editorial Team"} required />
+        <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
+          <span>Author type</span>
+          <select
+            name="authorType"
+            defaultValue={article?.authorType || "organization"}
+            className="rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm outline-none"
+          >
+            <option value="organization">Organization</option>
+            <option value="person">Person</option>
+          </select>
+        </label>
         <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
           <span>Status</span>
           <select

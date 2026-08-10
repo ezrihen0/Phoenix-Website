@@ -49,14 +49,14 @@ export const heroHighlights = [
 
 export const trustMetrics = [
   { value: "Local", label: "Fireplace and chimney service for Calgary homes" },
-  { value: "Priority", label: "Scheduling for urgent WETT report requests when available" },
+  { value: "WETT", label: "Inspection reporting for insurance and real-estate files" },
   { value: "100km", label: "Coverage radius around Calgary" },
 ] as const;
 
 export function getTrustMetrics(cityName: string) {
   return [
     { value: "Local", label: `Fireplace and chimney service for ${cityName} homes` },
-    { value: "Priority", label: "Scheduling for urgent WETT report requests when available" },
+    { value: "WETT", label: "Inspection reporting for insurance and real-estate files" },
     { value: "100km", label: `Coverage radius around ${cityName}` },
   ] as const;
 }
@@ -204,7 +204,7 @@ export const aboutPoints = [
   {
     title: "Scheduling that respects the homeowner",
     description:
-      "Fast responses, clear appointment windows, and online booking that works after hours.",
+      "Clear appointment windows and online booking that stays available after hours.",
   },
   {
     title: "Repair-first mindset",
@@ -228,7 +228,7 @@ export function getAboutPoints(cityName: string) {
     {
       title: "Scheduling that respects the homeowner",
       description:
-        "Fast responses, clear appointment windows, and online booking that works after hours.",
+        "Clear appointment windows and online booking that stays available after hours.",
     },
     {
       title: "Repair-first mindset",
@@ -377,7 +377,7 @@ export function getWettFaqs(cityName: string) {
     {
       question: `How fast can I book a WETT inspection in ${cityName}?`,
       answer:
-        `Timing depends on season and urgency, but Phoenix treats insurance files, real-estate closings, and safety-sensitive requests as priority scheduling cases whenever possible.`,
+        `Timing depends on season, route, and current workload. If the request is tied to an insurance file, real-estate closing, or another deadline, mention that at booking so the right appointment path can be discussed.`,
     },
     {
       question: `What does a WETT inspection in ${cityName} usually review?`,
@@ -609,7 +609,7 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
     slug: "chimney-sweeping-inspection",
     title: "Chimney Sweeping & Inspection",
     navLabel: "Chimney Sweeping & Inspection",
-    menuDescription: "Expert chimney sweep visits, creosote removal, and WETT-aware inspections.",
+    menuDescription: "Chimney sweep visits, creosote removal, and WETT-aware inspections.",
     cardDescription:
       "Chimney sweep service with creosote removal, inspection reporting, and safety guidance for Alberta homeowners.",
     metaTitle: "Chimney Sweep Alberta | Calgary, Edmonton & Red Deer",
@@ -626,9 +626,9 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
         `chimney inspection ${cityName}`,
       ] as const,
     keywords: [
-      "expert chimney sweep Calgary",
-      "expert chimney sweep Edmonton",
-      "expert chimney sweep Red Deer",
+      "chimney sweep Calgary",
+      "chimney sweep Edmonton",
+      "chimney sweep Red Deer",
       "chimney sweeping inspection Alberta",
       "WETT inspection Alberta",
     ],

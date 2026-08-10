@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { CalendarDays, FileText, Inbox, Settings } from "lucide-react";
+import { CalendarDays, FileText, Images, Inbox, Settings } from "lucide-react";
 
 import { updateAiModelAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { requireAdmin } from "@/lib/auth/options";
 import { AI_MODEL_OPTIONS, getAiModelLabel } from "@/lib/ai/model-options";
-import { getCmsStorageStatus, getSiteSettings, listArticles, listLeads } from "@/lib/cms/storage";
+import { getCmsStorageStatus, getSiteSettings, listArticles, listEvidence, listLeads } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";
 
@@ -36,8 +36,9 @@ export default async function AdminDashboardPage({
     );
   }
 
-  const [articles, leads, settings] = await Promise.all([
+  const [articles, evidence, leads, settings] = await Promise.all([
     listArticles({ includeDrafts: true }),
+    listEvidence(),
     listLeads(),
     getSiteSettings(),
   ]);
@@ -63,19 +64,26 @@ export default async function AdminDashboardPage({
         </div>
       ) : null}
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
         <Card title="Articles" value={String(articles.length)} icon={<FileText className="h-5 w-5" />} />
         <Card title="Published" value={String(publishedCount)} icon={<CalendarDays className="h-5 w-5" />} />
+        <Card title="Evidence" value={String(evidence.length)} icon={<Images className="h-5 w-5" />} />
         <Card title="Leads" value={String(leads.length)} icon={<Inbox className="h-5 w-5" />} />
         <Card title="AI model" value={getAiModelLabel(settings.aiModel)} icon={<Settings className="h-5 w-5" />} />
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-3">
+      <div className="grid gap-5 xl:grid-cols-4">
         <ActionPanel
           title="Content"
           description="Create manual articles, review AI-generated posts, and maintain internal linking coverage."
           href="/admin/articles"
           cta="Manage articles"
+        />
+        <ActionPanel
+          title="Evidence"
+          description="Capture real field examples, review image provenance, and control what proof can be shown publicly."
+          href="/admin/evidence"
+          cta="Open evidence"
         />
         <ActionPanel
           title="Lead inbox"

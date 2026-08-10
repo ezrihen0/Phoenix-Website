@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Mail, Phone, Send, ShieldCheck } from "lucide-react";
 
 import { AdminShell } from "@/components/admin/admin-shell";
@@ -46,20 +47,20 @@ export default async function AdminLeadsPage({
       storageStatus={storageStatus}
     >
       <div className="flex flex-wrap gap-3">
-        <a
+        <Link
           href="/admin/leads"
           className={`rounded-full px-4 py-2 text-sm font-semibold transition ${selectedCity ? "border border-[var(--color-border)] bg-white/65 hover:bg-white" : "bg-[var(--color-ink)] text-[var(--color-paper)]"}`}
         >
           All cities
-        </a>
+        </Link>
         {cities.map((city) => (
-          <a
+          <Link
             key={city.slug}
             href={`/admin/leads?city=${city.slug}`}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition ${selectedCity === city.slug ? "bg-[var(--color-ink)] text-[var(--color-paper)]" : "border border-[var(--color-border)] bg-white/65 hover:bg-white"}`}
           >
             {city.name}
-          </a>
+          </Link>
         ))}
       </div>
 
