@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { CityChooserHero } from "@/components/city-chooser-hero";
-import { OrganizationHub } from "@/components/homepage/organization-hub";
+import { WhatWeDo } from "@/components/homepage/what-we-do";
 import { StructuredData } from "@/components/structured-data";
 import { buildBreadcrumbSchema, buildOrganizationSchema, createPageMetadata } from "@/lib/seo";
 
@@ -27,7 +27,7 @@ export default function Home() {
         ]}
       />
       <CityChooserHero />
-      <OrganizationHub />
+      <WhatWeDo />
     </>
   );
 }
