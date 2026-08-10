@@ -150,7 +150,7 @@ export const services = [
     title: "Wood Stove & Fireplace Service",
     tagline: "Maintenance and repairs that keep wood-burning systems safe and efficient.",
     description:
-      "We service wood stoves, inserts, and fireplaces with gasket replacement, inspection, cleaning, and repair support tailored to Calgary homes.",
+      "We service wood stoves, inserts, and fireplaces with gasket replacement, inspection, cleaning, and repair support for wood-burning systems.",
     bullets: [
       "Annual maintenance and cleanings",
       "Door gasket and seal replacement",
@@ -662,6 +662,56 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
     ctaLabel: "Book installation consult",
   },
 ] as const;
+
+export function getCityServiceKeywords(slug: string, cityName: string) {
+  switch (slug) {
+    case "gas-fireplace-maintenance":
+      return [
+        `gas fireplace maintenance ${cityName}`,
+        `annual fireplace service ${cityName}`,
+        `gas fireplace cleaning ${cityName}`,
+        `pilot light service ${cityName}`,
+      ] as const;
+    case "chimney-sweeping-inspection":
+      return [
+        `chimney sweep ${cityName}`,
+        `chimney sweeping ${cityName}`,
+        `creosote removal ${cityName}`,
+        `chimney inspection ${cityName}`,
+      ] as const;
+    case "chimney-repair-masonry":
+      return [
+        `chimney repair ${cityName}`,
+        `chimney masonry ${cityName}`,
+        `chimney leak repair ${cityName}`,
+        `tuckpointing ${cityName}`,
+      ] as const;
+    case "gas-fireplace-installation":
+      return [
+        `gas fireplace installation ${cityName}`,
+        `gas fireplace retrofit ${cityName}`,
+        `fireplace replacement ${cityName}`,
+        `gas fireplace upgrade ${cityName}`,
+      ] as const;
+    default:
+      return [`fireplace service ${cityName}`, `chimney service ${cityName}`] as const;
+  }
+}
+
+export function getCityServiceCardDescription(slug: string, cityName: string) {
+  switch (slug) {
+    case "gas-fireplace-maintenance":
+      return `Annual gas fireplace safety checks, cleaning, and pilot service for ${cityName} homes.`;
+    case "chimney-sweeping-inspection":
+      return `Chimney sweep service with creosote removal, inspection reporting, and safety guidance for ${cityName} homeowners.`;
+    case "chimney-repair-masonry":
+      return `Tuckpointing, chimney brick repair, liner replacement, and leak diagnosis for ${cityName} chimneys affected by freeze-thaw wear.`;
+    case "gas-fireplace-installation":
+      return `New gas fireplace installs, retrofit replacements, and upgrade planning for ${cityName} projects.`;
+    default:
+      return `Fireplace and chimney service guidance for ${cityName} homeowners.`;
+  }
+}
 
 export function getServiceLandingHref(slug: string, city?: CitySlug | null) {
   if (city) {

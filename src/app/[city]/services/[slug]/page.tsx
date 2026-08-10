@@ -18,6 +18,7 @@ import {
   createPageMetadata,
 } from "@/lib/seo";
 import {
+  getCityServiceKeywords,
   getServiceLandingHref,
   getServiceLandingPage,
   serviceLandingPages,
@@ -87,11 +88,7 @@ export async function generateMetadata({
     title,
     description,
     path: getServiceLandingHref(servicePage.slug, city.slug),
-    keywords: [
-      ...servicePage.keywords,
-      `${servicePage.title.toLowerCase()} ${city.name}`,
-      `${city.name} fireplace service`,
-    ],
+    keywords: [...getCityServiceKeywords(servicePage.slug, city.name)],
     imagePath: servicePage.image,
     imageAlt: servicePage.imageAlt,
   });

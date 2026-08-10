@@ -3,8 +3,12 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
-import type { CitySlug } from "@/lib/cities";
-import { getServiceLandingHref, serviceLandingPages } from "@/lib/site-data";
+import { getCityBySlug, type CitySlug } from "@/lib/cities";
+import {
+  getCityServiceCardDescription,
+  getServiceLandingHref,
+  serviceLandingPages,
+} from "@/lib/site-data";
 
 type ServiceGuidesGridProps = {
   eyebrow: string;
@@ -19,6 +23,9 @@ export function ServiceGuidesGrid({
   description,
   city,
 }: ServiceGuidesGridProps) {
+  const cityConfig = city ? getCityBySlug(city) : undefined;
+  const guideEyebrow = cityConfig ? `${cityConfig.name} service guide` : "Alberta service guide";
+
   return (
     <section className="section-pad bg-[rgba(255,255,255,0.42)]">
       <div className="page-frame">
@@ -33,13 +40,15 @@ export function ServiceGuidesGrid({
                 className="flex h-full flex-col rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6 shadow-[0_18px_40px_rgba(31,26,22,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_52px_rgba(31,26,22,0.1)]"
               >
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-ember)]">
-                  Alberta service guide
+                  {guideEyebrow}
                 </p>
                 <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
                   {servicePage.title}
                 </h2>
                 <p className="mt-3 flex-1 text-sm leading-7 text-[var(--color-muted)]">
-                  {servicePage.cardDescription}
+                  {cityConfig
+                    ? getCityServiceCardDescription(servicePage.slug, cityConfig.name)
+                    : servicePage.cardDescription}
                 </p>
                 <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]">
                   Open guide
