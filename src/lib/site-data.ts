@@ -42,35 +42,35 @@ export const navigationLinks = [
 ] as const;
 
 export const heroHighlights = [
-  "Certified WETT inspections for insurance and real-estate transactions",
-  "Gas fireplace repair and diagnostics for all major makes and models",
-  "Chimney sweeping, masonry repair, relining, and camera inspections",
+  "WETT inspection appointments for insurance and real-estate documentation",
+  "Gas fireplace repair and diagnostics for common ignition and performance issues",
+  "Chimney sweeping, masonry repair, relining, and visual inspections",
 ] as const;
 
 export const trustMetrics = [
-  { value: "10+", label: "Years serving Calgary homes" },
-  { value: "24h", label: "Turnaround for urgent WETT reporting" },
+  { value: "Local", label: "Fireplace and chimney service for Calgary homes" },
+  { value: "Priority", label: "Scheduling for urgent WETT report requests when available" },
   { value: "100km", label: "Coverage radius around Calgary" },
 ] as const;
 
 export function getTrustMetrics(cityName: string) {
   return [
-    { value: "10+", label: `Years serving ${cityName} homes` },
-    { value: "24h", label: "Turnaround for urgent WETT reporting" },
+    { value: "Local", label: `Fireplace and chimney service for ${cityName} homes` },
+    { value: "Priority", label: "Scheduling for urgent WETT report requests when available" },
     { value: "100km", label: `Coverage radius around ${cityName}` },
   ] as const;
 }
 
 export const valuePillars = [
   {
-    title: "Insurance-ready documentation",
+    title: "Clear service documentation",
     description:
-      "Clear reporting, photo evidence, and code-minded recommendations for insurers, buyers, sellers, and homeowners.",
+      "Clear notes and practical recommendations for homeowners, buyers, sellers, and insurance-related requests.",
   },
   {
-    title: "Field-tested diagnostics",
+    title: "Symptom-led diagnostics",
     description:
-      "We use live camera inspection, combustion troubleshooting, and practical repair plans instead of guesswork.",
+      "We start with the symptom, review visible conditions, and explain practical repair options instead of guessing.",
   },
   {
     title: "One local team, start to finish",
@@ -82,14 +82,14 @@ export const valuePillars = [
 export function getValuePillars(cityName: string) {
   return [
     {
-      title: "Insurance-ready documentation",
+      title: "Clear service documentation",
       description:
-        "Clear reporting, photo evidence, and code-minded recommendations for insurers, buyers, sellers, and homeowners.",
+        "Clear notes and practical recommendations for homeowners, buyers, sellers, and insurance-related requests.",
     },
     {
-      title: "Field-tested diagnostics",
+      title: "Symptom-led diagnostics",
       description:
-        "We use live camera inspection, combustion troubleshooting, and practical repair plans instead of guesswork.",
+        "We start with the symptom, review visible conditions, and explain practical repair options instead of guessing.",
     },
     {
       title: "One local team, start to finish",
@@ -118,14 +118,14 @@ export const services = [
   {
     slug: "wett-inspections",
     title: "WETT Inspections",
-    tagline: "Certified reporting for insurance, real estate, and peace of mind.",
+    tagline: "Inspection reporting for insurance, real estate, and peace of mind.",
     description:
-      "We inspect wood-burning systems, venting, clearances, and chimney condition to produce documentation accepted by Canadian insurance providers.",
+      "We inspect wood-burning systems, venting, clearances, and chimney condition to produce documentation homeowners can share with insurers or real-estate contacts.",
     bullets: [
       "Insurance and pre-sale reports",
-      "Camera-based visual assessments",
+      "Visual system assessments",
       "Clearance and venting review",
-      "Photo-backed documentation",
+      "Clear inspection documentation",
     ],
     image: "/images/photos/wett-inspection.jpg",
     icon: "/images/icons/inspection-icon.png",
@@ -135,7 +135,7 @@ export const services = [
     title: "Chimney Sweep & Repair",
     tagline: "Safer draft, cleaner systems, and repairs before small issues become structural ones.",
     description:
-      "Professional sweeping, creosote removal, video inspection, and repair planning for chimneys that need better performance and lower risk.",
+      "Professional sweeping, creosote removal, visual inspection, and repair planning for chimneys that need better performance and lower risk.",
     bullets: [
       "Creosote and blockage removal",
       "Camera inspections",
@@ -197,7 +197,7 @@ export const processSteps = [
 
 export const aboutPoints = [
   {
-    title: "Licensed, careful technicians",
+    title: "Careful fireplace and chimney technicians",
     description:
       "Every visit is built around safety, clean workmanship, and realistic advice instead of unnecessary upsells.",
   },
@@ -221,7 +221,7 @@ export const aboutPoints = [
 export function getAboutPoints(cityName: string) {
   return [
     {
-      title: "Licensed, careful technicians",
+      title: "Careful fireplace and chimney technicians",
       description:
         "Every visit is built around safety, clean workmanship, and realistic advice instead of unnecessary upsells.",
     },
@@ -246,30 +246,30 @@ export function getAboutPoints(cityName: string) {
 export const galleryImages = [
   {
     src: "/images/photos/gallery-01.jpg",
-    alt: "Technician servicing a fireplace component in the field.",
+    alt: "Fireplace service component close-up.",
   },
   {
     src: "/images/photos/gallery-02.jpeg",
-    alt: "Detailed interior inspection of a fireplace unit.",
+    alt: "Interior view of a fireplace unit during service.",
   },
   {
     src: "/images/photos/gallery-03.jpeg",
-    alt: "Measurement and inspection work on a hearth assembly.",
+    alt: "Measurement detail near a hearth assembly.",
   },
   {
     src: "/images/photos/gallery-04.jpeg",
-    alt: "Field photo from a live repair visit in a Calgary home.",
+    alt: "Fireplace and chimney service photo from a home visit.",
   },
 ] as const;
 
 export const wettBenefits = [
   {
-    title: "Insurance and real-estate ready",
+    title: "Insurance and real-estate documentation support",
     description:
       "Reports are written to help buyers, sellers, insurers, and homeowners understand system condition fast.",
   },
   {
-    title: "Camera-backed inspection",
+    title: "Visual inspection support",
     description:
       "Hidden defects, blockages, and compromised flues are easier to document when the full system is reviewed visually.",
   },
@@ -279,9 +279,9 @@ export const wettBenefits = [
       "You get plain-language recommendations on what passes, what needs correction, and what should be repaired before use.",
   },
   {
-    title: "Fast reporting turnaround",
+    title: "Report timing clarity",
     description:
-      "Time-sensitive files for listings, closings, or insurance reviews are handled with urgency.",
+      "Time-sensitive files for listings, closings, or insurance reviews can be discussed at booking so timing is clear before the visit.",
   },
 ] as const;
 
@@ -289,7 +289,7 @@ export const homeFaqs = [
   {
     question: "Do I need a WETT inspection for a home sale in Calgary?",
     answer:
-      "Often yes. Buyers, insurers, and real-estate agents commonly request a certified WETT inspection for wood-burning appliances and connected chimney systems.",
+      "Often yes. Buyers, insurers, and real-estate agents commonly request a WETT inspection for wood-burning appliances and connected chimney systems.",
   },
   {
     question: "Can you repair a gas fireplace that will not ignite?",
@@ -315,7 +315,7 @@ export function getHomeFaqs(cityName: string, serviceAreas: readonly string[]) {
     {
       question: `Do I need a WETT inspection for a home sale in ${cityName}?`,
       answer:
-        `Often yes. Buyers, insurers, and real-estate agents commonly request a certified WETT inspection for wood-burning appliances and connected chimney systems in ${cityName}.`,
+        `Often yes. Buyers, insurers, and real-estate agents commonly request a WETT inspection for wood-burning appliances and connected chimney systems in ${cityName}.`,
     },
     {
       question: "Can you repair a gas fireplace that will not ignite?",
@@ -421,15 +421,15 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
     cardDescription:
       "Annual gas fireplace safety checks, cleaning, and pilot service for Calgary, Edmonton, and Red Deer homes.",
     metaTitle:
-      "Gas Fireplace Maintenance Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+      "Gas Fireplace Maintenance Alberta | Calgary, Edmonton & Red Deer",
     metaDescription:
-      "Annual gas fireplace safety checks, cleaning, pilot light troubleshooting, and performance tuning from certified technicians serving Calgary, Edmonton, and Red Deer.",
+      "Annual gas fireplace safety checks, cleaning, pilot light troubleshooting, and performance tuning for Calgary, Edmonton, and Red Deer homes.",
     keywords: [
       "gas fireplace maintenance Calgary",
       "gas fireplace maintenance Edmonton",
       "gas fireplace maintenance Red Deer",
       "gas fireplace repair Alberta",
-      "certified technicians Calgary Edmonton Red Deer",
+      "fireplace technicians Calgary Edmonton Red Deer",
     ],
     eyebrow: "Annual fireplace safety service",
     heroTitle:
@@ -481,11 +481,11 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
     navLabel: "Chimney Sweeping & Inspection",
     menuDescription: "Expert chimney sweep visits, creosote removal, and WETT-aware inspections.",
     cardDescription:
-      "Expert chimney sweep service with creosote removal, inspection reporting, and safety guidance for Alberta homeowners.",
+      "Chimney sweep service with creosote removal, inspection reporting, and safety guidance for Alberta homeowners.",
     metaTitle:
-      "Expert Chimney Sweep Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+      "Chimney Sweep Alberta | Calgary, Edmonton & Red Deer",
     metaDescription:
-      "Book expert chimney sweeping, creosote removal, WETT-aware inspections, and safety reporting with certified technicians serving Calgary, Edmonton, and Red Deer.",
+      "Book chimney sweeping, creosote removal, WETT-aware inspections, and safety reporting for Calgary, Edmonton, and Red Deer.",
     keywords: [
       "expert chimney sweep Calgary",
       "expert chimney sweep Edmonton",
@@ -495,11 +495,11 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
     ],
     eyebrow: "Sweep, inspect, and document",
     heroTitle:
-      "Expert chimney sweep service with inspections that show what is clean, what is damaged, and what needs attention next.",
+      "Chimney sweep service with inspections that show what is clean, what is damaged, and what needs attention next.",
     heroDescription:
       "Phoenix combines creosote removal, system inspection, and practical safety reporting for homeowners in Calgary, Edmonton, and Red Deer who need lower fire risk, better draft, and clearer documentation.",
     image: "/images/photos/service-masonry.jpg",
-    imageAlt: "Chimney inspection camera cable and equipment set up on a roof during a flue inspection",
+    imageAlt: "Chimney inspection equipment set up near a roofline",
     secondaryImage: "/images/photos/wett-report.jpg",
     secondaryImageAlt: "Roof-level chimney inspection tools and camera equipment prepared for sweep and safety review",
     included: [
@@ -545,9 +545,9 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
     cardDescription:
       "Tuckpointing, chimney brick repair, liner replacement, and leak diagnosis built for Alberta freeze-thaw wear.",
     metaTitle:
-      "Chimney Repair & Masonry Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+      "Chimney Repair & Masonry Alberta | Calgary, Edmonton & Red Deer",
     metaDescription:
-      "Book tuckpointing, chimney brick repair, liner replacement, crown work, and leak diagnosis with certified technicians serving Calgary, Edmonton, and Red Deer.",
+      "Book tuckpointing, chimney brick repair, liner replacement, crown work, and leak diagnosis for Calgary, Edmonton, and Red Deer.",
     keywords: [
       "chimney repair masonry Calgary",
       "chimney repair masonry Edmonton",
@@ -607,9 +607,9 @@ export const serviceLandingPages: readonly ServiceLandingPage[] = [
     cardDescription:
       "New gas fireplace installs, retrofit replacements, and upgrade planning for Calgary, Edmonton, and Red Deer projects.",
     metaTitle:
-      "Gas Fireplace Installation Alberta | Certified Technicians in Calgary, Edmonton & Red Deer",
+      "Gas Fireplace Installation Alberta | Calgary, Edmonton & Red Deer",
     metaDescription:
-      "Book new gas fireplace installations, retrofits, replacements, and venting upgrades with certified technicians serving Calgary, Edmonton, and Red Deer.",
+      "Book new gas fireplace installations, retrofits, replacements, and venting upgrades for Calgary, Edmonton, and Red Deer.",
     keywords: [
       "gas fireplace installation Calgary",
       "gas fireplace installation Edmonton",

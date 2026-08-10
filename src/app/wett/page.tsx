@@ -16,7 +16,7 @@ import { wettBenefits } from "@/lib/site-data";
 export const metadata: Metadata = createPageMetadata({
   title: "WETT Inspection Calgary | Insurance & Real-Estate Reports",
   description:
-    "Book certified WETT inspections in Calgary for insurance, real-estate transactions, wood-burning system review, and photo-backed reporting.",
+    "Book WETT inspection appointments in Calgary for insurance, real-estate transactions, wood-burning system review, and clear reporting.",
   path: "/wett",
   keywords: ["WETT inspection Calgary", "insurance fireplace inspection Calgary"],
 });
@@ -34,7 +34,7 @@ export default async function WettPage() {
           ]),
           buildServiceSchema(
             "WETT Inspections",
-            "Certified WETT inspections and insurance-ready reporting for Calgary wood-burning systems.",
+            "WETT inspection appointments and documentation support for Calgary wood-burning systems.",
             "/wett",
           ),
         ]}
@@ -47,15 +47,15 @@ export default async function WettPage() {
             <div className="space-y-6 p-8 sm:p-10 lg:p-12">
               <div className="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-gold)]">
                 <ShieldCheck className="h-4 w-4" />
-                Certified WETT service
+                WETT inspection service
               </div>
               <h1 className="display-title text-balance text-5xl font-semibold leading-[0.92] sm:text-6xl">
-                WETT inspections built for insurers, closings, and homeowners who need clear proof.
+                WETT inspections built for insurers, closings, and homeowners who need clear documentation.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-[var(--color-paper)]/78 sm:text-lg">
                 When a sale, policy review, or safety concern depends on credible documentation,
                 Phoenix inspects the full wood-burning system and produces reporting that is fast,
-                understandable, and grounded in field evidence.
+                understandable, and organized around visible findings.
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 {wettBenefits.map((benefit) => (
@@ -89,7 +89,7 @@ export default async function WettPage() {
             <div className="relative min-h-[24rem] lg:min-h-full">
               <Image
                 src="/images/photos/wett-report.jpg"
-                alt="Technician documentation and reporting in the field"
+                alt="WETT inspection documentation and report paperwork"
                 fill
                 sizes="(max-width: 1024px) 100vw, 48vw"
                 className="object-cover"
@@ -113,7 +113,7 @@ export default async function WettPage() {
             <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
               <p className="text-sm leading-7 text-[var(--color-muted)]">
                 Our WETT workflow reviews appliance setup, clearances, flue condition,
-                chimney path, visible defects, and code-related concerns, with photo-backed notes where needed.
+                chimney path, visible defects, and safety-related concerns, with documented findings where photos are available.
               </p>
             </div>
           </div>
@@ -150,7 +150,7 @@ export default async function WettPage() {
             <div className="space-y-5 p-8 sm:p-10">
               <Image
                 src="/images/brand/insurance-badge.png"
-                alt="Insurance compatibility badge"
+                alt="Insurance paperwork support icon"
                 width={68}
                 height={68}
                 className="h-14 w-14 object-contain"

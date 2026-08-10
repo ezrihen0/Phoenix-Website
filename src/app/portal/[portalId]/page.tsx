@@ -37,6 +37,16 @@ const progressSteps = ["Scheduled", "In Progress", "Completed"] as const;
 export const metadata: Metadata = {
   title: "Customer Portal | Phoenix Chimney & Fireplace",
   description: "Standalone mock customer portal preview for Phoenix Chimney & Fireplace.",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
+  },
 };
 
 export default async function CustomerPortalPage({

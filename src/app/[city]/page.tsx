@@ -65,7 +65,7 @@ export async function generateMetadata({
   return createPageMetadata({
     title: `Fireplace Repair ${city.name} | Chimney, WETT & Gas Fireplace Service`,
     description:
-      `Book ${city.name} fireplace and chimney specialists for gas fireplace repair, WETT inspections, chimney sweeping, relining, and masonry work.`,
+      `Book ${city.name} fireplace and chimney service for gas fireplace repair, WETT inspections, chimney sweeping, relining, and masonry work.`,
     path: getCityHref(city.slug),
     keywords: [
       `fireplace repair ${city.name}`,
@@ -138,12 +138,12 @@ export default async function CityHomePage({
                       Fireplace & chimney repair in {city.name}
                     </p>
                     <h1 className="display-title text-balance text-5xl font-semibold leading-[0.92] sm:text-6xl lg:text-7xl">
-                      Gas fireplace repair, WETT inspections, chimney care, and masonry work handled by one local team.
+                      Gas fireplace repair, WETT inspections, chimney care, and masonry work for local homes.
                     </h1>
                     <p className="mx-auto max-w-3xl text-base leading-8 text-[var(--color-paper)]/80 sm:text-lg">
                       Phoenix handles gas fireplace repair, WETT inspections, chimney
                       sweeping, relining, and masonry service for {city.name} homes that
-                      need the issue diagnosed properly the first time.
+                      need the issue diagnosed and explained clearly.
                     </p>
                     <div className="flex flex-wrap justify-center gap-3 pb-6 pt-2 sm:pb-8">
                       <a
@@ -212,14 +212,14 @@ export default async function CityHomePage({
                 <div className="space-y-4 p-7 sm:p-8">
                   <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-paper)]">
                     <ShieldCheck className="h-3.5 w-3.5 text-[var(--color-gold)]" />
-                    WETT-ready reporting
+                    WETT reporting support
                   </div>
                   <p className="display-title text-3xl font-semibold leading-none text-[var(--color-paper)] sm:text-[2.15rem]">
                     Inspection, documentation, and repair planning in one service flow.
                   </p>
                   <p className="text-sm leading-7 text-[var(--color-paper)]/76">
-                    Insurance reviews, home sales, camera-based inspection, and field
-                    notes are handled with the same practical standard as the repair work.
+                    Insurance reviews, home sales, visual inspection notes, and practical
+                    findings are handled with the same care as the repair work.
                   </p>
                   <Link
                     href={getCityHref(city.slug, "/wett")}
@@ -299,7 +299,7 @@ export default async function CityHomePage({
                   <div className="flex items-center gap-3">
                     <Image
                       src="/images/brand/wett-badge.png"
-                      alt="WETT certification mark"
+                      alt="WETT reporting support badge"
                       width={72}
                       height={72}
                       className="h-14 w-14 object-contain"
@@ -366,9 +366,9 @@ export default async function CityHomePage({
         <div className="page-frame">
           <Reveal>
             <SectionHeading
-              eyebrow="Recent field notes"
-              title="Recent service snapshots from the field."
-              description={`A closer look at the kinds of fireplace, chimney, and inspection work handled across ${city.name} homes.`}
+              eyebrow="Service photos"
+              title="Service snapshots and common inspection details."
+              description={`A closer look at fireplace, chimney, and inspection details relevant to ${city.name} homes.`}
             />
           </Reveal>
           <div className="mt-12 grid gap-4 md:grid-cols-[1.1fr_0.9fr]">

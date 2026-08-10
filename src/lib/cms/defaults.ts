@@ -80,7 +80,7 @@ Local conditions matter here. ${city.weatherContext}
 - Look for soot, staining, or unusual odors around the appliance.
 - Check exterior brick, crown, and cap areas for visible moisture damage.
 - If you have a gas unit, note any ignition hesitation, weak flame, or dirty glass.
-- If you have a wood-burning system, schedule a proper inspection if draft changed during the winter.
+- If you have a wood-burning system, schedule an inspection appointment if draft changed during the winter.
 
 ## What homeowners around ${city.name} usually miss
 
@@ -90,7 +90,7 @@ If you live around ${nearbyAreas}, the same rule applies: inspect in spring whil
 
 ## When to bring in professional service
 
-If you notice ignition trouble, smoke spillage, heavy creosote, or visible masonry movement, the safest move is to book service before the next cold season. Homeowners dealing with gas appliance issues should review our [gas fireplace maintenance guide](/services/gas-fireplace-maintenance). If the concern is structural or venting-related, our [chimney sweeping and inspection guide](/services/chimney-sweeping-inspection) and [chimney repair and masonry page](/services/chimney-repair-masonry) are the right next steps.
+If you notice ignition trouble, smoke spillage, heavy creosote, or visible masonry movement, book service before the next cold season. Homeowners dealing with gas appliance issues should review our [gas fireplace maintenance guide](/services/gas-fireplace-maintenance). If the concern is structural or venting-related, our [chimney sweeping and inspection guide](/services/chimney-sweeping-inspection) and [chimney repair and masonry page](/services/chimney-repair-masonry) are the right next steps.
 
 ## A simple planning rule
 
@@ -133,7 +133,7 @@ function buildWettArticle(city: CityDefinition): Article {
     aiGenerated: false,
     body: `## The most common reason ${city.name} homeowners book one
 
-The biggest trigger is not curiosity. It is paperwork. A buyer, seller, insurer, or broker needs a qualified inspection and a report they can use to make a decision.
+The biggest trigger is not curiosity. It is paperwork. A buyer, seller, insurer, or broker needs an inspection report they can use to make a decision.
 
 That is especially true in Alberta, where local context often includes ${city.regulationContext.toLowerCase()}
 
@@ -145,11 +145,11 @@ Insurers often want a current inspection when a property has a wood stove, inser
 
 ### 2. Real-estate transactions
 
-Home sales frequently require confirmation that the system is safe, installed correctly, and not hiding obvious defects.
+Home sales frequently require documentation of visible condition, clearances, connected components, and obvious defects.
 
 ### 3. New appliance installation
 
-If a stove or insert has recently been installed, a WETT inspection can confirm whether clearances, venting, and connected components meet the right standard.
+If a stove or insert has recently been installed, a WETT inspection can document clearances, venting, and connected components for the file.
 
 ## What to do next
 
@@ -217,7 +217,7 @@ Our [gas fireplace maintenance guide](/services/gas-fireplace-maintenance) is de
 
 ## Do not ignore inspection history
 
-If a system has gone years without a proper inspection, or if a property change means an insurer or buyer now wants documentation, it may make sense to combine the repair discussion with a [WETT planning review](/articles/${slugs.wett}).
+If a system has gone years without an inspection appointment, or if a property change means an insurer or buyer now wants documentation, it may make sense to combine the repair discussion with a [WETT planning review](/articles/${slugs.wett}).
 
 ## Related reading
 

@@ -74,13 +74,6 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
     };
   }, []);
 
-  useEffect(() => {
-    clearServicesMenuCloseTimer();
-    setIsOpen(false);
-    setIsServicesMenuOpen(false);
-    setIsServicesMobileOpen(false);
-  }, [pathname]);
-
   function clearServicesMenuCloseTimer() {
     if (servicesMenuCloseTimerRef.current) {
       clearTimeout(servicesMenuCloseTimerRef.current);
@@ -105,6 +98,20 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
       servicesMenuCloseTimerRef.current = null;
     }, SERVICES_MENU_CLOSE_DELAY_MS);
   }
+
+  useEffect(() => {
+    clearServicesMenuCloseTimer();
+
+    const resetTimer = window.setTimeout(() => {
+      setIsOpen(false);
+      setIsServicesMenuOpen(false);
+      setIsServicesMobileOpen(false);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(resetTimer);
+    };
+  }, [pathname]);
 
   function clearLogoClickStreak() {
     logoClickCountRef.current = 0;
@@ -197,7 +204,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               <span className="inline-flex items-center gap-2">
                 <Flame className="h-3.5 w-3.5 text-[var(--color-gold)]" />
                 {city
-                  ? `Keeping ${city.name} homes safe and warm since 2015`
+                  ? `Fireplace and chimney service for ${city.name} homes`
                   : "Choose your city for the right dispatch number and service path"}
               </span>
               {showCityNavigation ? (
