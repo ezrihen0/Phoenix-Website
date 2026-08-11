@@ -1,6 +1,6 @@
 import type { CitySlug } from "@/lib/cities";
 
-export type ArticleStatus = "draft" | "published";
+export type ArticleStatus = "draft" | "scheduled" | "published";
 
 export type LeadDeliveryStatus = "sent" | "skipped" | "failed";
 
@@ -19,6 +19,7 @@ export type Article = {
   relatedSlugs: string[];
   relatedServiceSlugs?: string[];
   status: ArticleStatus;
+  scheduledAt?: string;
   authorName: string;
   authorType: ArticleAuthorType;
   coverImage?: string;

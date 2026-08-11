@@ -156,7 +156,7 @@ export function assessCrossCityOriginality(
   article: Pick<Article, "id" | "slug" | "city" | "body" | "status">,
   articles: Article[],
 ): ArticleQualityIssue[] {
-  if (article.status !== "published") {
+  if (article.status !== "published" && article.status !== "scheduled") {
     return [];
   }
 
@@ -206,7 +206,7 @@ export function assertPublishableArticle(
   articles: Article[] = [],
   options?: { allowBorderlineSimilarity?: boolean },
 ) {
-  if (article.status !== "published") {
+  if (article.status !== "published" && article.status !== "scheduled") {
     return;
   }
 

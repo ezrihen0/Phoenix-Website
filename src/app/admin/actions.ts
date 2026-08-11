@@ -25,7 +25,7 @@ import {
 } from "@/lib/cms/article-migration";
 import { assertPublishableArticle } from "@/lib/cms/article-quality";
 import { defaultSiteSettings } from "@/lib/cms/defaults";
-import { slugify } from "@/lib/cms/helpers";
+import { parseScheduleDateTime, slugify } from "@/lib/cms/helpers";
 import {
   deleteArticle,
   deleteArticleById,
@@ -64,7 +64,9 @@ const articleSchema = z.object({
   keywords: z.string().trim().min(3),
   relatedSlugs: z.string().trim().optional(),
   relatedServiceSlugs: z.string().trim().optional(),
-  status: z.enum(["draft", "published"]),
+  status: z.enum(["draft", "scheduled", "published"]),
+  scheduleDate: z.string().trim().optional(),
+  scheduleTime: z.string().trim().optional(),
   authorName: z.string().trim().min(2),
   authorType: z.enum(["organization", "person"]).default("organization"),
 });
@@ -264,6 +266,8 @@ function getEvidenceServiceSlugs(formData: FormData) {
 
 function revalidatePublicContent(articleRoutes: Array<{ city: CitySlug; slug: string }> = []) {
   revalidatePath("/");
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/feed.xml");
 
   for (const city of CITY_SLUGS) {
     revalidatePath(getCityHref(city));
@@ -409,6 +413,23 @@ export async function saveArticleAction(formData: FormData) {
   const slug = slugify(parsed.slug || parsed.title);
   const articleId = originalId || crypto.randomUUID();
 
+  let scheduledAt: string | undefined;
+
+  if (parsed.status === "scheduled") {
+    if (!parsed.scheduleDate?.trim() || !parsed.scheduleTime?.trim()) {
+      redirectWithActionError(errorPath, "Choose a publish date and time to schedule this article.");
+    }
+
+    scheduledAt = parseScheduleDateTime(parsed.scheduleDate, parsed.scheduleTime);
+
+    if (new Date(scheduledAt).getTime() <= Date.now()) {
+      redirectWithActionError(
+        errorPath,
+        "Scheduled publish time must be in the future (Alberta time).",
+      );
+    }
+  }
+
   try {
     const existingArticle = originalId
       ? await getArticleById(originalId, { includeDrafts: true })
@@ -427,6 +448,7 @@ export async function saveArticleAction(formData: FormData) {
       relatedSlugs: toList(parsed.relatedSlugs || ""),
       relatedServiceSlugs: toList(parsed.relatedServiceSlugs || ""),
       status: parsed.status,
+      scheduledAt: parsed.status === "scheduled" ? scheduledAt : undefined,
       authorName: parsed.authorName,
       authorType: parsed.authorType,
       coverImage: parsed.coverImage || undefined,
@@ -436,7 +458,7 @@ export async function saveArticleAction(formData: FormData) {
       publishedAt:
         parsed.status === "published"
           ? existingArticle?.publishedAt || now
-          : existingArticle?.publishedAt || now,
+          : "",
       aiGenerated: existingArticle?.aiGenerated || aiGeneratedFlag,
     };
 

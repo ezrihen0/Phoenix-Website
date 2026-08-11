@@ -3,6 +3,7 @@
 import { useMemo, useState, useTransition, type ReactNode } from "react";
 
 import { improveArticleFromNotesAction, saveArticleAction } from "@/app/admin/actions";
+import { ArticlePublishControls } from "@/components/admin/article-publish-controls";
 import { ArticleBody } from "@/components/articles/article-body";
 import { cities, defaultCitySlug, getCityHref, type CitySlug } from "@/lib/cities";
 import { slugify } from "@/lib/cms/helpers";
@@ -379,25 +380,8 @@ export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePubli
           </>
         )}
 
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-border)] bg-[var(--color-paper)]/95 px-4 py-3 backdrop-blur">
-          <div className="mx-auto flex w-full max-w-lg flex-col gap-3 sm:flex-row">
-            <button
-              type="submit"
-              name="status"
-              value="draft"
-              className="min-h-12 flex-1 rounded-full border border-[var(--color-border)] bg-white px-5 py-3 text-base font-semibold text-[var(--color-ink)]"
-            >
-              Save draft
-            </button>
-            <button
-              type="submit"
-              name="status"
-              value="published"
-              className="min-h-12 flex-1 rounded-full bg-[var(--color-ink)] px-5 py-3 text-base font-semibold text-[var(--color-paper)]"
-            >
-              Publish
-            </button>
-          </div>
+        <div className="pb-28">
+          <ArticlePublishControls layout="fixed" />
         </div>
       </form>
     </div>

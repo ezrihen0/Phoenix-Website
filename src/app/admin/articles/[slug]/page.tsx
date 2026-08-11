@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { saveArticleAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
+import { ArticlePublishControls } from "@/components/admin/article-publish-controls";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { requireAdmin } from "@/lib/auth/options";
 import { cities, defaultCitySlug } from "@/lib/cities";
@@ -119,29 +120,13 @@ export function ArticleEditor({ article }: { article?: Article }) {
             <option value="person">Person</option>
           </select>
         </label>
-        <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
-          <span>Status</span>
-          <select
-            name="status"
-            defaultValue={article?.status || "draft"}
-            className="rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm outline-none"
-          >
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-          </select>
-        </label>
         <div className="md:col-span-2">
           <span className="mb-2 block text-sm font-medium text-[var(--color-ink)]">Body markdown</span>
           <MarkdownEditor name="body" defaultValue={article?.body} />
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="rounded-full bg-[var(--color-ink)] px-6 py-3 font-semibold text-[var(--color-paper)]"
-      >
-        Save article
-      </button>
+      <ArticlePublishControls article={article} />
     </form>
   );
 }

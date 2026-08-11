@@ -7,6 +7,7 @@ import { unstable_noStore as noStore } from "next/cache";
 
 import { defaultCitySlug, getCityBySlug, type CitySlug } from "@/lib/cities";
 import { defaultArticles, defaultSiteSettings } from "@/lib/cms/defaults";
+import { getArticleSortTimestamp } from "@/lib/cms/helpers";
 import { isProtectedJsonEnvelope, protectJson, unprotectJson } from "@/lib/cms/secure-json";
 import type { Article, Lead, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
 import type { EvidenceRecord, PublicEvidence } from "@/lib/evidence";
@@ -182,7 +183,10 @@ function asArray<T>(value: unknown, fallback: T[]): T[] {
 
 function sortArticles(articles: Article[]) {
   return [...articles].sort((first, second) => {
-    return new Date(second.publishedAt).getTime() - new Date(first.publishedAt).getTime();
+    return (
+      new Date(getArticleSortTimestamp(second)).getTime() -
+      new Date(getArticleSortTimestamp(first)).getTime()
+    );
   });
 }
 
@@ -202,6 +206,20 @@ function sortLeads(leads: Lead[]) {
 
 function normalizeArticleRecord(article: Article & { city?: string }) {
   const city = getCityBySlug(article.city || "")?.slug || defaultCitySlug;
+  const createdAt = article.createdAt || article.updatedAt || new Date().toISOString();
+  const updatedAt = article.updatedAt || createdAt;
+  const status =
+    article.status === "scheduled" || article.status === "published"
+      ? article.status
+      : "draft";
+  const scheduledAt =
+    status === "scheduled" && article.scheduledAt?.trim()
+      ? article.scheduledAt
+      : undefined;
+  const publishedAt =
+    status === "published"
+      ? article.publishedAt || updatedAt || createdAt
+      : "";
 
   return {
     ...article,
@@ -213,9 +231,11 @@ function normalizeArticleRecord(article: Article & { city?: string }) {
     authorType: article.authorType === "person" ? "person" : "organization",
     coverImage: article.coverImage || undefined,
     coverImageAlt: article.coverImageAlt || undefined,
-    createdAt: article.createdAt || article.publishedAt || article.updatedAt,
-    updatedAt: article.updatedAt || article.publishedAt || article.createdAt,
-    publishedAt: article.publishedAt || article.updatedAt || article.createdAt,
+    status,
+    scheduledAt,
+    createdAt,
+    updatedAt,
+    publishedAt,
     aiGenerated: Boolean(article.aiGenerated),
   } satisfies Article;
 }
@@ -817,4 +837,62 @@ export async function saveLead(lead: Lead) {
   }
 
   await writeLocalJson(LOCAL_LEADS_FILE, nextLeads);
+}
+
+export type PublishDueScheduledArticlesResult = {
+  published: Article[];
+  skipped: Array<{ id: string; reason: string }>;
+};
+
+export async function publishDueScheduledArticles(): Promise<PublishDueScheduledArticlesResult> {
+  assertCmsStorageConfigured();
+
+  const now = new Date();
+  const articles = await listArticles({ includeDrafts: true });
+  const due = articles.filter(
+    (article) =>
+      article.status === "scheduled" &&
+      article.scheduledAt &&
+      new Date(article.scheduledAt).getTime() <= now.getTime(),
+  );
+
+  const published: Article[] = [];
+  const skipped: Array<{ id: string; reason: string }> = [];
+
+  for (const candidate of due) {
+    const fresh = await getArticleById(candidate.id, { includeDrafts: true });
+
+    if (!fresh) {
+      skipped.push({ id: candidate.id, reason: "missing" });
+      continue;
+    }
+
+    if (fresh.status !== "scheduled" || !fresh.scheduledAt) {
+      skipped.push({ id: candidate.id, reason: "status-changed" });
+      continue;
+    }
+
+    if (new Date(fresh.scheduledAt).getTime() > now.getTime()) {
+      skipped.push({ id: candidate.id, reason: "not-due" });
+      continue;
+    }
+
+    if (fresh.updatedAt !== candidate.updatedAt) {
+      skipped.push({ id: candidate.id, reason: "concurrent-edit" });
+      continue;
+    }
+
+    const nextArticle = normalizeArticleRecord({
+      ...fresh,
+      status: "published",
+      publishedAt: fresh.scheduledAt,
+      scheduledAt: undefined,
+      updatedAt: now.toISOString(),
+    });
+
+    await saveArticle(nextArticle);
+    published.push(nextArticle);
+  }
+
+  return { published, skipped };
 }
