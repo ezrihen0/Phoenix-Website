@@ -561,20 +561,35 @@ export function GuidedArticleWizard({ defaultAuthorName, onOpenManualEditor }: G
           description="Real photos are preferred. Describe what each photo shows. AI will not inspect images visually."
         >
           <div className="space-y-4">
-            <label className="flex min-h-11 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[var(--color-border)] bg-white px-4 py-4 text-sm font-semibold text-[var(--color-ink)]">
-              Add photo
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                multiple
-                className="sr-only"
-                onChange={(event) => {
-                  void handleImageUpload(event.target.files);
-                  event.target.value = "";
-                }}
-              />
-            </label>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <label className="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[var(--color-border)] bg-white px-4 py-4 text-sm font-semibold text-[var(--color-ink)]">
+                Take photo
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  multiple
+                  className="sr-only"
+                  onChange={(event) => {
+                    void handleImageUpload(event.target.files);
+                    event.target.value = "";
+                  }}
+                />
+              </label>
+              <label className="flex min-h-11 flex-1 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[var(--color-border)] bg-white px-4 py-4 text-sm font-semibold text-[var(--color-ink)]">
+                Add from gallery
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="sr-only"
+                  onChange={(event) => {
+                    void handleImageUpload(event.target.files);
+                    event.target.value = "";
+                  }}
+                />
+              </label>
+            </div>
             {images.map((image) => (
               <div key={image.id} className="space-y-3 rounded-2xl border border-[var(--color-border)] bg-white/70 p-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
