@@ -36,7 +36,17 @@ export default async function AdminLeadsPage({
     );
   }
 
-  const leads = await listLeads({ city: selectedCity });
+  let leads: Awaited<ReturnType<typeof listLeads>> = [];
+  let loadError: string | null = null;
+
+  try {
+    leads = await listLeads({ city: selectedCity });
+  } catch (error) {
+    loadError =
+      error instanceof Error
+        ? error.message
+        : "Lead inbox data could not be read from storage.";
+  }
 
   return (
     <AdminShell
@@ -64,7 +74,11 @@ export default async function AdminLeadsPage({
         ))}
       </div>
 
-      {leads.length ? (
+      {loadError ? (
+        <div className="rounded-[2rem] border border-red-200 bg-red-50 p-8 text-sm leading-7 text-red-800">
+          {loadError}
+        </div>
+      ) : leads.length ? (
         <div className="space-y-4">
           {leads.map((lead) => (
             <article

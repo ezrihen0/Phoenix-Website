@@ -26,7 +26,6 @@ const REMOTE_EVIDENCE_KEY = "cms/evidence.json";
 const REMOTE_LEADS_KEY = "cms/leads.json";
 const REMOTE_SETTINGS_KEY = "cms/settings.json";
 const REMOTE_BLOB_ACCESS = process.env.BLOB_STORE_ACCESS === "public" ? "public" : "private";
-const JSON_BLOB_CACHE_TTL_SECONDS = 60;
 const IS_VERCEL_RUNTIME = Boolean(process.env.VERCEL);
 const ALLOW_LOCAL_CMS_STORAGE = !IS_VERCEL_RUNTIME || process.env.ALLOW_LOCAL_CMS_STORAGE === "1";
 const CANONICAL_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim() || undefined;
@@ -97,9 +96,10 @@ function getBlobReadOptions() {
   const options = getBlobBaseOptions();
 
   // CMS JSON files are overwritten in place, so cached reads can serve stale data.
-  return REMOTE_BLOB_ACCESS === "private"
-    ? { ...options, useCache: false }
-    : options;
+  return {
+    ...options,
+    useCache: false,
+  };
 }
 
 async function ensureLocalDataDir() {
@@ -145,18 +145,22 @@ async function readRemoteJson<T>(
       }
 
       if (isProtectedJsonEnvelope(payload)) {
-        await writeRemoteJson(key, fallback, options);
-        return fallback;
+        throw new Error(
+          "Protected CMS data could not be decrypted. Confirm ADMIN_SESSION_SECRET matches the secret used to store this file.",
+        );
       }
     }
 
     if (isProtectedJsonEnvelope(payload)) {
-      await writeRemoteJson(key, fallback, options);
-      return fallback;
+      throw new Error("Protected CMS data was found where plain JSON was expected.");
     }
 
     return payload as T;
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith("Protected CMS data")) {
+      throw error;
+    }
+
     return fallback;
   }
 }
@@ -171,7 +175,7 @@ async function writeRemoteJson(
   await put(key, JSON.stringify(payload, null, 2), {
     addRandomSuffix: false,
     allowOverwrite: true,
-    cacheControlMaxAge: JSON_BLOB_CACHE_TTL_SECONDS,
+    cacheControlMaxAge: 0,
     ...getBlobBaseOptions(),
     contentType: "application/json; charset=utf-8",
   });

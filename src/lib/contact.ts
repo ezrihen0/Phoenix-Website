@@ -1,5 +1,6 @@
 import "server-only";
 
+import { revalidatePath } from "next/cache";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 
@@ -317,6 +318,12 @@ export async function routeLeadSubmission(
   };
 
   await saveLead(leadRecord);
+  console.info("[lead-inbox] saved", {
+    leadId,
+    source: leadRecord.source,
+    city: leadRecord.city,
+  });
+  revalidatePath("/admin/leads");
 
   let emailDelivery: DeliveryResult = {
     status: "failed",
@@ -511,6 +518,12 @@ export async function routeServiceRequestSubmission(
   };
 
   await saveLead(leadRecord);
+  console.info("[lead-inbox] saved", {
+    leadId,
+    source: leadRecord.source,
+    city: leadRecord.city,
+  });
+  revalidatePath("/admin/leads");
 
   let emailDelivery: DeliveryResult = {
     status: "failed",

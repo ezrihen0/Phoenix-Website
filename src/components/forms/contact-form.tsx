@@ -188,7 +188,14 @@ export function ContactForm({ className = "", city = defaultCitySlug, settings }
           />
         </label>
 
-        <input type="text" name="honey" className="hidden" tabIndex={-1} autoComplete="off" />
+        <input
+          type="checkbox"
+          name="honey"
+          className="hidden"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+        />
       </div>
 
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

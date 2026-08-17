@@ -20,6 +20,7 @@ import { siteConfig } from "@/lib/site-data";
 type FormState = {
   status: "idle" | "submitting" | "success" | "error";
   message?: string;
+  leadId?: string;
 };
 
 type Attribution = {
@@ -189,7 +190,7 @@ export function RequestServiceForm({
         }),
       });
 
-      const result = (await response.json()) as { message?: string };
+      const result = (await response.json()) as { message?: string; leadId?: string };
 
       if (!response.ok) {
         setState({
@@ -201,6 +202,7 @@ export function RequestServiceForm({
 
       setState({
         status: "success",
+        leadId: result.leadId,
         message:
           result.message ??
           "Request received. Phoenix will review your request and contact you with the next step.",
@@ -232,6 +234,11 @@ export function RequestServiceForm({
               ? `We have your ${selectedService.title.toLowerCase()} request for ${cityName}.`
               : `We have your ${cityName} service request.`}
           </p>
+          {state.leadId ? (
+            <p className="mt-3 text-xs leading-6 text-[var(--color-muted)]">
+              Reference: {state.leadId}
+            </p>
+          ) : null}
           <a
             href={`tel:${settings.phoneHref || siteConfig.phoneHref}`}
             className="mt-8 inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold text-[var(--color-ink)]"
@@ -558,7 +565,14 @@ export function RequestServiceForm({
           </div>
         ) : null}
 
-        <input type="text" name="honey" className="hidden" tabIndex={-1} autoComplete="off" />
+        <input
+          type="checkbox"
+          name="honey"
+          className="hidden"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+        />
         <input type="hidden" name="city" value={city} />
 
         {stepError ? (
