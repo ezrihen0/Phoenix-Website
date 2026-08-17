@@ -8,7 +8,12 @@ import { unstable_noStore as noStore } from "next/cache";
 import { defaultCitySlug, getCityBySlug, type CitySlug } from "@/lib/cities";
 import { defaultArticles, defaultSiteSettings } from "@/lib/cms/defaults";
 import { getArticleSortTimestamp } from "@/lib/cms/helpers";
-import { isProtectedJsonEnvelope, protectJson, unprotectJson } from "@/lib/cms/secure-json";
+import {
+  isProtectedJsonEnvelope,
+  protectJson,
+  shouldRewrapProtectedJson,
+  unprotectJson,
+} from "@/lib/cms/secure-json";
 import type { Article, Lead, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
 import type { EvidenceRecord, PublicEvidence } from "@/lib/evidence";
 import { EVIDENCE_TYPE_VALUES, toPublicEvidence } from "@/lib/evidence";
@@ -141,6 +146,10 @@ async function readRemoteJson<T>(
       const decrypted = unprotectJson<T>(payload);
 
       if (decrypted !== null) {
+        if (shouldRewrapProtectedJson(payload)) {
+          await writeRemoteJson(key, decrypted, options);
+        }
+
         return decrypted;
       }
 
