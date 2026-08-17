@@ -50,8 +50,8 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
       "Sunnyside",
       "Strathmore",
     ],
-    phoneDisplay: "(825) 425-0050",
-    phoneHref: "+18254250050",
+    phoneDisplay: "(825) 823-9556",
+    phoneHref: "+18258239556",
     mapEmbedUrl:
       "https://maps.google.com/maps?q=Calgary&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",
@@ -84,8 +84,8 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
       "St. Albert",
       "Stony Plain",
     ],
-    phoneDisplay: "(825) 445-4437",
-    phoneHref: "+18254454437",
+    phoneDisplay: "(825) 823-9556",
+    phoneHref: "+18258239556",
     mapEmbedUrl:
       "https://maps.google.com/maps?q=Edmonton&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",
@@ -118,8 +118,8 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
       "Rocky Mountain House",
       "Sylvan Lake",
     ],
-    phoneDisplay: "(587) 875-3500",
-    phoneHref: "+15878753500",
+    phoneDisplay: "(825) 823-9556",
+    phoneHref: "+18258239556",
     mapEmbedUrl:
       "https://maps.google.com/maps?q=Red%20Deer%20Alberta&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",

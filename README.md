@@ -167,7 +167,7 @@ Use this endpoint for container or platform health probes:
 
 ## Content Notes
 
-- The original site contains inconsistent phone numbers. The rebuild currently uses `(825) 425-0050` as the single source of truth until business data is confirmed.
+- The site uses `(825) 823-9556` as the business phone across Calgary, Edmonton, and Red Deer.
 - Business hours, booking link, and contact info are seeded from `src/lib/cms/defaults.ts` and become editable through `/admin/settings`.
 
 ## Suggested Next Build Steps

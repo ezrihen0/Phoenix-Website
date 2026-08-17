@@ -7,8 +7,8 @@ export const siteConfig = {
   description:
     "Phoenix Chimney & Fireplace Services routes fireplace repair, chimney care, and WETT inspection service across Calgary, Edmonton, and Red Deer.",
   url: process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://phoenixfireplace.ca",
-  phoneDisplay: "(825) 425-0050",
-  phoneHref: "+18254250050",
+  phoneDisplay: "(825) 823-9556",
+  phoneHref: "+18258239556",
   email: "phoenixfireplace0@gmail.com",
   serviceRadius: "Serving Calgary and surrounding communities within 100 km.",
   hoursLabel: "Sunday-Friday",
