@@ -150,14 +150,16 @@ export function RequestServiceForm({
       return;
     }
 
+    const form = event.currentTarget;
+    const honeyValue = form instanceof HTMLFormElement ? new FormData(form).get("honey") : "";
+    const honey = typeof honeyValue === "string" ? honeyValue : "";
+
     setState({ status: "submitting" });
     setStepError("");
 
     try {
       const recaptchaToken = await getRecaptchaToken();
       const liveAttribution = getAttributionFromWindow(attribution);
-      const form = event.currentTarget;
-      const honey = new FormData(form).get("honey");
 
       const response = await fetch("/api/request-service", {
         method: "POST",
@@ -182,7 +184,7 @@ export function RequestServiceForm({
           utmSource: liveAttribution.utmSource,
           utmMedium: liveAttribution.utmMedium,
           utmCampaign: liveAttribution.utmCampaign,
-          honey: typeof honey === "string" ? honey : "",
+          honey,
           recaptchaToken,
         }),
       });
