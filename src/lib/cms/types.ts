@@ -41,8 +41,6 @@ export type SiteSettings = {
   hoursLabel: string;
   hoursDetail: string;
   serviceRadius: string;
-  bookingLabel: string;
-  workizUrl: string;
   mapEmbedUrl: string;
   socialPreview: string;
   defaultAuthorName: string;
@@ -67,8 +65,6 @@ export type PublicSiteSettings = Pick<
   | "hoursLabel"
   | "hoursDetail"
   | "serviceRadius"
-  | "bookingLabel"
-  | "workizUrl"
   | "mapEmbedUrl"
   | "socialPreview"
   | "defaultAuthorName"
@@ -76,10 +72,12 @@ export type PublicSiteSettings = Pick<
   | "blogIndexDescription"
 >;
 
+export type LeadSource = "contact-form" | "website";
+
 export type Lead = {
   id: string;
   city: CitySlug;
-  source: "contact-form";
+  source: LeadSource;
   firstName: string;
   lastName: string;
   phone: string;
@@ -88,8 +86,16 @@ export type Lead = {
   preferredDay?: string;
   preferredTime?: string;
   message: string;
+  address?: string;
+  urgency?: string;
+  urgencyDetail?: string;
+  preferredContactMethod?: string;
+  sourceUrl?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
   createdAt: string;
-  bookingDeliveryStatus: LeadDeliveryStatus;
+  bookingDeliveryStatus?: LeadDeliveryStatus;
   bookingDeliveryNote?: string;
   emailDeliveryStatus: LeadDeliveryStatus;
   emailDeliveryNote?: string;

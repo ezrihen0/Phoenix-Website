@@ -4,7 +4,7 @@ import Script from "next/script";
 import { LoaderCircle, Send } from "lucide-react";
 import { useState } from "react";
 
-import { defaultCitySlug, type CitySlug } from "@/lib/cities";
+import { defaultCitySlug, getRequestServiceHref, type CitySlug } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
 import { CONTACT_FORM_RECAPTCHA_ACTION } from "@/lib/recaptcha";
 import { contactServiceOptions, siteConfig } from "@/lib/site-data";
@@ -23,7 +23,7 @@ const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY?.trim() || "
 type ContactFormProps = {
   className?: string;
   city?: CitySlug;
-  settings?: Pick<PublicSiteSettings, "phoneDisplay" | "workizUrl">;
+  settings?: Pick<PublicSiteSettings, "phoneDisplay">;
 };
 
 declare global {
@@ -38,7 +38,6 @@ declare global {
 export function ContactForm({ className = "", city = defaultCitySlug, settings }: ContactFormProps) {
   const [state, setState] = useState<FormState>(initialState);
   const phoneDisplay = settings?.phoneDisplay || siteConfig.phoneDisplay;
-  const workizUrl = settings?.workizUrl || siteConfig.workizUrl;
 
   async function getRecaptchaToken() {
     if (!recaptchaSiteKey) {
@@ -97,7 +96,7 @@ export function ContactForm({ className = "", city = defaultCitySlug, settings }
         status: "error",
         message:
           result.message ??
-          "We could not send your request right now. Please call or book online.",
+          "We could not send your request right now. Please call the office.",
       });
     } catch (error) {
       setState({
@@ -105,7 +104,7 @@ export function ContactForm({ className = "", city = defaultCitySlug, settings }
         message:
           error instanceof Error
             ? error.message
-            : "We could not send your request right now. Please call or book online.",
+            : "We could not send your request right now. Please call the office.",
       });
     }
   }
@@ -194,7 +193,7 @@ export function ContactForm({ className = "", city = defaultCitySlug, settings }
 
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm leading-6 text-[var(--color-muted)]">
-            Prefer instant scheduling? Use the <a href={workizUrl} target="_blank" rel="noreferrer" className="font-semibold text-[var(--color-forest)]">online booking link</a> for 24/7 self-serve booking.
+            Prefer a guided request? Use <a href={getRequestServiceHref(city)} className="font-semibold text-[var(--color-forest)]">Request Service</a>.
           </div>
           <button
             type="submit"

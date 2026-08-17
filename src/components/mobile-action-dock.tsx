@@ -6,10 +6,10 @@ import { CalendarDays, FileText, Phone } from "lucide-react";
 
 import {
   citySupportsArticles,
-  citySupportsBooking,
   getCityFromPathname,
   getCityHref,
   getCitySettings,
+  getRequestServiceHref,
   getScopedPath,
 } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
@@ -27,7 +27,6 @@ export function MobileActionDock({ settings }: MobileActionDockProps) {
   }
 
   const effectiveSettings = getCitySettings(settings, currentCity);
-  const showBooking = citySupportsBooking(currentCity);
   const showArticles = citySupportsArticles(currentCity);
 
   return (
@@ -40,25 +39,13 @@ export function MobileActionDock({ settings }: MobileActionDockProps) {
           <Phone className="h-4 w-4 text-[var(--color-gold)]" />
           Call
         </a>
-        {showBooking ? (
-          <a
-            href={effectiveSettings.workizUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="flex flex-col items-center justify-center gap-1 rounded-[1.1rem] bg-[var(--color-ember)] px-2 py-3 text-white"
-          >
-            <CalendarDays className="h-4 w-4" />
-            {effectiveSettings.bookingLabel}
-          </a>
-        ) : (
-          <Link
-            href={getCityHref(currentCity)}
-            className="flex flex-col items-center justify-center gap-1 rounded-[1.1rem] bg-[var(--color-ember)] px-2 py-3 text-white"
-          >
-            <CalendarDays className="h-4 w-4" />
-            Home
-          </Link>
-        )}
+        <Link
+          href={getRequestServiceHref(currentCity)}
+          className="flex flex-col items-center justify-center gap-1 rounded-[1.1rem] bg-[var(--color-ember)] px-2 py-3 text-white"
+        >
+          <CalendarDays className="h-4 w-4" />
+          Request
+        </Link>
         <Link
           href={showArticles ? getScopedPath("/articles", currentCity) : "/"}
           className="flex flex-col items-center justify-center gap-1 rounded-[1.1rem] px-2 py-3"

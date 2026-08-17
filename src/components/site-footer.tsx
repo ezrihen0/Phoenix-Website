@@ -7,11 +7,11 @@ import { ArrowUpRight, Clock3, Mail, MapPinned, Phone } from "lucide-react";
 
 import {
   cities,
-  citySupportsBooking,
   getCityBySlug,
   getCityFromPathname,
   getCityHref,
   getCitySettings,
+  getRequestServiceHref,
   getScopedPath,
 } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
@@ -103,16 +103,12 @@ export function SiteFooter({ settings }: SiteFooterProps) {
             >
               Change city
             </Link>
-            {citySupportsBooking(currentCity) ? (
-              <a
-                href={effectiveSettings.workizUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold transition hover:border-white/40"
-              >
-                {effectiveSettings.bookingLabel}
-              </a>
-            ) : null}
+            <Link
+              href={getRequestServiceHref(currentCity)}
+              className="rounded-full bg-[var(--color-ember)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
+            >
+              Request Service
+            </Link>
           </div>
         </div>
 

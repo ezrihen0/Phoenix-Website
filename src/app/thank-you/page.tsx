@@ -54,7 +54,7 @@ export default async function ThankYouPage() {
                       Review
                     </p>
                     <p className="mt-3 text-sm leading-6 text-[var(--color-paper)]/78">
-                      Every booking is checked before dispatch details are locked in.
+                      Every request is checked before dispatch details are locked in.
                     </p>
                   </div>
                   <div className="rounded-[1.4rem] border border-white/10 bg-white/6 px-4 py-4">
@@ -131,7 +131,7 @@ export default async function ThankYouPage() {
                   What happens next?
                 </p>
                 <h2 className="mt-4 text-2xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-3xl">
-                  We will confirm the details and send your booking status shortly.
+                  Phoenix will review your request and contact you with the next step.
                 </h2>
                 <div className="mt-6 space-y-4 text-sm leading-8 text-[var(--color-muted)] sm:text-base">
                   <p>
@@ -141,14 +141,14 @@ export default async function ThankYouPage() {
                     Please note: If you do not receive a confirmation, your appointment is not yet finalized.
                   </p>
                   <p>
-                    In that case, one of our representatives will contact you to complete the booking.
+                    In that case, one of our representatives will contact you to confirm the next step.
                   </p>
                 </div>
               </div>
 
               <div className="mt-8 rounded-[2rem] border border-[var(--color-border)] bg-[rgba(255,255,255,0.62)] p-5">
                 <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-ember)]">
-                  Booking Reminder
+                  Request reminder
                 </p>
                 <div className="mt-4 space-y-3 text-sm leading-8 text-[var(--color-muted)] sm:text-base">
                   <p>
@@ -158,7 +158,7 @@ export default async function ThankYouPage() {
                     If a confirmation does not arrive, the request is still pending review and scheduling.
                   </p>
                   <p className="font-semibold text-[var(--color-ink)]">
-                    Phoenix will follow up directly to finish the booking if anything still needs to be confirmed.
+                    Phoenix will follow up directly if anything still needs to be confirmed.
                   </p>
                 </div>
               </div>

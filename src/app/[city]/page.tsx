@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CalendarDays, CheckCircle2, MapPinned, Phone, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, MapPinned, Phone, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { ContextualLinksGrid } from "@/components/internal-links/contextual-links-grid";
@@ -12,7 +12,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { ServiceGuidesGrid } from "@/components/service-guides-grid";
 import { ServiceCard } from "@/components/service-card";
 import { StructuredData } from "@/components/structured-data";
-import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
+import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings, getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { getCityHubLinks } from "@/lib/internal-links";
 import {
@@ -148,15 +148,12 @@ export default async function CityHomePage({
                       the right service and understand what comes next.
                     </p>
                     <div className="flex flex-wrap justify-center gap-3 pb-6 pt-2 sm:pb-8">
-                      <a
-                        href={siteSettings.workizUrl}
-                        target="_blank"
-                        rel="noreferrer"
+                      <Link
+                        href={getRequestServiceHref(city.slug)}
                         className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
                       >
-                        <CalendarDays className="h-4 w-4" />
-                        Book online
-                      </a>
+                        Request Service
+                      </Link>
                       <a
                         href={`tel:${siteSettings.phoneHref}`}
                         className="inline-flex items-center gap-2 rounded-full border border-white/18 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/8"
@@ -351,7 +348,7 @@ export default async function CityHomePage({
         <div className="page-frame grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
           <Reveal>
             <SectionHeading
-              eyebrow="How booking works"
+              eyebrow="How service requests work"
               title="A simple process built around getting the right technician and the right report."
               description="Whether the issue is a dirty gas unit, a suspected chimney defect, or a time-sensitive WETT request, the goal is to match the appointment to the actual problem quickly."
             />
@@ -411,7 +408,7 @@ export default async function CityHomePage({
               <SectionHeading
                 eyebrow="Coverage and quick answers"
                 title="Common questions before you book."
-                description="These answers are written for homeowners choosing between calling, booking, or requesting an inspection report."
+                description="These answers are written for homeowners choosing between calling, requesting service, or requesting an inspection report."
               />
             </Reveal>
             <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
@@ -443,7 +440,7 @@ export default async function CityHomePage({
           <div className="space-y-5">
             <p className="eyebrow text-[var(--color-gold)]">Request service</p>
             <h2 className="display-title text-balance text-5xl font-semibold leading-[0.95] sm:text-6xl">
-              Book online, or send the issue through the form and let us route the right service.
+              Request service, or send the issue through the form and let us route the right next step.
             </h2>
             <p className="max-w-xl text-base leading-8 text-[var(--color-paper)]/76">
               Whether you are dealing with a cold unit, a chimney concern, or an insurance-driven inspection,

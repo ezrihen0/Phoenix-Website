@@ -9,7 +9,7 @@ import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
-import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
+import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings, getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { getGasRepairContextualLinks } from "@/lib/internal-links";
 import {
@@ -157,14 +157,12 @@ export default async function CityGasFireplaceRepairPage({
                 ))}
               </div>
               <div className="flex flex-wrap gap-3">
-                <a
-                  href={siteSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  href={getRequestServiceHref(city.slug)}
                   className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                 >
-                  Book gas fireplace repair
-                </a>
+                  Request gas fireplace repair
+                </Link>
                 <a
                   href={`tel:${siteSettings.phoneHref}`}
                   className="inline-flex items-center gap-2 rounded-full border border-white/16 px-5 py-3 text-sm font-semibold text-white"

@@ -13,9 +13,6 @@ export const siteConfig = {
   serviceRadius: "Serving Calgary and surrounding communities within 100 km.",
   hoursLabel: "Sunday-Friday",
   hoursDetail: "9AM-6PM local dispatch",
-  bookingLabel: "24/7 online booking",
-  workizUrl:
-    "https://online-booking.workiz.com/?ac=a4cec125301177c1e59dbd126ecf1fdb5e10a208bf0fd37dc32cf14e5be902f7",
   mapEmbedUrl:
     "https://maps.google.com/maps?q=Calgary&t=m&z=9&output=embed&iwloc=near",
   serviceAreas: [
@@ -204,7 +201,7 @@ export const aboutPoints = [
   {
     title: "Scheduling that respects the homeowner",
     description:
-      "Clear appointment windows and online booking that stays available after hours.",
+      "Clear appointment windows and a request form that stays available after hours.",
   },
   {
     title: "Repair-first mindset",
@@ -228,7 +225,7 @@ export function getAboutPoints(cityName: string) {
     {
       title: "Scheduling that respects the homeowner",
       description:
-        "Clear appointment windows and online booking that stays available after hours.",
+        "Clear appointment windows and a request form that stays available after hours.",
     },
     {
       title: "Repair-first mindset",
@@ -304,7 +301,7 @@ export const homeFaqs = [
   {
     question: "What is the fastest way to schedule service?",
     answer:
-      "Use the online booking link for 24/7 scheduling, or call the office if you need help choosing the right service type.",
+      "Use Request Service for 24/7 intake, or call the office if you need help choosing the right service type.",
   },
 ] as const;
 
@@ -330,7 +327,7 @@ export function getHomeFaqs(cityName: string, serviceAreas: readonly string[]) {
     {
       question: "What is the fastest way to schedule service?",
       answer:
-        "Use the online booking link for 24/7 scheduling, or call the office if you need help choosing the right service type.",
+        "Use Request Service for 24/7 intake, or call the office if you need help choosing the right service type.",
     },
   ] as const;
 }

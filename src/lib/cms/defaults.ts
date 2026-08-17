@@ -12,9 +12,6 @@ export const defaultSiteSettings: SiteSettings = {
   hoursLabel: "Sunday-Friday",
   hoursDetail: "9AM-6PM local dispatch",
   serviceRadius: "Serving Calgary and surrounding communities within 100 km.",
-  bookingLabel: "24/7 online booking",
-  workizUrl:
-    "https://online-booking.workiz.com/?ac=a4cec125301177c1e59dbd126ecf1fdb5e10a208bf0fd37dc32cf14e5be902f7",
   mapEmbedUrl:
     "https://maps.google.com/maps?q=Calgary&t=m&z=9&output=embed&iwloc=near",
   socialPreview: "/images/photos/hero-fireplace.jpg",

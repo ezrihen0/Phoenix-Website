@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, ChevronDown, Clock3, Flame, Menu, Phone, X } from "lucide-react";
+import { ChevronDown, Clock3, Flame, Menu, Phone, X } from "lucide-react";
 import type { FocusEvent, MouseEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
@@ -13,11 +13,11 @@ import {
 } from "@/components/phoenix-logo-easter-egg";
 import {
   cities,
-  citySupportsBooking,
   getCityBySlug,
   getCityFromPathname,
   getCityHref,
   getCitySettings,
+  getRequestServiceHref,
   getScopedPath,
 } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
@@ -39,7 +39,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
   const city = currentCity ? getCityBySlug(currentCity) : undefined;
   const effectiveSettings = getCitySettings(settings, currentCity);
   const showCityNavigation = Boolean(currentCity);
-  const showBooking = citySupportsBooking(currentCity);
+  const requestServiceHref = getRequestServiceHref(currentCity);
   const isChooserPage = pathname === "/";
   const isProvinceWideServicesRoute =
     pathname === "/services" || pathname?.startsWith("/services/");
@@ -59,8 +59,6 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
   const clickResetTimerRef = useRef<number | null>(null);
   const servicesMenuCloseTimerRef = useRef<number | null>(null);
   const lastPhoenixMessageIndexRef = useRef(-1);
-  const mobileBookingLabel =
-    effectiveSettings.bookingLabel.length > 14 ? "Book online" : effectiveSettings.bookingLabel;
 
   useEffect(() => {
     return () => {
@@ -226,17 +224,12 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                   <Phone className="h-3.5 w-3.5 text-[var(--color-gold)]" />
                   {effectiveSettings.phoneDisplay}
                 </a>
-                {showBooking ? (
-                  <a
-                    href={effectiveSettings.workizUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-4 py-2 font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
-                  >
-                    <CalendarDays className="h-3.5 w-3.5" />
-                    Book online
-                  </a>
-                ) : null}
+                <Link
+                  href={requestServiceHref}
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-4 py-2 font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
+                >
+                  Request Service
+                </Link>
               </div>
             ) : isChooserPage ? (
               <div className="flex flex-wrap items-center gap-4 text-[var(--color-paper)]/78">
@@ -400,17 +393,13 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               >
                 Call now
               </a>
-              {showBooking ? (
-                <a
-                  href={effectiveSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full border border-[rgba(34,58,51,0.18)] bg-[var(--color-forest)] px-5 py-2.5 text-sm font-semibold shadow-[0_14px_30px_rgba(34,58,51,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(34,58,51,0.3)]"
-                  style={{ color: "var(--color-paper)" }}
-                >
-                  {effectiveSettings.bookingLabel}
-                </a>
-              ) : null}
+              <Link
+                href={requestServiceHref}
+                className="rounded-full border border-[rgba(34,58,51,0.18)] bg-[var(--color-forest)] px-5 py-2.5 text-sm font-semibold shadow-[0_14px_30px_rgba(34,58,51,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(34,58,51,0.3)]"
+                style={{ color: "var(--color-paper)" }}
+              >
+                Request Service
+              </Link>
             </div>
           ) : null}
 
@@ -421,6 +410,12 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                 className="rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-semibold transition hover:border-[var(--color-ink)]"
               >
                 Cities
+              </Link>
+              <Link
+                href={requestServiceHref}
+                className="rounded-full bg-[var(--color-ember)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
+              >
+                Request Service
               </Link>
             </div>
           ) : null}
@@ -443,17 +438,12 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                   Cities
                 </Link>
               )}
-              {showBooking ? (
-                <a
-                  href={effectiveSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-[var(--color-forest)] px-3 py-3 text-[0.82rem] font-semibold text-[var(--color-paper)] sm:px-4 sm:text-sm"
-                >
-                  <CalendarDays className="h-4 w-4" />
-                  {mobileBookingLabel}
-                </a>
-              ) : null}
+              <Link
+                href={requestServiceHref}
+                className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-[var(--color-forest)] px-3 py-3 text-[0.82rem] font-semibold text-[var(--color-paper)] sm:px-4 sm:text-sm"
+              >
+                Request Service
+              </Link>
               <button
                 type="button"
                 className="inline-flex rounded-full border border-[var(--color-border)] p-3"
@@ -564,16 +554,13 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                   Call {effectiveSettings.phoneDisplay}
                 </a>
               ) : null}
-              {showBooking ? (
-                <a
-                  href={effectiveSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-2xl bg-[var(--color-ember)] px-4 py-3 text-center font-semibold text-white"
-                >
-                  {mobileBookingLabel}
-                </a>
-              ) : null}
+              <Link
+                href={requestServiceHref}
+                onClick={() => setIsOpen(false)}
+                className="rounded-2xl bg-[var(--color-ember)] px-4 py-3 text-center font-semibold text-white"
+              >
+                Request Service
+              </Link>
             </div>
           </div>
         ) : null}

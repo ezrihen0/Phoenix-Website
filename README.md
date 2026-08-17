@@ -1,6 +1,6 @@
 # Phoenix Chimney & Fireplace Services
 
-Next.js marketing site rebuild for the Calgary fireplace and chimney business, using the existing live-site media locally and keeping the booking flow centered on Workiz.
+Next.js marketing site rebuild for the Calgary fireplace and chimney business, using the existing live-site media locally and capturing website requests through Phoenix Request Service.
 
 The project now also includes a lightweight article CMS, a simple credential-based admin login, and a scheduled AI article generator designed for Vercel deployment.
 
@@ -10,7 +10,7 @@ The project now also includes a lightweight article CMS, a simple credential-bas
 - TypeScript
 - Tailwind CSS v4
 - Local image assets copied from the live site
-- Server-side contact route with a clean seam for future Workiz API delivery
+- Server-side contact and Request Service routes that save leads into the Phoenix admin inbox
 - Signed cookie admin sessions with env-based credentials and basic brute-force throttling
 - Local JSON fallback plus Vercel Blob storage for articles and editable site settings
 - OpenAI-powered daily article generation via a protected cron route
@@ -63,16 +63,9 @@ npm run dev
 npm run build
 ```
 
-## Workiz Integration
+## Lead Intake
 
-The current public booking buttons point to the Workiz online-booking URL stored in `src/lib/site-data.ts`.
-
-The contact form posts to `/api/contact` and supports two modes:
-
-- `WORKIZ_API_TOKEN` and `WORKIZ_LEAD_ENDPOINT` configured: submit leads server-side to Workiz
-- no production config present: return a clear fallback so the site can direct users to call or book online
-
-This keeps the current project Next.js-only while leaving a clean backend seam if a future NestJS service takes over lead routing.
+Website requests go to `/[city]/request-service` and `/api/request-service`. Contact form submissions go to `/api/contact`. Both save into the existing Admin Leads inbox and can email `phoenixfireplace0@gmail.com`.
 
 ## Admin and CMS
 
@@ -80,7 +73,7 @@ Admin access is handled with a direct username and password stored in environmen
 
 The admin area supports:
 
-- site setting updates for business details and booking/contact data
+- site setting updates for business details and contact data
 - article create, edit, delete, and publish flows
 - manual AI article generation for review
 
@@ -114,8 +107,6 @@ Use `.env.example` as the template. The main deployment variables are:
 
 - `NEXT_PUBLIC_SITE_URL`: canonical public URL used for metadata and sitemap generation
 - `DEPLOYMENT_VERSION`: deployment identifier used by Next.js to reduce version-skew issues during rollouts
-- `WORKIZ_API_TOKEN`: optional, enables direct server-side Workiz lead submission
-- `WORKIZ_LEAD_ENDPOINT`: optional, endpoint for Workiz lead delivery
 - `ADMIN_USERNAME`: username allowed into `/admin`
 - `ADMIN_PASSWORD_HASH`: preferred password format, generated as a scrypt hash
 - `ADMIN_PASSWORD`: optional plain-text fallback for local setup only if you do not want to pre-hash the password
@@ -168,7 +159,7 @@ Use this endpoint for container or platform health probes:
 ## Content Notes
 
 - The site uses `(825) 823-9556` as the business phone across Calgary, Edmonton, and Red Deer.
-- Business hours, booking link, and contact info are seeded from `src/lib/cms/defaults.ts` and become editable through `/admin/settings`.
+- Business hours and contact info are seeded from `src/lib/cms/defaults.ts` and become editable through `/admin/settings`.
 
 ## Suggested Next Build Steps
 

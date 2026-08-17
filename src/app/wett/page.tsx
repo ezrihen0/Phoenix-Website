@@ -7,7 +7,7 @@ import { ContextualLinksGrid } from "@/components/internal-links/contextual-link
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
-import { getCityHref } from "@/lib/cities";
+import { getCityHref, getRequestServiceHref } from "@/lib/cities";
 import { getSiteSettings } from "@/lib/cms/storage";
 import { getWettContextualLinks } from "@/lib/internal-links";
 import {
@@ -90,14 +90,12 @@ export default async function WettPage() {
                 ))}
               </div>
               <div className="flex flex-wrap gap-3">
-                <a
-                  href={siteSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  href={getRequestServiceHref()}
                   className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                 >
-                  Book WETT inspection
-                </a>
+                  Request WETT inspection
+                </Link>
                 <a
                   href={`tel:${siteSettings.phoneHref}`}
                   className="rounded-full border border-white/16 px-5 py-3 text-sm font-semibold text-white"
@@ -192,14 +190,12 @@ export default async function WettPage() {
                 documents them properly, and points to the repair or correction path rather than leaving homeowners to interpret technical notes alone.
               </p>
               <div className="flex flex-wrap gap-3">
-                <a
-                  href={siteSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  href={getRequestServiceHref()}
                   className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                 >
-                  Book inspection now
-                </a>
+                  Request inspection
+                </Link>
                 <a
                   href={`tel:${siteSettings.phoneHref}`}
                   className="rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"

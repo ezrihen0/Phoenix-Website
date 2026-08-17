@@ -9,7 +9,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { ServiceGuidesGrid } from "@/components/service-guides-grid";
 import { StructuredData } from "@/components/structured-data";
-import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
+import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings, getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, buildFaqSchema, buildLocalBusinessSchema, buildServiceSchema, createPageMetadata } from "@/lib/seo";
 import { getHomeFaqs, getServiceDetailPath, services } from "@/lib/site-data";
@@ -122,14 +122,12 @@ export default async function CityServicesPage({
                 and structural wear goes to masonry.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <a
-                  href={siteSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  href={getRequestServiceHref(city.slug)}
                   className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                 >
-                  Book online
-                </a>
+                  Request Service
+                </Link>
                 <a
                   href={`tel:${siteSettings.phoneHref}`}
                   className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
@@ -185,14 +183,12 @@ export default async function CityServicesPage({
                         Open service page
                         <ArrowRight className="h-4 w-4" />
                       </Link>
-                      <a
-                        href={siteSettings.workizUrl}
-                        target="_blank"
-                        rel="noreferrer"
+                      <Link
+                        href={getRequestServiceHref(city.slug)}
                         className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                       >
-                        Schedule this service
-                      </a>
+                        Request this service
+                      </Link>
                       <a
                         href={`tel:${siteSettings.phoneHref}`}
                         className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
@@ -222,7 +218,7 @@ export default async function CityServicesPage({
             <SectionHeading
               eyebrow="Fireplace & chimney FAQs"
               title={`Common questions before booking fireplace or chimney service in ${city.name}.`}
-              description="These answers help homeowners choose between calling, booking online, or opening a more specific service page."
+              description="These answers help homeowners choose between calling, requesting service, or opening a more specific service page."
             />
           </Reveal>
           <div className="grid gap-4">

@@ -10,6 +10,7 @@ import {
   cities,
   getCityBySlug,
   getCityHref,
+  getRequestServiceHref,
   type CitySlug,
 } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
@@ -77,14 +78,12 @@ export async function ServiceLandingPageView({
                   ))}
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <a
-                    href={settings.workizUrl}
-                    target="_blank"
-                    rel="noreferrer"
+                  <Link
+                    href={getRequestServiceHref(city)}
                     className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                   >
                     {servicePage.ctaLabel}
-                  </a>
+                  </Link>
                   <a
                     href={`tel:${settings.phoneHref}`}
                     className="inline-flex items-center gap-2 rounded-full border border-white/16 px-5 py-3 text-sm font-semibold text-white"
@@ -361,14 +360,12 @@ export async function ServiceLandingPageView({
                 {servicePage.finalCta.description}
               </p>
               <div className="flex flex-wrap gap-3">
-                <a
-                  href={settings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  href={getRequestServiceHref(city)}
                   className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                 >
                   {servicePage.ctaLabel}
-                </a>
+                </Link>
                 <a
                   href={`tel:${settings.phoneHref}`}
                   className="rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"

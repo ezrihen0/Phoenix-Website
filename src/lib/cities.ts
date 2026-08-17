@@ -20,7 +20,6 @@ export type CityDefinition = {
   phoneHref: string;
   mapEmbedUrl: string;
   launchStage: CityStatus;
-  bookingEnabled: boolean;
   contactFormEnabled: boolean;
   articlesEnabled: boolean;
   weatherContext: string;
@@ -37,7 +36,7 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     longitude: -114.0719,
     dispatchLabel: "Live city site",
     chooserBlurb:
-      "Calgary service pages, booking flow, contact routing, and localized article coverage are live now.",
+      "Calgary service pages, request-service flow, contact routing, and localized article coverage are live now.",
     serviceRadius: "Serving Calgary and surrounding communities within 100 km.",
     serviceAreas: [
       "Altadore",
@@ -55,7 +54,6 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     mapEmbedUrl:
       "https://maps.google.com/maps?q=Calgary&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",
-    bookingEnabled: true,
     contactFormEnabled: true,
     articlesEnabled: true,
     weatherContext:
@@ -89,7 +87,6 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     mapEmbedUrl:
       "https://maps.google.com/maps?q=Edmonton&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",
-    bookingEnabled: true,
     contactFormEnabled: true,
     articlesEnabled: true,
     weatherContext:
@@ -123,7 +120,6 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     mapEmbedUrl:
       "https://maps.google.com/maps?q=Red%20Deer%20Alberta&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",
-    bookingEnabled: true,
     contactFormEnabled: true,
     articlesEnabled: true,
     weatherContext:
@@ -153,6 +149,10 @@ export function getCityBySlug(value: string) {
 export function getCityHref(city: CitySlug, path = "/") {
   const normalizedPath = path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
   return `/${city}${normalizedPath}`;
+}
+
+export function getRequestServiceHref(city?: CitySlug | null) {
+  return getCityHref(city || defaultCitySlug, "/request-service");
 }
 
 export function getCityFromPathname(pathname?: string | null) {
@@ -205,10 +205,6 @@ export function getCitySettings(
 
 export function cityHasFullContent(city: CitySlug) {
   return cityDefinitions[city].launchStage === "full";
-}
-
-export function citySupportsBooking(city?: CitySlug | null) {
-  return city ? cityDefinitions[city].bookingEnabled : false;
 }
 
 export function citySupportsContactForm(city?: CitySlug | null) {

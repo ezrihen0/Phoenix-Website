@@ -5,8 +5,13 @@ import { z } from "zod";
 
 import { CITY_SLUGS, defaultCitySlug, getCityBySlug } from "@/lib/cities";
 import { getSiteSettings, saveLead } from "@/lib/cms/storage";
+import type { Lead, LeadDeliveryStatus } from "@/lib/cms/types";
 import { CONTACT_FORM_RECAPTCHA_ACTION, DEFAULT_RECAPTCHA_MIN_SCORE } from "@/lib/recaptcha";
-import type { LeadDeliveryStatus } from "@/lib/cms/types";
+import {
+  SERVICE_REQUEST_CONTACT_METHODS,
+  SERVICE_REQUEST_TITLES,
+  SERVICE_REQUEST_URGENCY_OPTIONS,
+} from "@/lib/request-service";
 
 export const contactRequestSchema = z.object({
   city: z.enum(CITY_SLUGS).optional().default(defaultCitySlug),
@@ -24,11 +29,38 @@ export const contactRequestSchema = z.object({
 
 export type ContactRequest = z.infer<typeof contactRequestSchema>;
 
+const serviceRequestTitleSchema = z.enum(
+  SERVICE_REQUEST_TITLES as [string, ...string[]],
+);
+
+export const serviceRequestSchema = z.object({
+  city: z.enum(CITY_SLUGS).optional().default(defaultCitySlug),
+  firstName: z.string().trim().min(2, "First name is required."),
+  lastName: z.string().trim().min(2, "Last name is required."),
+  phone: z.string().trim().min(10, "Phone number is required."),
+  email: z.string().trim().email("Enter a valid email address."),
+  service: serviceRequestTitleSchema,
+  message: z.string().trim().min(10, "Tell us what is happening."),
+  urgency: z.enum(SERVICE_REQUEST_URGENCY_OPTIONS),
+  urgencyDetail: z.string().trim().min(2, "Choose a timing option."),
+  preferredDay: z.string().trim().optional(),
+  preferredTime: z.string().trim().optional(),
+  address: z.string().trim().optional(),
+  preferredContactMethod: z.enum(SERVICE_REQUEST_CONTACT_METHODS).optional().default("Phone"),
+  sourceUrl: z.string().trim().optional(),
+  utmSource: z.string().trim().optional(),
+  utmMedium: z.string().trim().optional(),
+  utmCampaign: z.string().trim().optional(),
+  honey: z.string().max(0).optional().default(""),
+  recaptchaToken: z.string().trim().optional().default(""),
+});
+
+export type ServiceRequest = z.infer<typeof serviceRequestSchema>;
+
 export type LeadDispatchResult = {
   ok: boolean;
   message: string;
   leadId?: string;
-  bookingDeliveryStatus: LeadDeliveryStatus;
   emailDeliveryStatus: LeadDeliveryStatus;
 };
 
@@ -44,6 +76,15 @@ type RecaptchaVerificationResult = {
 
 function normalizeOptional(value?: string) {
   return value?.trim() ? value.trim() : undefined;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function getRecaptchaMinScore() {
@@ -125,7 +166,7 @@ async function verifyRecaptchaToken(
     if (typeof result.score === "number" && result.score < getRecaptchaMinScore()) {
       return {
         ok: false,
-        message: "We could not verify your submission. Please call or use online booking if the form keeps failing.",
+        message: "We could not verify your submission. Please call the office if the form keeps failing.",
       };
     }
 
@@ -138,50 +179,6 @@ async function verifyRecaptchaToken(
       message: "We could not verify your submission right now. Please try again.",
     };
   }
-}
-
-function buildWorkizPayload(payload: ContactRequest) {
-  const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
-
-  return {
-    firstName: payload.firstName,
-    lastName: payload.lastName,
-    phone: payload.phone,
-    email: payload.email,
-    service: payload.service,
-    preferredDay: payload.preferredDay,
-    preferredTime: payload.preferredTime,
-    message: city ? `[City: ${city.name}]\n${payload.message}` : payload.message,
-    source: city ? `website-${city.slug}` : "website",
-  };
-}
-
-async function dispatchToWorkiz(payload: ContactRequest) {
-  const endpoint = process.env.WORKIZ_LEAD_ENDPOINT;
-  const token = process.env.WORKIZ_API_TOKEN;
-
-  if (!endpoint || !token) {
-    return null;
-  }
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(buildWorkizPayload(payload)),
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      `Workiz lead dispatch failed with status ${response.status}: ${errorText}`,
-    );
-  }
-
-  return response;
 }
 
 async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryResult> {
@@ -281,7 +278,6 @@ export async function routeLeadSubmission(
     return {
       ok: true,
       message: "Submission received.",
-      bookingDeliveryStatus: "skipped",
       emailDeliveryStatus: "skipped",
     };
   }
@@ -295,39 +291,15 @@ export async function routeLeadSubmission(
     return {
       ok: false,
       message: recaptchaVerification.message || "We could not verify your submission. Please try again.",
-      bookingDeliveryStatus: "skipped",
       emailDeliveryStatus: "skipped",
     };
   }
 
-  let bookingDelivery: DeliveryResult = {
-    status: "skipped",
-    note: "Online booking sync is not configured.",
-  };
-
-  try {
-    const workizResponse = await dispatchToWorkiz(payload);
-
-    if (workizResponse) {
-      bookingDelivery = {
-        status: "sent",
-        note: "Lead synced to the booking system.",
-      };
-    }
-  } catch (error) {
-    console.error("[lead-booking-sync] Failed to sync lead", error);
-    bookingDelivery = {
-      status: "failed",
-      note: error instanceof Error ? error.message : "Unknown booking sync error.",
-    };
-  }
-
-  const emailDelivery = await sendNotificationEmail(payload);
   const createdAt = new Date().toISOString();
   const leadId = crypto.randomUUID();
   const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
 
-  await saveLead({
+  const leadRecord: Lead = {
     id: leadId,
     city: city?.slug || defaultCitySlug,
     source: "contact-form",
@@ -340,17 +312,235 @@ export async function routeLeadSubmission(
     preferredTime: normalizeOptional(payload.preferredTime),
     message: payload.message,
     createdAt,
-    bookingDeliveryStatus: bookingDelivery.status,
-    bookingDeliveryNote: bookingDelivery.note,
-    emailDeliveryStatus: emailDelivery.status,
-    emailDeliveryNote: emailDelivery.note,
-  });
+    emailDeliveryStatus: "skipped",
+    emailDeliveryNote: "Notification pending.",
+  };
+
+  await saveLead(leadRecord);
+
+  let emailDelivery: DeliveryResult = {
+    status: "failed",
+    note: "Lead was saved, but the notification email did not run.",
+  };
+
+  try {
+    emailDelivery = await sendNotificationEmail(payload);
+  } catch (error) {
+    console.error("[lead-email] Contact-form notification failed after save", error);
+    emailDelivery = {
+      status: "failed",
+      note: error instanceof Error ? error.message : "Unknown email delivery error.",
+    };
+  }
+
+  try {
+    await saveLead({
+      ...leadRecord,
+      emailDeliveryStatus: emailDelivery.status,
+      emailDeliveryNote: emailDelivery.note,
+    });
+  } catch (error) {
+    console.error("[lead-email] Lead was saved, but email status could not be updated", error);
+  }
 
   return {
     ok: true,
     message: `Thanks. Your ${city?.name || "service"} request has been received.`,
     leadId,
-    bookingDeliveryStatus: bookingDelivery.status,
+    emailDeliveryStatus: emailDelivery.status,
+  };
+}
+
+async function sendWebsiteLeadEmail(
+  payload: ServiceRequest,
+  leadId: string,
+): Promise<DeliveryResult> {
+  const settings = await getSiteSettings();
+  const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
+  const recipient = (settings.notificationEmail || settings.sendingEmail || settings.email).trim();
+  const sender = (settings.sendingEmail || settings.email).trim();
+  const appPassword = settings.googleAppPassword.trim();
+
+  if (!recipient || !sender || !appPassword) {
+    return {
+      status: "failed",
+      note: "Lead was saved, but the sender, recipient, or app password is missing for email notification.",
+    };
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: sender,
+      pass: appPassword,
+    },
+  });
+
+  const customerName = `${payload.firstName} ${payload.lastName}`;
+  const subject = `[Phoenix Website Lead] ${city?.name || "Website"} | ${payload.service} | ${customerName}`;
+  const adminLeadsUrl = `${settings.siteUrl.replace(/\/$/, "")}/admin/leads`;
+  const lines = [
+    `Lead ID: ${leadId}`,
+    `Admin inbox: ${adminLeadsUrl}`,
+    `City: ${city?.name || "Unknown"}`,
+    `Source: Website`,
+    `Name: ${customerName}`,
+    `Phone: ${payload.phone}`,
+    `Email: ${payload.email}`,
+    `Preferred contact: ${payload.preferredContactMethod || "Phone"}`,
+    `Service: ${payload.service}`,
+    `Urgency: ${payload.urgency}`,
+    `Timing: ${payload.urgencyDetail}`,
+    `Address: ${normalizeOptional(payload.address) || "Not provided"}`,
+    `Preferred day: ${normalizeOptional(payload.preferredDay) || payload.urgencyDetail}`,
+    `Preferred time: ${normalizeOptional(payload.preferredTime) || "Not provided"}`,
+    `Page: ${normalizeOptional(payload.sourceUrl) || "Not provided"}`,
+    `UTM source: ${normalizeOptional(payload.utmSource) || "Not provided"}`,
+    `UTM medium: ${normalizeOptional(payload.utmMedium) || "Not provided"}`,
+    `UTM campaign: ${normalizeOptional(payload.utmCampaign) || "Not provided"}`,
+    "",
+    "What is happening:",
+    payload.message,
+  ];
+
+  try {
+    await transporter.sendMail({
+      from: `Phoenix website leads <${sender}>`,
+      to: recipient,
+      replyTo: payload.email,
+      subject,
+      text: lines.join("\n"),
+      html: `
+        <h2>${escapeHtml(subject)}</h2>
+        <p><strong>Lead ID:</strong> ${escapeHtml(leadId)}</p>
+        <p><strong>Admin inbox:</strong> <a href="${escapeHtml(adminLeadsUrl)}">${escapeHtml(adminLeadsUrl)}</a></p>
+        <p><strong>City:</strong> ${escapeHtml(city?.name || "Unknown")}</p>
+        <p><strong>Source:</strong> Website</p>
+        <p><strong>Name:</strong> ${escapeHtml(customerName)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(payload.phone)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
+        <p><strong>Preferred contact:</strong> ${escapeHtml(payload.preferredContactMethod || "Phone")}</p>
+        <p><strong>Service:</strong> ${escapeHtml(payload.service)}</p>
+        <p><strong>Urgency:</strong> ${escapeHtml(payload.urgency)}</p>
+        <p><strong>Timing:</strong> ${escapeHtml(payload.urgencyDetail)}</p>
+        <p><strong>Address:</strong> ${escapeHtml(normalizeOptional(payload.address) || "Not provided")}</p>
+        <p><strong>Preferred day:</strong> ${escapeHtml(normalizeOptional(payload.preferredDay) || payload.urgencyDetail)}</p>
+        <p><strong>Preferred time:</strong> ${escapeHtml(normalizeOptional(payload.preferredTime) || "Not provided")}</p>
+        <p><strong>Page:</strong> ${escapeHtml(normalizeOptional(payload.sourceUrl) || "Not provided")}</p>
+        <p><strong>What is happening:</strong></p>
+        <p>${escapeHtml(payload.message).replace(/\n/g, "<br />")}</p>
+      `,
+    });
+
+    return {
+      status: "sent",
+      note: `Lead email sent to ${recipient}.`,
+    };
+  } catch (error) {
+    console.error("[lead-email] Failed to send website request notification", error);
+
+    return {
+      status: "failed",
+      note: error instanceof Error ? error.message : "Unknown email delivery error.",
+    };
+  }
+}
+
+export async function routeServiceRequestSubmission(
+  rawPayload: unknown,
+  options?: { remoteIp?: string },
+): Promise<LeadDispatchResult> {
+  const parsed = serviceRequestSchema.safeParse(rawPayload);
+
+  if (!parsed.success) {
+    throw parsed.error;
+  }
+
+  const payload = parsed.data;
+
+  if (payload.honey) {
+    return {
+      ok: true,
+      message: "Request received. Phoenix will review your request and contact you with the next step.",
+      emailDeliveryStatus: "skipped",
+    };
+  }
+
+  const recaptchaVerification = await verifyRecaptchaToken(
+    payload.recaptchaToken,
+    options?.remoteIp,
+  );
+
+  if (!recaptchaVerification.ok) {
+    return {
+      ok: false,
+      message: recaptchaVerification.message || "We could not verify your submission. Please try again.",
+      emailDeliveryStatus: "skipped",
+    };
+  }
+
+  const createdAt = new Date().toISOString();
+  const leadId = crypto.randomUUID();
+  const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
+
+  const leadRecord: Lead = {
+    id: leadId,
+    city: city?.slug || defaultCitySlug,
+    source: "website",
+    firstName: payload.firstName,
+    lastName: payload.lastName,
+    phone: payload.phone,
+    email: payload.email,
+    service: payload.service,
+    preferredDay: normalizeOptional(payload.preferredDay) || payload.urgencyDetail,
+    preferredTime: normalizeOptional(payload.preferredTime),
+    message: payload.message,
+    address: normalizeOptional(payload.address),
+    urgency: payload.urgency,
+    urgencyDetail: payload.urgencyDetail,
+    preferredContactMethod: payload.preferredContactMethod,
+    sourceUrl: normalizeOptional(payload.sourceUrl),
+    utmSource: normalizeOptional(payload.utmSource),
+    utmMedium: normalizeOptional(payload.utmMedium),
+    utmCampaign: normalizeOptional(payload.utmCampaign),
+    createdAt,
+    emailDeliveryStatus: "skipped",
+    emailDeliveryNote: "Notification pending.",
+  };
+
+  await saveLead(leadRecord);
+
+  let emailDelivery: DeliveryResult = {
+    status: "failed",
+    note: "Lead was saved, but the notification email did not run.",
+  };
+
+  try {
+    emailDelivery = await sendWebsiteLeadEmail(payload, leadId);
+  } catch (error) {
+    console.error("[lead-email] Website request notification failed after save", error);
+    emailDelivery = {
+      status: "failed",
+      note: error instanceof Error ? error.message : "Unknown email delivery error.",
+    };
+  }
+
+  try {
+    await saveLead({
+      ...leadRecord,
+      emailDeliveryStatus: emailDelivery.status,
+      emailDeliveryNote: emailDelivery.note,
+    });
+  } catch (error) {
+    console.error("[lead-email] Lead was saved, but email status could not be updated", error);
+  }
+
+  return {
+    ok: true,
+    message: "Request received. Phoenix will review your request and contact you with the next step.",
+    leadId,
     emailDeliveryStatus: emailDelivery.status,
   };
 }

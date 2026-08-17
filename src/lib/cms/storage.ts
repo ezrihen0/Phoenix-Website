@@ -302,13 +302,19 @@ function normalizeLeadRecord(lead: Lead & { city?: string }) {
 }
 
 function normalizeSettingsRecord(
-  settings?: Partial<SiteSettings> & { leadNotificationEmail?: string; senderEmail?: string },
+  settings?: Partial<SiteSettings> & {
+    leadNotificationEmail?: string;
+    senderEmail?: string;
+    bookingLabel?: string;
+    workizUrl?: string;
+  },
 ) {
   if (!settings) {
     return settings;
   }
 
-  const { leadNotificationEmail, senderEmail, ...rest } = settings;
+  const { leadNotificationEmail, senderEmail, bookingLabel: _bookingLabel, workizUrl: _workizUrl, ...rest } =
+    settings;
 
   return {
     ...rest,
@@ -322,16 +328,6 @@ function normalizeSettingsRecord(
       rest.email ||
       defaultSiteSettings.notificationEmail,
   } satisfies Partial<SiteSettings>;
-}
-
-function sanitizeBookingLabel(label: string) {
-  const trimmed = label.trim();
-
-  if (!trimmed || /workiz/i.test(trimmed)) {
-    return "Book online";
-  }
-
-  return trimmed;
 }
 
 export function getCmsStorageStatus(): CmsStorageStatus {
@@ -422,8 +418,6 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
     hoursLabel: settings.hoursLabel,
     hoursDetail: settings.hoursDetail,
     serviceRadius: settings.serviceRadius,
-    bookingLabel: sanitizeBookingLabel(settings.bookingLabel),
-    workizUrl: settings.workizUrl,
     mapEmbedUrl: settings.mapEmbedUrl,
     socialPreview: settings.socialPreview,
     defaultAuthorName: settings.defaultAuthorName,

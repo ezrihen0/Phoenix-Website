@@ -82,8 +82,6 @@ const settingsSchema = z.object({
   hoursLabel: z.string().trim().min(2),
   hoursDetail: z.string().trim().min(2),
   serviceRadius: z.string().trim().min(8),
-  bookingLabel: z.string().trim().min(2),
-  workizUrl: z.string().trim().url(),
   mapEmbedUrl: z.string().trim().url(),
   socialPreview: z.string().trim().min(1),
   defaultAuthorName: z.string().trim().min(2),

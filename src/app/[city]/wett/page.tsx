@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { CheckCircle2, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -8,7 +9,7 @@ import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
-import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings } from "@/lib/cities";
+import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings, getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { getWettContextualLinks } from "@/lib/internal-links";
 import { buildBreadcrumbSchema, buildFaqSchema, buildLocalBusinessSchema, buildServiceSchema, createPageMetadata } from "@/lib/seo";
@@ -126,14 +127,12 @@ export default async function CityWettPage({
                   ))}
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <a
-                    href={siteSettings.workizUrl}
-                    target="_blank"
-                    rel="noreferrer"
+                  <Link
+                    href={getRequestServiceHref(city.slug)}
                     className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                   >
-                    Book WETT inspection
-                  </a>
+                    Request WETT inspection
+                  </Link>
                   <a
                     href={`tel:${siteSettings.phoneHref}`}
                     className="rounded-full border border-white/16 px-5 py-3 text-sm font-semibold text-white"
@@ -227,14 +226,12 @@ export default async function CityWettPage({
                 documents them properly, and points to the repair or correction path rather than leaving homeowners to interpret technical notes alone.
               </p>
               <div className="flex flex-wrap gap-3">
-                <a
-                  href={siteSettings.workizUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  href={getRequestServiceHref(city.slug)}
                   className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                 >
-                  Book inspection now
-                </a>
+                  Request inspection
+                </Link>
                 <a
                   href={`tel:${siteSettings.phoneHref}`}
                   className="rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"

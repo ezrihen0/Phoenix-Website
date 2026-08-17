@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-import { routeLeadSubmission } from "@/lib/contact";
+import { routeServiceRequestSubmission } from "@/lib/contact";
 
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
     const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
     const realIp = request.headers.get("x-real-ip")?.trim();
-    const result = await routeLeadSubmission(payload, {
+    const result = await routeServiceRequestSubmission(payload, {
       remoteIp: forwardedFor || realIp || undefined,
     });
 
@@ -26,12 +26,11 @@ export async function POST(request: Request) {
       );
     }
 
-    console.error("[contact-api] Unexpected error", error);
+    console.error("[request-service-api] Unexpected error", error);
 
     return NextResponse.json(
       {
-        message:
-          "We could not process your request right now. Please call the office.",
+        message: "We could not process your request right now. Please call the office.",
       },
       { status: 500 },
     );

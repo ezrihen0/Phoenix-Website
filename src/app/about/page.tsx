@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2, MapPinned } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { getRequestServiceHref } from "@/lib/cities";
 import { getSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { aboutPoints, services, siteConfig } from "@/lib/site-data";
@@ -47,14 +48,12 @@ export default async function AboutPage() {
               They show up with a symptom, a real-estate deadline, an insurer request, or a system that just does not feel safe anymore.
             </p>
             <div className="flex flex-wrap gap-3">
-              <a
-                href={siteSettings.workizUrl}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href={getRequestServiceHref()}
                 className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
               >
-                Book online
-              </a>
+                Request Service
+              </Link>
               <Link
                 href="/services"
                 className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"

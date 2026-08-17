@@ -87,13 +87,13 @@ export default async function AdminDashboardPage({
         />
         <ActionPanel
           title="Lead inbox"
-          description="Review every contact-form submission, including delivery status for inbox email and booking sync."
+          description="Review every website and contact-form submission, including inbox email delivery status."
           href="/admin/leads"
           cta="Open lead inbox"
         />
         <ActionPanel
           title="Site settings"
-          description="Update booking links, inbox email settings, business details, and the AI content prompt used by the daily publishing job."
+          description="Update inbox email settings, business details, and the AI content prompt used by the daily publishing job."
           href="/admin/settings"
           cta="Edit settings"
         />

@@ -23,7 +23,7 @@ export default async function AdminLeadsPage({
     return (
       <AdminShell
         title="Lead inbox"
-        description="Every contact-form submission is captured here, along with booking-sync and email-delivery status."
+        description="Every website and contact-form request is captured here, along with email-delivery status."
         currentPath="/admin/leads"
         userLabel={session.username}
         storageStatus={storageStatus}
@@ -41,7 +41,7 @@ export default async function AdminLeadsPage({
   return (
     <AdminShell
       title="Lead inbox"
-      description="Every contact-form submission is captured here, along with booking-sync and email-delivery status."
+      description="Every website and contact-form request is captured here, along with email-delivery status."
       currentPath="/admin/leads"
       userLabel={session.username}
       storageStatus={storageStatus}
@@ -76,13 +76,19 @@ export default async function AdminLeadsPage({
                   <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
                     <span>{formatLeadDate(lead.createdAt)}</span>
                     <span>{lead.city}</span>
-                    <StatusPill label="Booking sync" status={lead.bookingDeliveryStatus} />
+                    <span>{lead.source === "website" ? "Website" : "Contact form"}</span>
                     <StatusPill label="Email" status={lead.emailDeliveryStatus} />
                   </div>
                   <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
                     {lead.firstName} {lead.lastName}
                   </h2>
                   <p className="text-sm font-semibold text-[var(--color-ink)]">{lead.service}</p>
+                  {lead.urgency ? (
+                    <p className="text-sm font-semibold text-[var(--color-ink)]">
+                      Urgency: {lead.urgency}
+                      {lead.urgencyDetail ? ` · ${lead.urgencyDetail}` : ""}
+                    </p>
+                  ) : null}
                   <p className="max-w-3xl whitespace-pre-wrap text-sm leading-7 text-[var(--color-muted)]">
                     {lead.message}
                   </p>
@@ -97,6 +103,20 @@ export default async function AdminLeadsPage({
                     {lead.email}
                   </a>
                   <p>
+                    <span className="font-semibold text-[var(--color-ink)]">Lead ID:</span> {lead.id}
+                  </p>
+                  {lead.address ? (
+                    <p>
+                      <span className="font-semibold text-[var(--color-ink)]">Address:</span> {lead.address}
+                    </p>
+                  ) : null}
+                  {lead.preferredContactMethod ? (
+                    <p>
+                      <span className="font-semibold text-[var(--color-ink)]">Preferred contact:</span>{" "}
+                      {lead.preferredContactMethod}
+                    </p>
+                  ) : null}
+                  <p>
                     <span className="font-semibold text-[var(--color-ink)]">Preferred day:</span>{" "}
                     {lead.preferredDay || "Not provided"}
                   </p>
@@ -104,10 +124,9 @@ export default async function AdminLeadsPage({
                     <span className="font-semibold text-[var(--color-ink)]">Preferred time:</span>{" "}
                     {lead.preferredTime || "Not provided"}
                   </p>
-                  {lead.bookingDeliveryNote ? (
-                    <p>
-                      <span className="font-semibold text-[var(--color-ink)]">Booking note:</span>{" "}
-                      {lead.bookingDeliveryNote}
+                  {lead.sourceUrl ? (
+                    <p className="break-all">
+                      <span className="font-semibold text-[var(--color-ink)]">Page:</span> {lead.sourceUrl}
                     </p>
                   ) : null}
                   {lead.emailDeliveryNote ? (

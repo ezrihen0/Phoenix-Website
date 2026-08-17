@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight, CheckCircle2, Phone } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import {
   buildBreadcrumbSchema,
@@ -61,14 +62,12 @@ export default async function ServicesPage() {
               long without cleaning.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={siteSettings.workizUrl}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                href={getRequestServiceHref()}
                 className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
               >
-                Book online
-              </a>
+                Request Service
+              </Link>
               <a
                 href={`tel:${siteSettings.phoneHref}`}
                 className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"
@@ -148,14 +147,12 @@ export default async function ServicesPage() {
                     ))}
                   </div>
                   <div className="mt-8 flex flex-wrap gap-3">
-                    <a
-                      href={siteSettings.workizUrl}
-                      target="_blank"
-                      rel="noreferrer"
+                    <Link
+                      href={getRequestServiceHref()}
                       className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                     >
-                      Schedule this service
-                    </a>
+                      Request this service
+                    </Link>
                     <a
                       href={`tel:${siteSettings.phoneHref}`}
                       className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-5 py-3 text-sm font-semibold"

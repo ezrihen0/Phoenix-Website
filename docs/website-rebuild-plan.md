@@ -5,8 +5,8 @@
 Recreate https://fireplacerepairscalgary.ca/ as a faster, cleaner, easier-to-maintain marketing site while preserving the current business goals:
 
 - generate calls
-- generate form leads
-- push users into online booking through Workiz
+- generate form leads through Request Service and the contact form
+- keep every website lead in Admin Leads, with Gmail notification when configured
 - maintain local SEO for Calgary fireplace and chimney services
 
 ## Current Site Audit
@@ -32,8 +32,7 @@ The current experience is built around a few repeated patterns:
 
 ## Important Findings From The Existing Site
 
-- Workiz is currently used through direct links to an online booking page, not a visible embedded widget on the homepage.
-- The booking URL appears multiple times and should be treated as a shared global config value in the rebuild.
+- The live site no longer uses Workiz. Primary CTAs go to Request Service, and forms save into Admin Leads.
 - The site has inconsistent contact data that should be fixed during rebuild:
   - `(825) 425-0050` appears in multiple places
   - `403-679-8236` also appears on the homepage
@@ -55,7 +54,6 @@ Why this approach:
 
 - the site is mostly static marketing content
 - performance and SEO will be better than the current WordPress/Elementor build
-- Workiz integration is straightforward because the current booking flow is link-based
 - future improvements will be easier to maintain
 
 Alternative if non-technical editing is the top priority:
@@ -120,52 +118,15 @@ Alternative if non-technical editing is the top priority:
 - fast-turnaround and documentation messaging
 - booking and call CTAs
 
-## Workiz Support Plan
+## Lead Intake
 
-This should be treated as a required integration, not an afterthought.
-
-### Minimum Required Workiz Support
-
-- add a global Workiz booking URL in site configuration
-- use that same URL for every `Book now`, `Book online`, and inspection CTA
-- expose booking CTA in the top bar, hero, service sections, WETT page, and contact page
-- track every Workiz click as a conversion event in GA4
-
-### Lead Handling Strategy
-
-Two viable approaches:
-
-1. Fastest launch path
-
-- website form submits to site backend
-- confirmation email is sent to the business
-- form payload is forwarded into Workiz through whatever Workiz-friendly automation is available, such as Zapier or Make
-
-2. Tighter Workiz integration
-
-- if Workiz provides API, webhook, or supported lead intake tooling for this account, submit new leads directly from the site into Workiz
-
-### Recommended Decision
-
-Start with this unless we confirm better native Workiz support:
-
-- keep booking as direct Workiz link
-- keep a site-side contact form for users who do not want to book immediately
-- push form submissions into Workiz through automation if direct API intake is not available
-
-### Optional Workiz Enhancements
-
-- embedded booking modal if Workiz supports it cleanly
-- service-specific booking links prefilled by CTA context
-- hidden tracking fields to identify which page or service created the lead
-- Workiz conversion event tracking in GTM
+Website requests go to Admin Leads. Gmail notification is optional and must not block lead storage. Workiz is not used.
 
 ## Content And Data Needed Before Build
 
 - final approved phone number
 - final business hours
 - final email address for leads
-- final Workiz booking URL and any widget/API details
 - logo and brand assets
 - photography or approved stock image direction
 - final service descriptions
@@ -188,7 +149,6 @@ Start with this unless we confirm better native Workiz support:
 - confirm pages in scope
 - confirm branding direction
 - clean up contact information inconsistencies
-- confirm Workiz access details
 - finalize copy and images
 
 ### Phase 2: Design System And Layout
@@ -205,11 +165,11 @@ Start with this unless we confirm better native Workiz support:
 - implement contact page
 - implement WETT page
 
-### Phase 4: Workiz And Lead Integration
+### Phase 4: Lead Integration
 
-- centralize Workiz booking URL
-- connect CTAs to Workiz
-- connect form submission flow
+- connect CTAs to Request Service
+- save form submissions in Admin Leads
+- send Gmail notifications when SMTP is configured
 - add conversion tracking
 
 ### Phase 5: SEO, QA, And Launch
@@ -228,13 +188,12 @@ Start with this unless we confirm better native Workiz support:
 2. Build shared layout and navigation
 3. Build the home page first
 4. Build the remaining four pages
-5. Wire Workiz and lead handling
+5. Wire Request Service and lead handling
 6. Add analytics, SEO, and QA
 7. Launch
 
 ## Risks To Resolve Early
 
-- unclear Workiz API or automation support for this account
 - inconsistent business phone data from the current site
 - missing media assets
 - unclear ownership of current domain, analytics, and hosting
@@ -246,7 +205,6 @@ Before writing code, lock these four items:
 
 - final platform choice: Next.js or WordPress
 - final approved phone/email/hours
-- final Workiz integration method
 - final page copy and imagery
 
 Once those are confirmed, the next deliverable should be a sitemap plus wireframe, followed by the actual project scaffold.

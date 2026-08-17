@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { CalendarDays, Clock3, Mail, MapPinned, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/forms/contact-form";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-data";
@@ -50,10 +52,8 @@ export default async function ContactPage() {
               <ContactCard icon={<Clock3 className="h-5 w-5" />} label="Office hours">
                 {siteSettings.hoursLabel} · {siteSettings.hoursDetail}
               </ContactCard>
-              <ContactCard icon={<CalendarDays className="h-5 w-5" />} label="Booking">
-                <a href={siteSettings.workizUrl} target="_blank" rel="noreferrer">
-                  24/7 online booking
-                </a>
+              <ContactCard icon={<CalendarDays className="h-5 w-5" />} label="Request service">
+                <Link href={getRequestServiceHref()}>Request Service</Link>
               </ContactCard>
               <ContactCard icon={<MapPinned className="h-5 w-5" />} label="Coverage">
                 {siteSettings.serviceRadius}

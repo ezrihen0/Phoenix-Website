@@ -20,14 +20,14 @@ export default async function AdminSettingsPage({
     return (
       <AdminShell
         title="Site settings"
-        description="Manage business details, booking links, and the AI article configuration that powers daily content generation."
+        description="Manage business details and the AI article configuration that powers daily content generation."
         currentPath="/admin/settings"
         userLabel={session.username}
         storageStatus={storageStatus}
       >
         <AdminStorageUnavailablePanel
           title="Settings changes are paused."
-          description="Restore shared Blob storage before editing business details, booking links, or AI content configuration on this deployment."
+          description="Restore shared Blob storage before editing business details or AI content configuration on this deployment."
         />
       </AdminShell>
     );
@@ -38,7 +38,7 @@ export default async function AdminSettingsPage({
   return (
     <AdminShell
       title="Site settings"
-      description="Manage business details, booking links, and the AI article configuration that powers daily content generation."
+      description="Manage business details and the AI article configuration that powers daily content generation."
       currentPath="/admin/settings"
       userLabel={session.username}
       storageStatus={storageStatus}
@@ -66,8 +66,6 @@ export default async function AdminSettingsPage({
           <Field label="Phone href" name="phoneHref" defaultValue={settings.phoneHref} required />
           <Field label="Hours label" name="hoursLabel" defaultValue={settings.hoursLabel} required />
           <Field label="Hours detail" name="hoursDetail" defaultValue={settings.hoursDetail} required />
-          <Field label="Booking label" name="bookingLabel" defaultValue={settings.bookingLabel} required />
-          <Field label="Online booking URL" name="workizUrl" defaultValue={settings.workizUrl} required />
           <Field label="Map embed URL" name="mapEmbedUrl" defaultValue={settings.mapEmbedUrl} required className="md:col-span-2" />
           <Field label="Service radius" name="serviceRadius" defaultValue={settings.serviceRadius} required className="md:col-span-2" />
           <Field label="Social preview image" name="socialPreview" defaultValue={settings.socialPreview} required className="md:col-span-2" />
