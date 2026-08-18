@@ -13,7 +13,8 @@ import {
   suggestArticleAngles,
 } from "@/lib/ai/guided-article";
 import { improveArticleFromNotes } from "@/lib/ai/improve-article-from-notes";
-import { clearAdminSession, requireAdmin } from "@/lib/auth/options";
+import { clearAdminSession } from "@/lib/auth/options";
+import { requireAdmin, requireArticlesAccess } from "@/lib/auth/permissions";
 import { generateDailyArticle } from "@/lib/ai/generate-article";
 import { checkArticleOverlap } from "@/lib/article-workflow/overlap-check";
 import { getArticleCategoryById } from "@/lib/article-workflow/categories";
@@ -394,7 +395,7 @@ export async function logoutAdminAction() {
 }
 
 export async function saveArticleAction(formData: FormData) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const returnPath = getSafeReturnPath(formData);
   const errorPath = returnPath || "/admin/articles";
@@ -492,7 +493,7 @@ export async function saveArticleAction(formData: FormData) {
 }
 
 export async function improveArticleFromNotesAction(notes: string, city: string) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const citySlug = getCityBySlug(city)?.slug;
 
@@ -535,7 +536,7 @@ export async function improveArticleFromNotesAction(notes: string, city: string)
 }
 
 export async function suggestArticleAnglesAction(payload: string) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const parsedPayload = parseWorkflowPayload(payload);
 
@@ -553,7 +554,7 @@ export async function suggestArticleAnglesAction(payload: string) {
 }
 
 export async function checkArticleOverlapAction(payload: string) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const schema = workflowBaseSchema.extend({
     selectedAngle: articleAngleSchema,
@@ -582,7 +583,7 @@ export async function checkArticleOverlapAction(payload: string) {
 }
 
 export async function generateArticleBriefAction(payload: string) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const schema = workflowBaseSchema.extend({
     selectedAngle: articleAngleSchema,
@@ -603,7 +604,7 @@ export async function generateArticleBriefAction(payload: string) {
 }
 
 export async function generateGuidedArticleDraftAction(payload: string) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const schema = workflowBaseSchema.extend({
     selectedAngle: articleAngleSchema,
@@ -625,7 +626,7 @@ export async function generateGuidedArticleDraftAction(payload: string) {
 }
 
 export async function runArticleContentReviewAction(payload: string) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const draftSchema = z.object({
     title: z.string(),
@@ -672,7 +673,7 @@ export async function runArticleContentReviewAction(payload: string) {
 }
 
 export async function uploadArticleImageAction(formData: FormData) {
-  await requireAdmin();
+  await requireArticlesAccess();
 
   const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
 
@@ -881,7 +882,7 @@ export async function createEvidenceDraftFromWorkflowAction(payload: string) {
 }
 
 export async function deleteArticleAction(formData: FormData) {
-  await requireAdmin();
+  await requireArticlesAccess();
   const articleId = String(formData.get("articleId") || "").trim();
   const slug = String(formData.get("slug") || "").trim();
   const city = getCityBySlug(String(formData.get("city") || "").trim())?.slug;
@@ -971,7 +972,7 @@ export async function updateAiModelAction(formData: FormData) {
 }
 
 export async function generateAiArticleAction(formData: FormData) {
-  await requireAdmin();
+  await requireArticlesAccess();
   ensureHealthyCmsStorage("/admin/articles");
   const city = getCityBySlug(String(formData.get("city") || "").trim())?.slug;
 

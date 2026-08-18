@@ -14,7 +14,7 @@ import {
   shouldRewrapProtectedJson,
   unprotectJson,
 } from "@/lib/cms/secure-json";
-import type { Article, Lead, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
+import type { Article, Lead, LeadDisposition, LeadDispositionReason, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
 import type { EvidenceRecord, PublicEvidence } from "@/lib/evidence";
 import { EVIDENCE_TYPE_VALUES, toPublicEvidence } from "@/lib/evidence";
 
@@ -307,11 +307,38 @@ function normalizeEvidenceRecord(record: Partial<EvidenceRecord> & { jobCity?: s
 
 function normalizeLeadRecord(lead: Lead & { city?: string }) {
   const city = getCityBySlug(lead.city || "")?.slug || defaultCitySlug;
+  const disposition = normalizeLeadDisposition(lead.disposition);
 
   return {
     ...lead,
     city,
+    disposition,
+    dispositionReason:
+      disposition === "not-added" ? normalizeLeadDispositionReason(lead.dispositionReason) : undefined,
+    officeNote: lead.officeNote?.trim() || undefined,
+    handledAt: lead.handledAt,
+    handledBy: lead.handledBy?.trim() || undefined,
   } satisfies Lead;
+}
+
+function normalizeLeadDisposition(value?: LeadDisposition): LeadDisposition {
+  if (value === "added-to-calendar" || value === "not-added" || value === "pending") {
+    return value;
+  }
+
+  return "pending";
+}
+
+function normalizeLeadDispositionReason(value?: LeadDispositionReason): LeadDispositionReason | undefined {
+  if (
+    value === "customer-no-response" ||
+    value === "customer-declined" ||
+    value === "service-not-accepted"
+  ) {
+    return value;
+  }
+
+  return undefined;
 }
 
 function normalizeSettingsRecord(

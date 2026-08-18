@@ -1,8 +1,11 @@
+import type { UserRole } from "@/lib/auth/types";
+
 export const ADMIN_SESSION_COOKIE_NAME = "phoenix_admin_session";
 
 export type AdminSessionTokenPayload = {
   username: string;
   expiresAt: number;
+  role?: UserRole;
 };
 
 const encoder = new TextEncoder();
@@ -55,7 +58,8 @@ function decodePayload(value: string) {
   if (
     typeof parsed.username !== "string" ||
     !parsed.username ||
-    typeof parsed.expiresAt !== "number"
+    typeof parsed.expiresAt !== "number" ||
+    (parsed.role !== undefined && parsed.role !== "admin" && parsed.role !== "office")
   ) {
     return null;
   }

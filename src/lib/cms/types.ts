@@ -74,6 +74,13 @@ export type PublicSiteSettings = Pick<
 
 export type LeadSource = "contact-form" | "website";
 
+export type LeadDisposition = "pending" | "added-to-calendar" | "not-added";
+
+export type LeadDispositionReason =
+  | "customer-no-response"
+  | "customer-declined"
+  | "service-not-accepted";
+
 export type Lead = {
   id: string;
   city: CitySlug;
@@ -99,6 +106,11 @@ export type Lead = {
   bookingDeliveryNote?: string;
   emailDeliveryStatus: LeadDeliveryStatus;
   emailDeliveryNote?: string;
+  disposition?: LeadDisposition;
+  dispositionReason?: LeadDispositionReason;
+  officeNote?: string;
+  handledAt?: string;
+  handledBy?: string;
 };
 
 export type GeneratedArticleDraft = {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { PublishWorkspace } from "@/components/admin/publish-workspace";
 import { MobilePublisherShell } from "@/components/admin/mobile-publisher-shell";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireArticlesAccess } from "@/lib/auth/permissions";
 import { getCityBySlug, getCityHref } from "@/lib/cities";
 import { getCmsStorageStatus, getSiteSettings } from "@/lib/cms/storage";
 
@@ -14,7 +14,7 @@ export default async function AdminPublishPage({
 }: {
   searchParams: Promise<{ saved?: string; error?: string; slug?: string; city?: string }>;
 }) {
-  const session = await requireAdmin();
+  const session = await requireArticlesAccess();
   const storageStatus = getCmsStorageStatus();
   const [params, settings] = await Promise.all([searchParams, getSiteSettings()]);
 

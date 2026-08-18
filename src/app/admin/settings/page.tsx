@@ -2,7 +2,7 @@ import { AI_MODEL_OPTIONS } from "@/lib/ai/model-options";
 import { saveSettingsAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireAdmin } from "@/lib/auth/permissions";
 import { getCmsStorageStatus, getSiteSettings } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";

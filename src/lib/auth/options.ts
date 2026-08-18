@@ -1,22 +1,19 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 import {
   ADMIN_SESSION_COOKIE_NAME,
   createAdminSessionToken,
   readAdminSessionToken,
 } from "@/lib/auth/token";
+import { resolveSessionRole, type SessionUser, type UserRole } from "@/lib/auth/types";
 
-type AdminSession = {
-  username: string;
-};
-
-type AdminLoginResult =
+type LoginResult =
   | {
       ok: true;
       username: string;
+      role: UserRole;
     }
   | {
       ok: false;
@@ -47,6 +44,18 @@ function getConfiguredAdminPassword() {
 
 function getConfiguredAdminPasswordHash() {
   return (process.env.ADMIN_PASSWORD_HASH || "").trim();
+}
+
+function getConfiguredOfficeUsername() {
+  return (process.env.OFFICE_USERNAME || "").trim();
+}
+
+function getConfiguredOfficePassword() {
+  return (process.env.OFFICE_PASSWORD || "").trim();
+}
+
+function getConfiguredOfficePasswordHash() {
+  return (process.env.OFFICE_PASSWORD_HASH || "").trim();
 }
 
 function getConfiguredSessionSecret() {
@@ -92,6 +101,33 @@ function verifyPasswordHash(password: string, storedHash: string) {
   return timingSafeEqual(derived, expected);
 }
 
+function verifyCredentials({
+  username,
+  password,
+  expectedUsername,
+  passwordHash,
+  plainPassword,
+}: {
+  username: string;
+  password: string;
+  expectedUsername: string;
+  passwordHash: string;
+  plainPassword: string;
+}) {
+  if (!expectedUsername) {
+    return false;
+  }
+
+  const usernameMatches = safeEqual(username.trim(), expectedUsername);
+  const passwordMatches = passwordHash
+    ? verifyPasswordHash(password, passwordHash)
+    : plainPassword
+      ? safeEqual(password, plainPassword)
+      : false;
+
+  return usernameMatches && passwordMatches;
+}
+
 function getRateLimitStore() {
   const key = "__phoenixAdminLoginRateLimit";
   const globalScope = globalThis as typeof globalThis & {
@@ -119,6 +155,13 @@ export function createPasswordHash(password: string) {
   return `scrypt:${salt}:${hash}`;
 }
 
+export function officeAuthIsConfigured() {
+  return Boolean(
+    getConfiguredOfficeUsername() &&
+      (getConfiguredOfficePasswordHash() || getConfiguredOfficePassword()),
+  );
+}
+
 export async function verifyAdminLoginAttempt({
   username,
   password,
@@ -127,7 +170,7 @@ export async function verifyAdminLoginAttempt({
   username: string;
   password: string;
   clientIp: string;
-}): Promise<AdminLoginResult> {
+}): Promise<LoginResult> {
   if (!authIsConfigured()) {
     return { ok: false, reason: "not-configured" };
   }
@@ -148,15 +191,32 @@ export async function verifyAdminLoginAttempt({
   await waitForDelay(LOGIN_DELAY_MS);
 
   const normalizedUsername = username.trim();
-  const usernameMatches = safeEqual(normalizedUsername, getConfiguredAdminUsername());
-  const configuredHash = getConfiguredAdminPasswordHash();
-  const passwordMatches = configuredHash
-    ? verifyPasswordHash(password, configuredHash)
-    : safeEqual(password, getConfiguredAdminPassword());
 
-  if (usernameMatches && passwordMatches) {
+  if (
+    verifyCredentials({
+      username: normalizedUsername,
+      password,
+      expectedUsername: getConfiguredAdminUsername(),
+      passwordHash: getConfiguredAdminPasswordHash(),
+      plainPassword: getConfiguredAdminPassword(),
+    })
+  ) {
     rateLimitStore.delete(rateLimitKey);
-    return { ok: true, username: getConfiguredAdminUsername() };
+    return { ok: true, username: getConfiguredAdminUsername(), role: "admin" };
+  }
+
+  if (
+    officeAuthIsConfigured() &&
+    verifyCredentials({
+      username: normalizedUsername,
+      password,
+      expectedUsername: getConfiguredOfficeUsername(),
+      passwordHash: getConfiguredOfficePasswordHash(),
+      plainPassword: getConfiguredOfficePassword(),
+    })
+  ) {
+    rateLimitStore.delete(rateLimitKey);
+    return { ok: true, username: getConfiguredOfficeUsername(), role: "office" };
   }
 
   const withinWindow = currentAttempt && now - currentAttempt.firstAttemptAt < LOGIN_WINDOW_MS;
@@ -192,20 +252,21 @@ export async function verifyAdminLoginAttempt({
   };
 }
 
-export async function buildAdminSessionCookie(username: string) {
+export async function buildAdminSessionCookie(username: string, role: UserRole) {
   return {
     name: ADMIN_SESSION_COOKIE_NAME,
     value: await createAdminSessionToken({
       username,
+      role,
       expiresAt: Date.now() + ADMIN_SESSION_MAX_AGE_SECONDS * 1000,
     }),
     options: getAdminSessionCookieOptions(),
   };
 }
 
-export async function createAdminSession(username: string) {
+export async function createAdminSession(username: string, role: UserRole) {
   const cookieStore = await cookies();
-  const sessionCookie = await buildAdminSessionCookie(username);
+  const sessionCookie = await buildAdminSessionCookie(username, role);
   cookieStore.set(sessionCookie.name, sessionCookie.value, sessionCookie.options);
 }
 
@@ -214,7 +275,7 @@ export async function clearAdminSession() {
   cookieStore.delete(ADMIN_SESSION_COOKIE_NAME);
 }
 
-export async function getAdminSession(): Promise<AdminSession | null> {
+export async function getSession(): Promise<SessionUser | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_SESSION_COOKIE_NAME)?.value;
   const session = await readAdminSessionToken(token);
@@ -225,17 +286,13 @@ export async function getAdminSession(): Promise<AdminSession | null> {
 
   return {
     username: session.username,
+    role: resolveSessionRole(session.role),
   };
 }
 
-export async function requireAdmin() {
-  const session = await getAdminSession();
-
-  if (!session) {
-    redirect("/admin/login");
-  }
-
-  return session;
+/** @deprecated Use getSession() instead. */
+export async function getAdminSession(): Promise<SessionUser | null> {
+  return getSession();
 }
 
 export function authIsConfigured() {

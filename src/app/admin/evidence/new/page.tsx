@@ -1,7 +1,7 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { EvidenceEditor } from "@/components/admin/evidence-editor";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireAdmin } from "@/lib/auth/permissions";
 import { getCmsStorageStatus } from "@/lib/cms/storage";
 
 export const dynamic = "force-dynamic";

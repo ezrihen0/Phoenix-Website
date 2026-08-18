@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { GenerateAiArticleForm } from "@/components/admin/generate-ai-article-form";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireArticlesAccess } from "@/lib/auth/permissions";
 import { cities, getCityBySlug, getCityHref } from "@/lib/cities";
 import { formatArticleDateTime, getArticleAdminDateLabel } from "@/lib/cms/helpers";
 import { getCmsStorageStatus, listArticles } from "@/lib/cms/storage";
@@ -40,7 +40,7 @@ export default async function AdminArticlesPage({
 }: {
   searchParams: Promise<{ skipped?: string; deleted?: string; error?: string; city?: string; status?: string }>;
 }) {
-  const session = await requireAdmin();
+  const session = await requireArticlesAccess();
   const storageStatus = getCmsStorageStatus();
   const params = await searchParams;
   const selectedCity = getCityBySlug(params.city || "")?.slug;
@@ -56,6 +56,7 @@ export default async function AdminArticlesPage({
         description="Create, edit, publish, or delete blog posts. Legacy AI generation creates drafts for owner review only."
         currentPath="/admin/articles"
         userLabel={session.username}
+        userRole={session.role}
         storageStatus={storageStatus}
       >
         {params.error ? (
@@ -109,6 +110,7 @@ export default async function AdminArticlesPage({
       description="Create, edit, publish, or delete blog posts. You can also trigger the AI writer manually here."
       currentPath="/admin/articles"
       userLabel={session.username}
+      userRole={session.role}
       storageStatus={storageStatus}
     >
       {params.skipped ? (

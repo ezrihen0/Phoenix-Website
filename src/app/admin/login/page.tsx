@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 
 import { AdminLoginForm } from "@/components/admin/admin-login-form";
-import { authIsConfigured, getAdminSession } from "@/lib/auth/options";
+import { authIsConfigured, getSession } from "@/lib/auth/options";
+import { getDefaultAdminPathForRole } from "@/lib/auth/permissions";
 
 type AdminLoginPageProps = {
   searchParams: Promise<{
@@ -14,10 +15,10 @@ type AdminLoginPageProps = {
 
 export default async function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
   const configured = authIsConfigured();
-  const [params, session] = await Promise.all([searchParams, getAdminSession()]);
+  const [params, session] = await Promise.all([searchParams, getSession()]);
 
   if (session) {
-    redirect("/admin");
+    redirect(getDefaultAdminPathForRole(session.role));
   }
 
   const error = params.error;

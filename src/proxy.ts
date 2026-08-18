@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { canAccessAdminPath, getDefaultAdminPathForRole } from "@/lib/auth/permissions";
+import { resolveSessionRole } from "@/lib/auth/types";
 import { ADMIN_SESSION_COOKIE_NAME, readAdminSessionToken } from "@/lib/auth/token";
 
 function authIsConfigured() {
@@ -28,11 +30,18 @@ export default async function proxy(request: NextRequest) {
   const token = request.cookies.get(ADMIN_SESSION_COOKIE_NAME)?.value;
   const session = await readAdminSessionToken(token);
 
-  if (session) {
-    return NextResponse.next();
+  if (!session) {
+    return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.redirect(loginUrl);
+  const role = resolveSessionRole(session.role);
+  const pathname = request.nextUrl.pathname;
+
+  if (!canAccessAdminPath(pathname, role)) {
+    return NextResponse.redirect(new URL(getDefaultAdminPathForRole(role), request.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

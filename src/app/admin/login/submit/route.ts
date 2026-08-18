@@ -6,6 +6,7 @@ import {
   buildAdminSessionCookie,
   verifyAdminLoginAttempt,
 } from "@/lib/auth/options";
+import { getDefaultAdminPathForRole } from "@/lib/auth/permissions";
 
 const loginSchema = z.object({
   username: z.string().trim().min(1).max(120),
@@ -84,8 +85,11 @@ export async function POST(request: Request) {
     return NextResponse.redirect(loginUrl, { status: 303 });
   }
 
-  const response = NextResponse.redirect(buildRequestUrl("/admin", request), { status: 303 });
-  const sessionCookie = await buildAdminSessionCookie(result.username);
+  const response = NextResponse.redirect(
+    buildRequestUrl(getDefaultAdminPathForRole(result.role), request),
+    { status: 303 },
+  );
+  const sessionCookie = await buildAdminSessionCookie(result.username, result.role);
   response.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.options);
   return response;
 }

@@ -313,6 +313,7 @@ export async function routeLeadSubmission(
     preferredTime: normalizeOptional(payload.preferredTime),
     message: payload.message,
     createdAt,
+    disposition: "pending",
     emailDeliveryStatus: "skipped",
     emailDeliveryNote: "Notification pending.",
   };
@@ -513,6 +514,7 @@ export async function routeServiceRequestSubmission(
     utmMedium: normalizeOptional(payload.utmMedium),
     utmCampaign: normalizeOptional(payload.utmCampaign),
     createdAt,
+    disposition: "pending",
     emailDeliveryStatus: "skipped",
     emailDeliveryNote: "Notification pending.",
   };

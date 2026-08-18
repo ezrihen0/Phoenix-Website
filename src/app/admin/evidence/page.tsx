@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireAdmin } from "@/lib/auth/permissions";
 import { cities, getCityBySlug } from "@/lib/cities";
 import { getCmsStorageStatus, listEvidence } from "@/lib/cms/storage";
 import { evidenceServiceOptions } from "@/lib/evidence";

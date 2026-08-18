@@ -5,7 +5,7 @@ import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { ArticlePublishControls } from "@/components/admin/article-publish-controls";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireArticlesAccess } from "@/lib/auth/permissions";
 import { cities, defaultCitySlug } from "@/lib/cities";
 import { getArticleById, getCmsStorageStatus } from "@/lib/cms/storage";
 import type { Article } from "@/lib/cms/types";
@@ -19,7 +19,7 @@ export default async function EditArticlePage({
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ generated?: string; saved?: string; error?: string }>;
 }) {
-  const session = await requireAdmin();
+  const session = await requireArticlesAccess();
   const storageStatus = getCmsStorageStatus();
   const [{ slug: articleId }, pageState] = await Promise.all([params, searchParams]);
 
@@ -30,6 +30,7 @@ export default async function EditArticlePage({
         description="Update article copy, SEO fields, internal links, and publish status."
         currentPath="/admin/articles"
         userLabel={session.username}
+        userRole={session.role}
         storageStatus={storageStatus}
       >
         <AdminStorageUnavailablePanel
@@ -52,6 +53,7 @@ export default async function EditArticlePage({
       description="Update article copy, SEO fields, internal links, and publish status."
       currentPath="/admin/articles"
       userLabel={session.username}
+      userRole={session.role}
       storageStatus={storageStatus}
     >
       {pageState.generated ? (

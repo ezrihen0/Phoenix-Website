@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 
 import { AdminSignOutButton } from "@/components/admin/admin-sign-out-button";
 import { AdminStorageStatusBanner } from "@/components/admin/admin-storage-status";
+import { getNavLinksForRole } from "@/lib/auth/permissions";
+import type { UserRole } from "@/lib/auth/types";
 import type { CmsStorageStatus } from "@/lib/cms/storage";
 
 type AdminShellProps = {
@@ -11,17 +13,9 @@ type AdminShellProps = {
   description: string;
   currentPath: string;
   userLabel: string;
+  userRole?: UserRole;
   storageStatus?: CmsStorageStatus;
 };
-
-const navLinks = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/articles", label: "Articles" },
-  { href: "/admin/articles/migrate", label: "Migration" },
-  { href: "/admin/evidence", label: "Evidence" },
-  { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/settings", label: "Settings" },
-];
 
 export function AdminShell({
   children,
@@ -29,15 +23,18 @@ export function AdminShell({
   description,
   currentPath,
   userLabel,
+  userRole = "admin",
   storageStatus,
 }: AdminShellProps) {
+  const navLinks = getNavLinksForRole(userRole);
+
   return (
     <section className="pb-14 pt-4 sm:pb-18 sm:pt-6">
       <div className="page-frame space-y-6">
         <div className="flex flex-col gap-6 rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6 sm:p-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="eyebrow">Admin</p>
+              <p className="eyebrow">{userRole === "office" ? "Office" : "Admin"}</p>
               <h1 className="mt-4 text-balance text-4xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-5xl">
                 {title}
               </h1>
@@ -52,7 +49,9 @@ export function AdminShell({
           </div>
           <nav className="flex flex-wrap gap-3">
             {navLinks.map((item) => {
-              const isActive = currentPath === item.href;
+              const isActive =
+                currentPath === item.href ||
+                (item.href !== "/admin" && currentPath.startsWith(`${item.href}/`));
 
               return (
                 <Link

@@ -4,7 +4,7 @@ import { CalendarDays, FileText, Images, Inbox, Settings } from "lucide-react";
 import { updateAiModelAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireAdmin } from "@/lib/auth/permissions";
 import { AI_MODEL_OPTIONS, getAiModelLabel } from "@/lib/ai/model-options";
 import { getCmsStorageStatus, getSiteSettings, listArticles, listEvidence, listLeads } from "@/lib/cms/storage";
 

@@ -1,7 +1,7 @@
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ArticleMigrationPanel } from "@/components/admin/article-migration-panel";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
-import { requireAdmin } from "@/lib/auth/options";
+import { requireAdmin } from "@/lib/auth/permissions";
 import {
   buildArticleMigrationReport,
   getDefaultApprovedSeedIds,
