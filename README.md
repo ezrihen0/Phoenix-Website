@@ -65,7 +65,7 @@ npm run build
 
 ## Lead Intake
 
-Website requests go to `/[city]/request-service` and `/api/request-service`. Contact form submissions go to `/api/contact`. Both save into the existing Admin Leads inbox and can email `phoenixfireplace0@gmail.com`.
+Website requests go to `/[city]/request-service` and `/api/request-service`. Contact form submissions go to `/api/contact`. Both save into the existing Admin Leads inbox and can email `Service@phoenixfireplace.ca`.
 
 ## Admin and CMS
 

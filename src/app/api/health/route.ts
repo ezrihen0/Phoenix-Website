@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 
 import { authIsConfigured, officeAuthIsConfigured } from "@/lib/auth/options";
-import { getCmsStorageMode } from "@/lib/cms/storage";
+import { defaultSiteSettings } from "@/lib/cms/defaults";
+import { getCmsStorageMode, getSiteSettings } from "@/lib/cms/storage";
+import { leadEmailDeliveryIsConfigured } from "@/lib/email/lead-notifications";
 
 const deploymentVersion =
   process.env.VERCEL_DEPLOYMENT_ID?.trim() ||
@@ -9,6 +11,18 @@ const deploymentVersion =
   "local";
 
 export async function GET() {
+  let leadEmailConfigured = false;
+
+  try {
+    const settings = await getSiteSettings();
+    leadEmailConfigured =
+      settings.sendLeadEmails && leadEmailDeliveryIsConfigured(settings);
+  } catch {
+    leadEmailConfigured =
+      defaultSiteSettings.sendLeadEmails &&
+      leadEmailDeliveryIsConfigured(defaultSiteSettings);
+  }
+
   return NextResponse.json({
     ok: true,
     service: "papoon_fireplacerepair",
@@ -17,6 +31,8 @@ export async function GET() {
     blobConfigured: Boolean(process.env.BLOB_READ_WRITE_TOKEN?.trim()),
     adminAuthConfigured: authIsConfigured(),
     officeAuthConfigured: officeAuthIsConfigured(),
+    brevoConfigured: Boolean(process.env.BREVO_API_KEY?.trim()),
+    leadEmailConfigured,
     deploymentVersion,
     timestamp: new Date().toISOString(),
   });

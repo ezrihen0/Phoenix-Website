@@ -1,12 +1,12 @@
 import "server-only";
 
 import { revalidatePath } from "next/cache";
-import nodemailer from "nodemailer";
 import { z } from "zod";
 
 import { CITY_SLUGS, defaultCitySlug, getCityBySlug } from "@/lib/cities";
 import { getSiteSettings, saveLead } from "@/lib/cms/storage";
 import type { Lead, LeadDeliveryStatus } from "@/lib/cms/types";
+import { sendLeadNotificationEmail } from "@/lib/email/lead-notifications";
 import { CONTACT_FORM_RECAPTCHA_ACTION, DEFAULT_RECAPTCHA_MIN_SCORE } from "@/lib/recaptcha";
 import {
   SERVICE_REQUEST_CONTACT_METHODS,
@@ -186,34 +186,6 @@ async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryR
   const settings = await getSiteSettings();
   const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
 
-  if (!settings.sendLeadEmails) {
-    return {
-      status: "skipped",
-      note: "Lead email notifications are turned off.",
-    };
-  }
-
-  const recipient = (settings.notificationEmail || settings.sendingEmail || settings.email).trim();
-  const sender = (settings.sendingEmail || settings.email).trim();
-  const appPassword = settings.googleAppPassword.trim();
-
-  if (!recipient || !sender || !appPassword) {
-    return {
-      status: "failed",
-      note: "Lead email delivery is enabled, but the sender, recipient, or app password is missing.",
-    };
-  }
-
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: sender,
-      pass: appPassword,
-    },
-  });
-
   const subject = `New ${city?.name || "website"} fireplace lead: ${payload.firstName} ${payload.lastName}`;
   const lines = [
     `City: ${city?.name || "Unknown"}`,
@@ -228,39 +200,23 @@ async function sendNotificationEmail(payload: ContactRequest): Promise<DeliveryR
     payload.message,
   ];
 
-  try {
-    await transporter.sendMail({
-      from: `Phoenix website leads <${sender}>`,
-      to: recipient,
-      replyTo: payload.email,
-      subject,
-      text: lines.join("\n"),
-      html: `
-        <h2>${subject}</h2>
-        <p><strong>City:</strong> ${city?.name || "Unknown"}</p>
-        <p><strong>Name:</strong> ${payload.firstName} ${payload.lastName}</p>
-        <p><strong>Phone:</strong> ${payload.phone}</p>
-        <p><strong>Email:</strong> ${payload.email}</p>
-        <p><strong>Service:</strong> ${payload.service}</p>
-        <p><strong>Preferred day:</strong> ${normalizeOptional(payload.preferredDay) || "Not provided"}</p>
-        <p><strong>Preferred time:</strong> ${normalizeOptional(payload.preferredTime) || "Not provided"}</p>
+  return sendLeadNotificationEmail(settings, {
+    subject,
+    text: lines.join("\n"),
+    html: `
+        <h2>${escapeHtml(subject)}</h2>
+        <p><strong>City:</strong> ${escapeHtml(city?.name || "Unknown")}</p>
+        <p><strong>Name:</strong> ${escapeHtml(payload.firstName)} ${escapeHtml(payload.lastName)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(payload.phone)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
+        <p><strong>Service:</strong> ${escapeHtml(payload.service)}</p>
+        <p><strong>Preferred day:</strong> ${escapeHtml(normalizeOptional(payload.preferredDay) || "Not provided")}</p>
+        <p><strong>Preferred time:</strong> ${escapeHtml(normalizeOptional(payload.preferredTime) || "Not provided")}</p>
         <p><strong>Message:</strong></p>
-        <p>${payload.message.replace(/\n/g, "<br />")}</p>
+        <p>${escapeHtml(payload.message).replace(/\n/g, "<br />")}</p>
       `,
-    });
-
-    return {
-      status: "sent",
-      note: `Lead email sent to ${recipient}.`,
-    };
-  } catch (error) {
-    console.error("[lead-email] Failed to send notification", error);
-
-    return {
-      status: "failed",
-      note: error instanceof Error ? error.message : "Unknown email delivery error.",
-    };
-  }
+    replyTo: payload.email,
+  });
 }
 
 export async function routeLeadSubmission(
@@ -365,27 +321,6 @@ async function sendWebsiteLeadEmail(
 ): Promise<DeliveryResult> {
   const settings = await getSiteSettings();
   const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
-  const recipient = (settings.notificationEmail || settings.sendingEmail || settings.email).trim();
-  const sender = (settings.sendingEmail || settings.email).trim();
-  const appPassword = settings.googleAppPassword.trim();
-
-  if (!recipient || !sender || !appPassword) {
-    return {
-      status: "failed",
-      note: "Lead was saved, but the sender, recipient, or app password is missing for email notification.",
-    };
-  }
-
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: sender,
-      pass: appPassword,
-    },
-  });
-
   const customerName = `${payload.firstName} ${payload.lastName}`;
   const subject = `[Phoenix Website Lead] ${city?.name || "Website"} | ${payload.service} | ${customerName}`;
   const adminLeadsUrl = `${settings.siteUrl.replace(/\/$/, "")}/admin/leads`;
@@ -413,14 +348,10 @@ async function sendWebsiteLeadEmail(
     payload.message,
   ];
 
-  try {
-    await transporter.sendMail({
-      from: `Phoenix website leads <${sender}>`,
-      to: recipient,
-      replyTo: payload.email,
-      subject,
-      text: lines.join("\n"),
-      html: `
+  return sendLeadNotificationEmail(settings, {
+    subject,
+    text: lines.join("\n"),
+    html: `
         <h2>${escapeHtml(subject)}</h2>
         <p><strong>Lead ID:</strong> ${escapeHtml(leadId)}</p>
         <p><strong>Admin inbox:</strong> <a href="${escapeHtml(adminLeadsUrl)}">${escapeHtml(adminLeadsUrl)}</a></p>
@@ -440,20 +371,8 @@ async function sendWebsiteLeadEmail(
         <p><strong>What is happening:</strong></p>
         <p>${escapeHtml(payload.message).replace(/\n/g, "<br />")}</p>
       `,
-    });
-
-    return {
-      status: "sent",
-      note: `Lead email sent to ${recipient}.`,
-    };
-  } catch (error) {
-    console.error("[lead-email] Failed to send website request notification", error);
-
-    return {
-      status: "failed",
-      note: error instanceof Error ? error.message : "Unknown email delivery error.",
-    };
-  }
+    replyTo: payload.email,
+  });
 }
 
 export async function routeServiceRequestSubmission(

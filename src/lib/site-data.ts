@@ -9,7 +9,7 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://phoenixfireplace.ca",
   phoneDisplay: "(825) 823-9556",
   phoneHref: "+18258239556",
-  email: "phoenixfireplace0@gmail.com",
+  email: "Service@phoenixfireplace.ca",
   serviceRadius: "Serving Calgary and surrounding communities within 100 km.",
   hoursLabel: "Sunday-Friday",
   hoursDetail: "9AM-6PM Calgary time",

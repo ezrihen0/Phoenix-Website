@@ -7,8 +7,8 @@ export const defaultSiteSettings: SiteSettings = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://phoenixfireplace.ca",
   phoneDisplay: "(825) 823-9556",
   phoneHref: "+18258239556",
-  email: "phoenixfireplace0@gmail.com",
-  sendingEmail: "phoenixfireplace0@gmail.com",
+  email: "Service@phoenixfireplace.ca",
+  sendingEmail: "Service@phoenixfireplace.ca",
   hoursLabel: "Sunday-Friday",
   hoursDetail: "9AM-6PM Calgary time",
   serviceRadius: "Serving Calgary and surrounding communities within 100 km.",
@@ -23,8 +23,8 @@ export const defaultSiteSettings: SiteSettings = {
   aiModel: process.env.OPENAI_MODEL || "gpt-4.1",
   aiSystemPrompt:
     "Write practical, trustworthy articles for Canadian homeowners about fireplaces, chimneys, gas appliances, WETT inspections, and masonry repair. Localize content to the requested Alberta city using only supplied context. Avoid fluff, unsafe advice, and keyword stuffing. Prioritize clear structure, factual guidance, and strong internal linking opportunities.",
-  sendLeadEmails: false,
-  notificationEmail: "phoenixfireplace0@gmail.com",
+  sendLeadEmails: true,
+  notificationEmail: "Service@phoenixfireplace.ca",
   googleAppPassword: "",
 };
 

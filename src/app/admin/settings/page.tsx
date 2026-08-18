@@ -95,7 +95,7 @@ export default async function AdminSettingsPage({
             />
             <span>
               <span className="block font-semibold text-[var(--color-ink)]">Email new leads to the recipient inbox</span>
-              Send each contact-form submission to the receiving inbox below using the sending email and Google app password.
+              Send each website and contact-form lead to the recipient inbox below. Uses Brevo when BREVO_API_KEY is set on the server; otherwise Gmail SMTP with the app password.
             </span>
           </label>
           <Field label="Recipient inbox email (receives notifications)" name="notificationEmail" defaultValue={settings.notificationEmail} required />
@@ -121,7 +121,7 @@ export default async function AdminSettingsPage({
         </div>
 
         <p className="text-xs leading-6 text-[var(--color-muted)]">
-          The public business email is shown across the site. The sending email is the Gmail account used for SMTP delivery. The recipient inbox email is the address that receives new lead notifications. The Google app password must belong to the sending Gmail account.
+          The public business email is shown across the site. The sending email must be verified in Brevo or Gmail. The recipient inbox email receives new lead notifications. For Brevo, add BREVO_API_KEY in Vercel env vars. For Gmail SMTP, add a Google app password for the sending account below.
         </p>
 
         <button
