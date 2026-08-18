@@ -34,28 +34,41 @@ const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_LOCK_MS = 15 * 60 * 1000;
 const LOGIN_DELAY_MS = 700;
 
+function normalizeEnvValue(value: string) {
+  const trimmed = value.trim();
+
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1).trim();
+  }
+
+  return trimmed;
+}
+
 function getConfiguredAdminUsername() {
-  return (process.env.ADMIN_USERNAME || "").trim();
+  return normalizeEnvValue(process.env.ADMIN_USERNAME || "");
 }
 
 function getConfiguredAdminPassword() {
-  return (process.env.ADMIN_PASSWORD || "").trim();
+  return normalizeEnvValue(process.env.ADMIN_PASSWORD || "");
 }
 
 function getConfiguredAdminPasswordHash() {
-  return (process.env.ADMIN_PASSWORD_HASH || "").trim();
+  return normalizeEnvValue(process.env.ADMIN_PASSWORD_HASH || "");
 }
 
 function getConfiguredOfficeUsername() {
-  return (process.env.OFFICE_USERNAME || "").trim();
+  return normalizeEnvValue(process.env.OFFICE_USERNAME || "");
 }
 
 function getConfiguredOfficePassword() {
-  return (process.env.OFFICE_PASSWORD || "").trim();
+  return normalizeEnvValue(process.env.OFFICE_PASSWORD || "");
 }
 
 function getConfiguredOfficePasswordHash() {
-  return (process.env.OFFICE_PASSWORD_HASH || "").trim();
+  return normalizeEnvValue(process.env.OFFICE_PASSWORD_HASH || "");
 }
 
 function getConfiguredSessionSecret() {
@@ -101,6 +114,22 @@ function verifyPasswordHash(password: string, storedHash: string) {
   return timingSafeEqual(derived, expected);
 }
 
+function usernamesMatch(input: string, expected: string) {
+  return input.trim().toLowerCase() === expected.trim().toLowerCase();
+}
+
+function passwordsMatch(password: string, passwordHash: string, plainPassword: string) {
+  if (passwordHash && verifyPasswordHash(password, passwordHash)) {
+    return true;
+  }
+
+  if (plainPassword) {
+    return safeEqual(password, plainPassword);
+  }
+
+  return false;
+}
+
 function verifyCredentials({
   username,
   password,
@@ -118,14 +147,10 @@ function verifyCredentials({
     return false;
   }
 
-  const usernameMatches = safeEqual(username.trim(), expectedUsername);
-  const passwordMatches = passwordHash
-    ? verifyPasswordHash(password, passwordHash)
-    : plainPassword
-      ? safeEqual(password, plainPassword)
-      : false;
-
-  return usernameMatches && passwordMatches;
+  return (
+    usernamesMatch(username, expectedUsername) &&
+    passwordsMatch(password, passwordHash, plainPassword)
+  );
 }
 
 function getRateLimitStore() {
