@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { authIsConfigured, officeAuthIsConfigured } from "@/lib/auth/options";
 import { getCmsStorageMode } from "@/lib/cms/storage";
 
 const deploymentVersion =
@@ -14,6 +15,8 @@ export async function GET() {
     environment: process.env.NODE_ENV,
     cmsStorage: getCmsStorageMode(),
     blobConfigured: Boolean(process.env.BLOB_READ_WRITE_TOKEN?.trim()),
+    adminAuthConfigured: authIsConfigured(),
+    officeAuthConfigured: officeAuthIsConfigured(),
     deploymentVersion,
     timestamp: new Date().toISOString(),
   });

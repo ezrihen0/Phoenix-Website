@@ -29,22 +29,23 @@ type LoginAttemptRecord = {
 };
 
 const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 14;
+const ADMIN_SESSION_REMEMBER_MAX_AGE_SECONDS = 60 * 60 * 24 * 90;
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_LOCK_MS = 15 * 60 * 1000;
 const LOGIN_DELAY_MS = 700;
 
 function normalizeEnvValue(value: string) {
-  const trimmed = value.trim();
+  const cleaned = value.replace(/\uFEFF/g, "").replace(/\r/g, "").trim();
 
   if (
-    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
-    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+    (cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+    (cleaned.startsWith("'") && cleaned.endsWith("'"))
   ) {
-    return trimmed.slice(1, -1).trim();
+    return cleaned.slice(1, -1).trim();
   }
 
-  return trimmed;
+  return cleaned;
 }
 
 function getConfiguredAdminUsername() {
@@ -75,15 +76,19 @@ function getConfiguredSessionSecret() {
   return (process.env.ADMIN_SESSION_SECRET || process.env.NEXTAUTH_SECRET || "").trim();
 }
 
-export function getAdminSessionCookieOptions() {
+export function getAdminSessionCookieOptions(maxAgeSeconds = ADMIN_SESSION_MAX_AGE_SECONDS) {
   return {
     httpOnly: true,
     sameSite: "lax" as const,
     secure: process.env.NODE_ENV === "production",
     path: "/",
     priority: "high" as const,
-    maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
+    maxAge: maxAgeSeconds,
   };
+}
+
+export function getAdminSessionMaxAgeSeconds(remember = false) {
+  return remember ? ADMIN_SESSION_REMEMBER_MAX_AGE_SECONDS : ADMIN_SESSION_MAX_AGE_SECONDS;
 }
 
 function safeEqual(input: string, expected: string) {
@@ -277,21 +282,27 @@ export async function verifyAdminLoginAttempt({
   };
 }
 
-export async function buildAdminSessionCookie(username: string, role: UserRole) {
+export async function buildAdminSessionCookie(
+  username: string,
+  role: UserRole,
+  options?: { remember?: boolean },
+) {
+  const maxAgeSeconds = getAdminSessionMaxAgeSeconds(options?.remember);
+
   return {
     name: ADMIN_SESSION_COOKIE_NAME,
     value: await createAdminSessionToken({
       username,
       role,
-      expiresAt: Date.now() + ADMIN_SESSION_MAX_AGE_SECONDS * 1000,
+      expiresAt: Date.now() + maxAgeSeconds * 1000,
     }),
-    options: getAdminSessionCookieOptions(),
+    options: getAdminSessionCookieOptions(maxAgeSeconds),
   };
 }
 
-export async function createAdminSession(username: string, role: UserRole) {
+export async function createAdminSession(username: string, role: UserRole, options?: { remember?: boolean }) {
   const cookieStore = await cookies();
-  const sessionCookie = await buildAdminSessionCookie(username, role);
+  const sessionCookie = await buildAdminSessionCookie(username, role, options);
   cookieStore.set(sessionCookie.name, sessionCookie.value, sessionCookie.options);
 }
 

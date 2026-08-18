@@ -59,6 +59,10 @@ export async function POST(request: Request) {
     return NextResponse.redirect(loginUrl, { status: 303 });
   }
 
+  const remember = ["1", "true", "on", "yes"].includes(
+    String(formData.get("remember") || "").trim().toLowerCase(),
+  );
+
   const result = await verifyAdminLoginAttempt({
     username: parsed.data.username,
     password: parsed.data.password,
@@ -89,7 +93,7 @@ export async function POST(request: Request) {
     buildRequestUrl(getDefaultAdminPathForRole(result.role), request),
     { status: 303 },
   );
-  const sessionCookie = await buildAdminSessionCookie(result.username, result.role);
+  const sessionCookie = await buildAdminSessionCookie(result.username, result.role, { remember });
   response.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.options);
   return response;
 }

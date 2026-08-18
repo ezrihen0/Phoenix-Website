@@ -14,6 +14,7 @@ export function AdminLoginForm({ className = "" }: AdminLoginFormProps) {
     <form
       action="/admin/login/submit"
       method="post"
+      autoComplete="on"
       className={`grid w-full max-w-xl gap-4 ${className}`}
       onSubmit={() => setIsSubmitting(true)}
     >
@@ -36,6 +37,16 @@ export function AdminLoginForm({ className = "" }: AdminLoginFormProps) {
           required
           className="rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm outline-none"
         />
+      </label>
+      <label className="flex items-center gap-3 text-sm text-[var(--color-muted)]">
+        <input
+          type="checkbox"
+          name="remember"
+          value="1"
+          defaultChecked
+          className="h-4 w-4 rounded border-[var(--color-border)]"
+        />
+        <span>Keep me signed in on this device</span>
       </label>
       <button
         type="submit"
