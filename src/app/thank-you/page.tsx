@@ -6,12 +6,18 @@ import { CheckCircle2, Lightbulb, Phone } from "lucide-react";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = createPageMetadata({
-  title: "Thank You | Phoenix Chimney & Fireplace",
-  description:
-    "Confirmation page for Phoenix Chimney & Fireplace requests, with next-step guidance and urgent contact details.",
-  path: "/thank-you",
-});
+export const metadata: Metadata = {
+  ...createPageMetadata({
+    title: "Thank You | Phoenix Chimney & Fireplace",
+    description:
+      "Confirmation page for Phoenix Chimney & Fireplace requests, with next-step guidance and urgent contact details.",
+    path: "/thank-you",
+  }),
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default async function ThankYouPage() {
   const settings = await getPublicSiteSettings();

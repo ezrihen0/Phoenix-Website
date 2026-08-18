@@ -8,7 +8,7 @@ import { ArticleRelatedServices } from "@/components/articles/article-related-se
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
-import { defaultCitySlug } from "@/lib/cities";
+import { defaultCitySlug, getCityHref } from "@/lib/cities";
 import { getArticleByline } from "@/lib/cms/article-authorship";
 import { buildArticleSchema, buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { buildRelatedArticles, estimateReadingTime, formatArticleDate } from "@/lib/cms/helpers";
@@ -35,7 +35,7 @@ export async function generateMetadata({
   return createPageMetadata({
     title: article.seoTitle,
     description: article.seoDescription,
-    path: `/articles/${article.slug}`,
+    path: getCityHref(defaultCitySlug, `/articles/${article.slug}`),
     keywords: article.keywords,
     imagePath: article.coverImage || undefined,
     imageAlt: article.coverImageAlt || article.title,

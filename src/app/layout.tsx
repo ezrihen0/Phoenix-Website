@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Cormorant_Garamond } from "next/font/google";
 
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { MobileActionDock } from "@/components/mobile-action-dock";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -54,6 +55,13 @@ export const metadata: Metadata = {
       "application/rss+xml": absoluteUrl("/feed.xml"),
     },
   },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
 };
 
 export default async function RootLayout({
@@ -78,6 +86,7 @@ export default async function RootLayout({
           <MobileActionDock settings={settings} />
         </div>
         <VercelAnalytics />
+        <GoogleAnalytics />
       </body>
     </html>
   );
