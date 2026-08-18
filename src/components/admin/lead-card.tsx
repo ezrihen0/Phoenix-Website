@@ -9,6 +9,7 @@ import {
 } from "@/app/admin/lead-actions";
 import { LeadDispositionDialog } from "@/components/admin/lead-disposition-dialog";
 import type { Lead, LeadDispositionReason } from "@/lib/cms/types";
+import { formatServiceAddressLines } from "@/lib/request-service";
 import {
   formatDurationMinutes,
   formatLeadDateTime,
@@ -153,7 +154,22 @@ export function LeadCard({ lead }: LeadCardProps) {
             <p>
               <span className="font-semibold text-[var(--color-ink)]">Lead ID:</span> {lead.id}
             </p>
-            {lead.address ? (
+            {formatServiceAddressLines(lead).length ? (
+              <div className="space-y-1">
+                <p className="font-semibold text-[var(--color-ink)]">Service address</p>
+                {formatServiceAddressLines(lead).map((line) => {
+                  const separatorIndex = line.indexOf(": ");
+                  const label = separatorIndex >= 0 ? line.slice(0, separatorIndex) : "Address";
+                  const value = separatorIndex >= 0 ? line.slice(separatorIndex + 2) : line;
+
+                  return (
+                    <p key={line}>
+                      <span className="font-semibold text-[var(--color-ink)]">{label}:</span> {value}
+                    </p>
+                  );
+                })}
+              </div>
+            ) : lead.address ? (
               <p>
                 <span className="font-semibold text-[var(--color-ink)]">Address:</span> {lead.address}
               </p>

@@ -94,6 +94,10 @@ export type Lead = {
   preferredTime?: string;
   message: string;
   address?: string;
+  addressStreet?: string;
+  addressCity?: string;
+  addressProvince?: string;
+  addressPostalCode?: string;
   urgency?: string;
   urgencyDetail?: string;
   preferredContactMethod?: string;

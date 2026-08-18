@@ -12,6 +12,10 @@ import {
   SERVICE_REQUEST_CONTACT_METHODS,
   SERVICE_REQUEST_TITLES,
   SERVICE_REQUEST_URGENCY_OPTIONS,
+  CANADIAN_PROVINCE_CODES,
+  formatServiceAddress,
+  formatServiceAddressLines,
+  normalizeServiceAddressParts,
 } from "@/lib/request-service";
 
 export const contactRequestSchema = z.object({
@@ -46,6 +50,12 @@ export const serviceRequestSchema = z.object({
   urgencyDetail: z.string().trim().min(2, "Choose a timing option."),
   preferredDay: z.string().trim().optional(),
   preferredTime: z.string().trim().optional(),
+  addressStreet: z.string().trim().min(3, "Street address is required."),
+  addressCity: z.string().trim().min(2, "City is required."),
+  addressProvince: z.enum(CANADIAN_PROVINCE_CODES as [string, ...string[]], {
+    message: "Province is required.",
+  }),
+  addressPostalCode: z.string().trim().min(6, "Postal code is required."),
   address: z.string().trim().optional(),
   preferredContactMethod: z.enum(SERVICE_REQUEST_CONTACT_METHODS).optional().default("Phone"),
   sourceUrl: z.string().trim().optional(),
@@ -324,6 +334,19 @@ async function sendWebsiteLeadEmail(
   const customerName = `${payload.firstName} ${payload.lastName}`;
   const subject = `[Phoenix Website Lead] ${city?.name || "Website"} | ${payload.service} | ${customerName}`;
   const adminLeadsUrl = `${settings.siteUrl.replace(/\/$/, "")}/admin/leads`;
+  const addressLines = formatServiceAddressLines(payload);
+  const formattedAddress = formatServiceAddress(payload) || "Not provided";
+  const addressHtml = addressLines.length
+    ? addressLines
+        .map((line) => {
+          const separatorIndex = line.indexOf(": ");
+          const label = separatorIndex >= 0 ? line.slice(0, separatorIndex) : "Address";
+          const value = separatorIndex >= 0 ? line.slice(separatorIndex + 2) : line;
+
+          return `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`;
+        })
+        .join("")
+    : `<p><strong>Address:</strong> Not provided</p>`;
   const lines = [
     `Lead ID: ${leadId}`,
     `Admin inbox: ${adminLeadsUrl}`,
@@ -336,7 +359,7 @@ async function sendWebsiteLeadEmail(
     `Service: ${payload.service}`,
     `Urgency: ${payload.urgency}`,
     `Timing: ${payload.urgencyDetail}`,
-    `Address: ${normalizeOptional(payload.address) || "Not provided"}`,
+    ...(addressLines.length ? addressLines : [`Address: ${formattedAddress}`]),
     `Preferred day: ${normalizeOptional(payload.preferredDay) || payload.urgencyDetail}`,
     `Preferred time: ${normalizeOptional(payload.preferredTime) || "Not provided"}`,
     `Page: ${normalizeOptional(payload.sourceUrl) || "Not provided"}`,
@@ -364,7 +387,7 @@ async function sendWebsiteLeadEmail(
         <p><strong>Service:</strong> ${escapeHtml(payload.service)}</p>
         <p><strong>Urgency:</strong> ${escapeHtml(payload.urgency)}</p>
         <p><strong>Timing:</strong> ${escapeHtml(payload.urgencyDetail)}</p>
-        <p><strong>Address:</strong> ${escapeHtml(normalizeOptional(payload.address) || "Not provided")}</p>
+        ${addressHtml}
         <p><strong>Preferred day:</strong> ${escapeHtml(normalizeOptional(payload.preferredDay) || payload.urgencyDetail)}</p>
         <p><strong>Preferred time:</strong> ${escapeHtml(normalizeOptional(payload.preferredTime) || "Not provided")}</p>
         <p><strong>Page:</strong> ${escapeHtml(normalizeOptional(payload.sourceUrl) || "Not provided")}</p>
@@ -411,6 +434,7 @@ export async function routeServiceRequestSubmission(
   const createdAt = new Date().toISOString();
   const leadId = crypto.randomUUID();
   const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
+  const addressParts = normalizeServiceAddressParts(payload);
 
   const leadRecord: Lead = {
     id: leadId,
@@ -424,7 +448,11 @@ export async function routeServiceRequestSubmission(
     preferredDay: normalizeOptional(payload.preferredDay) || payload.urgencyDetail,
     preferredTime: normalizeOptional(payload.preferredTime),
     message: payload.message,
-    address: normalizeOptional(payload.address),
+    addressStreet: addressParts.addressStreet,
+    addressCity: addressParts.addressCity,
+    addressProvince: addressParts.addressProvince,
+    addressPostalCode: addressParts.addressPostalCode,
+    address: formatServiceAddress(payload),
     urgency: payload.urgency,
     urgencyDetail: payload.urgencyDetail,
     preferredContactMethod: payload.preferredContactMethod,

@@ -9,6 +9,7 @@ import { defaultCitySlug, type CitySlug } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
 import { CONTACT_FORM_RECAPTCHA_ACTION } from "@/lib/recaptcha";
 import {
+  CANADIAN_PROVINCES,
   SERVICE_REQUEST_CATALOG,
   SERVICE_REQUEST_CONTACT_METHODS,
   SERVICE_REQUEST_TIME_WINDOWS,
@@ -86,7 +87,10 @@ export function RequestServiceForm({
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [addressStreet, setAddressStreet] = useState("");
+  const [addressCity, setAddressCity] = useState("");
+  const [addressProvince, setAddressProvince] = useState("");
+  const [addressPostalCode, setAddressPostalCode] = useState("");
   const [preferredContactMethod, setPreferredContactMethod] = useState("Phone");
   const [stepError, setStepError] = useState("");
 
@@ -151,6 +155,16 @@ export function RequestServiceForm({
       return;
     }
 
+    if (
+      !addressStreet.trim() ||
+      !addressCity.trim() ||
+      !addressProvince.trim() ||
+      !addressPostalCode.trim()
+    ) {
+      setStepError("Enter the full service address.");
+      return;
+    }
+
     const form = event.currentTarget;
     const honeyValue = form instanceof HTMLFormElement ? new FormData(form).get("honey") : "";
     const honey = typeof honeyValue === "string" ? honeyValue : "";
@@ -179,7 +193,10 @@ export function RequestServiceForm({
           urgencyDetail,
           preferredDay: urgency === "This week" ? urgencyDetail : undefined,
           preferredTime,
-          address,
+          addressStreet,
+          addressCity,
+          addressProvince,
+          addressPostalCode,
           preferredContactMethod,
           sourceUrl: liveAttribution.sourceUrl,
           utmSource: liveAttribution.utmSource,
@@ -530,17 +547,52 @@ export function RequestServiceForm({
                 placeholder="name@email.com"
                 required
               />
-              <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)] sm:col-span-2">
-                <span>Service address or postal code <span className="font-normal text-[var(--color-muted)]">(optional)</span></span>
-                <input
-                  type="text"
-                  name="address"
-                  value={address}
-                  onChange={(event) => setAddress(event.target.value)}
-                  placeholder="Street address or postal code"
-                  className="rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3.5 text-base outline-none transition focus:border-[var(--color-ember)]"
-                />
-              </label>
+              <div className="grid gap-4 sm:col-span-2 sm:grid-cols-2">
+                  <Field
+                    label="Street address"
+                    name="addressStreet"
+                    value={addressStreet}
+                    onChange={setAddressStreet}
+                    placeholder="123 Main Street SW"
+                    className="sm:col-span-2"
+                    required
+                  />
+                  <Field
+                    label="City"
+                    name="addressCity"
+                    value={addressCity}
+                    onChange={setAddressCity}
+                    placeholder="Calgary"
+                    required
+                  />
+                  <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
+                    <span>Province</span>
+                    <select
+                      name="addressProvince"
+                      required
+                      value={addressProvince}
+                      onChange={(event) => setAddressProvince(event.target.value)}
+                      className="rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3.5 text-base outline-none transition focus:border-[var(--color-ember)]"
+                    >
+                      <option value="" disabled>
+                        Select province
+                      </option>
+                      {CANADIAN_PROVINCES.map((province) => (
+                        <option key={province.code} value={province.code}>
+                          {province.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <Field
+                    label="Postal code"
+                    name="addressPostalCode"
+                    value={addressPostalCode}
+                    onChange={setAddressPostalCode}
+                    placeholder="T2P 1A1"
+                    required
+                  />
+              </div>
             </div>
 
             <fieldset className="space-y-3">
@@ -625,6 +677,7 @@ function Field({
   type = "text",
   placeholder,
   required = false,
+  className = "",
 }: {
   label: string;
   name: string;
@@ -633,9 +686,10 @@ function Field({
   type?: string;
   placeholder?: string;
   required?: boolean;
+  className?: string;
 }) {
   return (
-    <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
+    <label className={`flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)] ${className}`}>
       <span>{label}</span>
       <input
         type={type}

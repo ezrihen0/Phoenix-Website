@@ -37,12 +37,100 @@ export const SERVICE_REQUEST_TIME_WINDOWS = [
   "3-7 Afternoon/evening",
 ] as const;
 
+export const CANADIAN_PROVINCES = [
+  { code: "AB", name: "Alberta" },
+  { code: "BC", name: "British Columbia" },
+  { code: "MB", name: "Manitoba" },
+  { code: "NB", name: "New Brunswick" },
+  { code: "NL", name: "Newfoundland and Labrador" },
+  { code: "NS", name: "Nova Scotia" },
+  { code: "NT", name: "Northwest Territories" },
+  { code: "NU", name: "Nunavut" },
+  { code: "ON", name: "Ontario" },
+  { code: "PE", name: "Prince Edward Island" },
+  { code: "QC", name: "Quebec" },
+  { code: "SK", name: "Saskatchewan" },
+  { code: "YT", name: "Yukon" },
+] as const;
+
+export const CANADIAN_PROVINCE_CODES = CANADIAN_PROVINCES.map((province) => province.code);
+
+export function getCanadianProvinceLabel(code?: string) {
+  if (!code) {
+    return undefined;
+  }
+
+  return CANADIAN_PROVINCES.find((province) => province.code === code)?.name || code;
+}
+
 export const SERVICE_REQUEST_CATALOG = services;
 
 export const SERVICE_REQUEST_TITLES = services.map((service) => service.title);
 
 export type ServiceRequestUrgency = (typeof SERVICE_REQUEST_URGENCY_OPTIONS)[number];
 export type ServiceRequestContactMethod = (typeof SERVICE_REQUEST_CONTACT_METHODS)[number];
+
+export type ServiceAddressParts = {
+  addressStreet?: string;
+  addressCity?: string;
+  addressProvince?: string;
+  addressPostalCode?: string;
+  address?: string;
+};
+
+export function normalizeServiceAddressParts(parts: ServiceAddressParts) {
+  return {
+    addressStreet: parts.addressStreet?.trim() || undefined,
+    addressCity: parts.addressCity?.trim() || undefined,
+    addressProvince: parts.addressProvince?.trim() || undefined,
+    addressPostalCode: parts.addressPostalCode?.trim().toUpperCase() || undefined,
+  };
+}
+
+export function formatServiceAddress(parts: ServiceAddressParts) {
+  const normalized = normalizeServiceAddressParts(parts);
+
+  if (
+    normalized.addressStreet ||
+    normalized.addressCity ||
+    normalized.addressProvince ||
+    normalized.addressPostalCode
+  ) {
+    const cityLine = [normalized.addressCity, normalized.addressProvince].filter(Boolean).join(", ");
+    const cityPostal = [cityLine, normalized.addressPostalCode].filter(Boolean).join(" ");
+
+    return [normalized.addressStreet, cityPostal].filter(Boolean).join(", ") || undefined;
+  }
+
+  return parts.address?.trim() || undefined;
+}
+
+export function formatServiceAddressLines(parts: ServiceAddressParts) {
+  const normalized = normalizeServiceAddressParts(parts);
+  const lines: string[] = [];
+
+  if (normalized.addressStreet) {
+    lines.push(`Street: ${normalized.addressStreet}`);
+  }
+
+  if (normalized.addressCity) {
+    lines.push(`City: ${normalized.addressCity}`);
+  }
+
+  if (normalized.addressProvince) {
+    lines.push(`Province: ${getCanadianProvinceLabel(normalized.addressProvince) || normalized.addressProvince}`);
+  }
+
+  if (normalized.addressPostalCode) {
+    lines.push(`Postal code: ${normalized.addressPostalCode}`);
+  }
+
+  if (!lines.length && parts.address?.trim()) {
+    lines.push(`Address: ${parts.address.trim()}`);
+  }
+
+  return lines;
+}
 
 export function getUpcomingWeekdayOptions(now = new Date()) {
   const todayName = new Intl.DateTimeFormat("en-US", {
