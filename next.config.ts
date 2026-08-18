@@ -42,6 +42,11 @@ const nextConfig: NextConfig = {
         destination: "/calgary/articles/:slug",
         permanent: true,
       },
+      {
+        source: "/gas-fireplace-repair",
+        destination: "/calgary/gas-fireplace-repair",
+        permanent: true,
+      },
     ];
   },
   async headers() {

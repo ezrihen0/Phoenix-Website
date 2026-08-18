@@ -125,3 +125,48 @@ export type GeneratedArticleDraft = {
   seoDescription: string;
   keywords: string[];
 };
+
+export type OfficeChecklistTaskId =
+  | "review-new-overnight-leads"
+  | "review-todays-calendar"
+  | "check-office-inbox"
+  | "review-yesterdays-unresolved-leads"
+  | "complete-todays-article"
+  | "morning-review-completed";
+
+export type OfficeChecklistCompletion = {
+  taskId: OfficeChecklistTaskId;
+  completedAt: string;
+  completedBy: string;
+};
+
+export type OfficeArticleTaskStatus =
+  | "pending"
+  | "in-progress"
+  | "waiting-for-manager-image"
+  | "done";
+
+export type OfficeArticleTaskState = {
+  calendarDate: string;
+  website: string;
+  topic: string;
+  status: OfficeArticleTaskStatus;
+  linkedArticleId?: string;
+  aiImageProvidedAt?: string;
+  realImageProvidedAt?: string;
+  managerImageRequestedAt?: string;
+  completedAt?: string;
+  completedBy?: string;
+};
+
+export type OfficeDailyStateRecord = {
+  date: string;
+  username: string;
+  checklist: OfficeChecklistCompletion[];
+  articleTask?: OfficeArticleTaskState;
+  updatedAt: string;
+};
+
+export type OfficeDailyStateStore = {
+  records: OfficeDailyStateRecord[];
+};

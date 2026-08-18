@@ -8,6 +8,7 @@ export type { SessionUser, UserRole };
 export { resolveSessionRole };
 
 const OFFICE_ALLOWED_PREFIXES = [
+  "/admin/office",
   "/admin/articles",
   "/admin/publish",
   "/admin/leads",
@@ -17,8 +18,14 @@ const OFFICE_DENIED_EXACT = ["/admin", "/admin/settings"] as const;
 
 const OFFICE_DENIED_PREFIXES = ["/admin/evidence", "/admin/articles/migrate"] as const;
 
+const ADMIN_DENIED_EXACT = ["/admin/office"] as const;
+
 export function canAccessAdminPath(pathname: string, role: UserRole): boolean {
   if (role === "admin") {
+    if (ADMIN_DENIED_EXACT.some((path) => pathname === path)) {
+      return false;
+    }
+
     return true;
   }
 
@@ -35,7 +42,7 @@ export function canAccessAdminPath(pathname: string, role: UserRole): boolean {
 }
 
 export function getDefaultAdminPathForRole(role: UserRole): string {
-  return role === "office" ? "/admin/leads" : "/admin";
+  return role === "office" ? "/admin/office" : "/admin";
 }
 
 export function getNavLinksForRole(role: UserRole) {
@@ -51,6 +58,7 @@ export function getNavLinksForRole(role: UserRole) {
   }
 
   return [
+    { href: "/admin/office", label: "Today" },
     { href: "/admin/articles", label: "Articles" },
     { href: "/admin/publish", label: "Publish" },
     { href: "/admin/leads", label: "Leads" },
@@ -89,4 +97,14 @@ export async function requireArticlesAccess(): Promise<SessionUser> {
 
 export async function requireLeadsAccess(): Promise<SessionUser> {
   return requireArticlesAccess();
+}
+
+export async function requireOfficeDashboardAccess(): Promise<SessionUser> {
+  const session = await requireSession();
+
+  if (session.role !== "office") {
+    redirect(getDefaultAdminPathForRole(session.role));
+  }
+
+  return session;
 }

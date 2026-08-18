@@ -1,12 +1,26 @@
 import Link from "next/link";
 import { CalendarDays, FileText, Images, Inbox, Settings } from "lucide-react";
 
+import { OfficeUsersStatusPanel } from "@/components/admin/office-users-status-panel";
 import { updateAiModelAction } from "@/app/admin/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { requireAdmin } from "@/lib/auth/permissions";
 import { AI_MODEL_OPTIONS, getAiModelLabel } from "@/lib/ai/model-options";
-import { getCmsStorageStatus, getSiteSettings, listArticles, listEvidence, listLeads } from "@/lib/cms/storage";
+import {
+  getArticleById,
+  getCmsStorageStatus,
+  getOfficeDailyState,
+  getSiteSettings,
+  listArticles,
+  listEvidence,
+  listLeads,
+} from "@/lib/cms/storage";
+import { formatSiteDate, getSiteDateKey } from "@/lib/datetime";
+import { getTodaysArticleCalendarEntry } from "@/lib/office/article-calendar";
+import { isArticleScheduledToday } from "@/lib/office/daily-checklist";
+import { createEmptyOfficeDailyState, getOfficeDailyProgressLabel, getOfficeDailySummaryStatus } from "@/lib/office/daily-state";
+import { getConfiguredOfficeUsernames } from "@/lib/office/office-users";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +57,26 @@ export default async function AdminDashboardPage({
     getSiteSettings(),
   ]);
   const publishedCount = articles.filter((article) => article.status === "published").length;
+  const dateKey = getSiteDateKey();
+  const dateLabel = formatSiteDate(new Date());
+  const calendar = getTodaysArticleCalendarEntry(dateKey);
+  const articleRequiredToday = isArticleScheduledToday(calendar);
+  const officeUsernames = getConfiguredOfficeUsernames();
+  const officeUsers = await Promise.all(
+    officeUsernames.map(async (username) => {
+      const state =
+        (await getOfficeDailyState(dateKey, username)) || createEmptyOfficeDailyState(dateKey, username);
+      const linkedArticle = state.articleTask?.linkedArticleId
+        ? await getArticleById(state.articleTask.linkedArticleId, { includeDrafts: true })
+        : null;
+
+      return {
+        username,
+        status: getOfficeDailySummaryStatus(state, linkedArticle, articleRequiredToday),
+        progressLabel: getOfficeDailyProgressLabel(state, articleRequiredToday),
+      };
+    }),
+  );
 
   return (
     <AdminShell
@@ -71,6 +105,8 @@ export default async function AdminDashboardPage({
         <Card title="Leads" value={String(leads.length)} icon={<Inbox className="h-5 w-5" />} />
         <Card title="AI model" value={getAiModelLabel(settings.aiModel)} icon={<Settings className="h-5 w-5" />} />
       </div>
+
+      <OfficeUsersStatusPanel users={officeUsers} dateLabel={dateLabel} />
 
       <div className="grid gap-5 xl:grid-cols-4">
         <ActionPanel

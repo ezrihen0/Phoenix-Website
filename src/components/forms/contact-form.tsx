@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { defaultCitySlug, getRequestServiceHref, type CitySlug } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
+import { trackContactFormSubmit } from "@/lib/analytics/events";
 import { CONTACT_FORM_RECAPTCHA_ACTION } from "@/lib/recaptcha";
 import { contactServiceOptions, siteConfig } from "@/lib/site-data";
 
@@ -84,6 +85,7 @@ export function ContactForm({ className = "", city = defaultCitySlug, settings }
 
       if (response.ok) {
         form.reset();
+        trackContactFormSubmit();
         setState({
           status: "success",
           message:

@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 
 import { defaultCitySlug, type CitySlug } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
+import { trackRequestServiceSubmit } from "@/lib/analytics/events";
 import { CONTACT_FORM_RECAPTCHA_ACTION } from "@/lib/recaptcha";
 import {
   CANADIAN_PROVINCES,
@@ -224,6 +225,7 @@ export function RequestServiceForm({
           result.message ??
           "Request received. Phoenix will review your request and contact you with the next step.",
       });
+      trackRequestServiceSubmit();
     } catch (error) {
       setState({
         status: "error",

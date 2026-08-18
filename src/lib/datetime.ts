@@ -79,3 +79,8 @@ export function getDateTimePartsInSiteTimeZone(date: DateInput) {
     minute: read("minute"),
   };
 }
+
+export function getSiteDateKey(date: DateInput = new Date()): string {
+  const { year, month, day } = getDateTimePartsInSiteTimeZone(date);
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}

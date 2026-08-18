@@ -127,6 +127,71 @@ export function buildFaqSchema(
   };
 }
 
+function getVerifiedSameAsUrls() {
+  const urls: string[] = [];
+  const googleBusinessProfileUrl = process.env.GOOGLE_BUSINESS_PROFILE_URL?.trim();
+
+  if (googleBusinessProfileUrl) {
+    urls.push(googleBusinessProfileUrl);
+  }
+
+  const extraUrls = process.env.BUSINESS_SAME_AS_URLS?.trim();
+
+  if (extraUrls) {
+    urls.push(
+      ...extraUrls
+        .split(",")
+        .map((url) => url.trim())
+        .filter(Boolean),
+    );
+  }
+
+  return urls;
+}
+
+function getVerifiedPostalAddress() {
+  const streetAddress = process.env.BUSINESS_STREET_ADDRESS?.trim();
+  const addressLocality = process.env.BUSINESS_ADDRESS_LOCALITY?.trim();
+  const addressRegion = process.env.BUSINESS_ADDRESS_REGION?.trim();
+  const postalCode = process.env.BUSINESS_ADDRESS_POSTAL_CODE?.trim();
+  const addressCountry = process.env.BUSINESS_ADDRESS_COUNTRY?.trim() || "CA";
+
+  if (!streetAddress || !addressLocality || !addressRegion || !postalCode) {
+    return undefined;
+  }
+
+  return {
+    "@type": "PostalAddress",
+    streetAddress,
+    addressLocality,
+    addressRegion,
+    postalCode,
+    addressCountry,
+  };
+}
+
+function getVerifiedGeoCoordinates() {
+  const latitude = process.env.BUSINESS_GEO_LATITUDE?.trim();
+  const longitude = process.env.BUSINESS_GEO_LONGITUDE?.trim();
+
+  if (!latitude || !longitude) {
+    return undefined;
+  }
+
+  const lat = Number(latitude);
+  const lng = Number(longitude);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+    return undefined;
+  }
+
+  return {
+    "@type": "GeoCoordinates",
+    latitude: lat,
+    longitude: lng,
+  };
+}
+
 export function buildLocalBusinessSchema(city?: CitySlug) {
   const logoUrl = absoluteUrl("/images/brand/favicon-512.png");
   const cityConfig = city ? getCityBySlug(city) : undefined;
@@ -134,6 +199,9 @@ export function buildLocalBusinessSchema(city?: CitySlug) {
     "@type": "Place",
     name: area,
   }));
+  const address = getVerifiedPostalAddress();
+  const geo = address ? getVerifiedGeoCoordinates() : undefined;
+  const sameAs = getVerifiedSameAsUrls();
 
   return {
     "@context": "https://schema.org",
@@ -165,7 +233,9 @@ export function buildLocalBusinessSchema(city?: CitySlug) {
         closes: "18:00",
       },
     ],
-    sameAs: [],
+    ...(address ? { address } : {}),
+    ...(geo ? { geo } : {}),
+    ...(sameAs.length > 0 ? { sameAs } : {}),
   };
 }
 

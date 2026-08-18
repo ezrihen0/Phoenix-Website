@@ -1,0 +1,1 @@
+export const OFFICE_DAILY_STATE_RETENTION_DAYS = 90;

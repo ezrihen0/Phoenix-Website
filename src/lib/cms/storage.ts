@@ -14,7 +14,9 @@ import {
   shouldRewrapProtectedJson,
   unprotectJson,
 } from "@/lib/cms/secure-json";
-import type { Article, Lead, LeadDisposition, LeadDispositionReason, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
+import type { Article, Lead, LeadDisposition, LeadDispositionReason, OfficeDailyStateRecord, OfficeDailyStateStore, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
+import { OFFICE_DAILY_STATE_RETENTION_DAYS } from "@/lib/office/constants";
+import { pruneOfficeDailyStateRecords } from "@/lib/office/daily-state";
 import type { EvidenceRecord, PublicEvidence } from "@/lib/evidence";
 import { EVIDENCE_TYPE_VALUES, toPublicEvidence } from "@/lib/evidence";
 
@@ -25,11 +27,13 @@ const LOCAL_ARTICLES_FILE = path.join(LOCAL_DATA_DIR, "articles.json");
 const LOCAL_EVIDENCE_FILE = path.join(LOCAL_DATA_DIR, "evidence.json");
 const LOCAL_LEADS_FILE = path.join(LOCAL_DATA_DIR, "leads.json");
 const LOCAL_SETTINGS_FILE = path.join(LOCAL_DATA_DIR, "settings.json");
+const LOCAL_OFFICE_DAILY_STATE_FILE = path.join(LOCAL_DATA_DIR, "office-daily-state.json");
 const REMOTE_ARTICLES_KEY = "cms/articles.json";
 const REMOTE_ARTICLE_SNAPSHOT_PREFIX = "cms/articles.snapshot.";
 const REMOTE_EVIDENCE_KEY = "cms/evidence.json";
 const REMOTE_LEADS_KEY = "cms/leads.json";
 const REMOTE_SETTINGS_KEY = "cms/settings.json";
+const REMOTE_OFFICE_DAILY_STATE_KEY = "cms/office-daily-state.json";
 const REMOTE_BLOB_ACCESS = process.env.BLOB_STORE_ACCESS === "public" ? "public" : "private";
 const IS_VERCEL_RUNTIME = Boolean(process.env.VERCEL);
 const ALLOW_LOCAL_CMS_STORAGE = !IS_VERCEL_RUNTIME || process.env.ALLOW_LOCAL_CMS_STORAGE === "1";
@@ -929,4 +933,93 @@ export async function publishDueScheduledArticles(): Promise<PublishDueScheduled
   }
 
   return { published, skipped };
+}
+
+function normalizeOfficeDailyStateRecord(record: OfficeDailyStateRecord): OfficeDailyStateRecord {
+  return {
+    ...record,
+    username: record.username.trim(),
+    date: record.date.slice(0, 10),
+    checklist: Array.isArray(record.checklist) ? record.checklist : [],
+    updatedAt: record.updatedAt || new Date().toISOString(),
+  };
+}
+
+async function readOfficeDailyStateStore(): Promise<OfficeDailyStateStore> {
+  assertCmsStorageConfigured();
+  noStore();
+
+  const fallback: OfficeDailyStateStore = { records: [] };
+  const raw = hasBlobStorage()
+    ? await readRemoteJson<OfficeDailyStateStore>(REMOTE_OFFICE_DAILY_STATE_KEY, fallback, {
+        protectedData: true,
+      })
+    : await readLocalJson<OfficeDailyStateStore>(LOCAL_OFFICE_DAILY_STATE_FILE, fallback);
+
+  return {
+    records: asArray(raw?.records, fallback.records).map(normalizeOfficeDailyStateRecord),
+  };
+}
+
+async function writeOfficeDailyStateStore(store: OfficeDailyStateStore) {
+  const prunedRecords = pruneOfficeDailyStateRecords(
+    store.records.map(normalizeOfficeDailyStateRecord),
+    OFFICE_DAILY_STATE_RETENTION_DAYS,
+  );
+
+  const nextStore: OfficeDailyStateStore = { records: prunedRecords };
+
+  if (hasBlobStorage()) {
+    await writeRemoteJson(REMOTE_OFFICE_DAILY_STATE_KEY, nextStore, { protectedData: true });
+    return;
+  }
+
+  await writeLocalJson(LOCAL_OFFICE_DAILY_STATE_FILE, nextStore);
+}
+
+export async function listOfficeDailyStateRecords() {
+  const store = await readOfficeDailyStateStore();
+  return store.records;
+}
+
+export async function getOfficeDailyState(date: string, username: string) {
+  const records = await listOfficeDailyStateRecords();
+  const dateKey = date.slice(0, 10);
+  const normalizedUsername = username.trim().toLowerCase();
+
+  return (
+    records.find(
+      (record) =>
+        record.date === dateKey && record.username.trim().toLowerCase() === normalizedUsername,
+    ) || null
+  );
+}
+
+export async function saveOfficeDailyState(record: OfficeDailyStateRecord) {
+  const normalizedRecord = normalizeOfficeDailyStateRecord({
+    ...record,
+    updatedAt: new Date().toISOString(),
+  });
+  const records = await listOfficeDailyStateRecords();
+  const normalizedUsername = normalizedRecord.username.trim().toLowerCase();
+  const nextRecords = [
+    normalizedRecord,
+    ...records.filter(
+      (entry) =>
+        !(
+          entry.date === normalizedRecord.date &&
+          entry.username.trim().toLowerCase() === normalizedUsername
+        ),
+    ),
+  ];
+
+  await writeOfficeDailyStateStore({ records: nextRecords });
+
+  return normalizedRecord;
+}
+
+export async function listOfficeDailyStatesForDate(date: string) {
+  const dateKey = date.slice(0, 10);
+  const records = await listOfficeDailyStateRecords();
+  return records.filter((record) => record.date === dateKey);
 }

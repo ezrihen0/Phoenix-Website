@@ -1,0 +1,2206 @@
+{
+  "calendarName": "Phoenix Chimney & Fireplace — Alberta Seasonal Content Calendar",
+  "website": "phoenixfireplace.ca",
+  "timezone": "America/Edmonton",
+  "startDate": "2026-08-19",
+  "endDate": "2026-12-24",
+  "entryCount": 128,
+  "rules": {
+    "oneArticlePerDay": true,
+    "officeSeesTodayOnly": true,
+    "requiredImages": {
+      "aiImage": true,
+      "realPhoenixImage": true,
+      "waitingForManagerImageIsComplete": false
+    },
+    "completionGate": "Linked article must be published or scheduled, AI image provided, and real Phoenix image provided.",
+    "contentFamilies": [
+      "Gas Fireplace",
+      "Chimney Repair & Cleaning",
+      "WETT",
+      "Weather-Wise Local / Seasonal"
+    ],
+    "cities": [
+      "Calgary",
+      "Edmonton"
+    ]
+  },
+  "entries": [
+    {
+      "date": "2026-08-19",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Why Late Summer Is a Smart Time for Chimney Cleaning — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney cleaning Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-20",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "What Is a WETT Inspection and When Might You Need One? — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-21",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "How Often Should a Chimney Be Cleaned? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney cleaning Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-22",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why Your Gas Fireplace Won't Turn On After Summer — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-23",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Signs Your Chimney May Need Cleaning Before the First Fire — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney cleaning Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-24",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Buying a Home With a Wood-Burning Fireplace: Why WETT Matters — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-25",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Why a Chimney Can Smell Worse in Warm Weather — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-26",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Why Late Summer Is the Best Time to Prepare Your Fireplace and Chimney — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-27",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace Pilot Light Won't Stay Lit — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace pilot Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-28",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Why Smoke Comes Back Into the Room From a Wood Fireplace — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney repair Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-29",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "Selling a Home With a Wood Stove or Fireplace: Preparing for WETT — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-30",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "What the First Cold Nights Mean for Fireplace Season — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-08-31",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace Turns Off After a Few Minutes — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-01",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Does a Chimney Cap Stop Every Chimney Leak? — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney leak repair Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-02",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "Insurance Asked for a WETT Inspection: What Happens Next? — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-03",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Autumn Rain and Chimney Leaks: What Homeowners Should Watch For — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-04",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Wall Switch Not Working — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-05",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Cracked Chimney Crown: Why Small Cracks Matter Before Winter — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney repair Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-06",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "Before Using a Fireplace That Hasn't Been Used in Years — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-07",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "First Frost Checklist for Fireplaces and Chimneys — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Pre-season: preparation, inspection, cleaning, exterior repair, and first-use readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-08",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why Your Gas Fireplace Remote Works Only Sometimes — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace remote Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-09",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Chimney Flashing Leaks: What Homeowners Usually Notice First — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney leak repair Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-10",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why Your Gas Fireplace Flame Looks Smaller Than Last Winter — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-11",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "How Freeze-Thaw Cycles Damage Masonry Chimneys — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney masonry repair Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-12",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "First Fireplace Use of the Season: What's That Dusty Smell? — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace smell Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-13",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Do You Need a WETT Inspection After Renovating Around a Wood Stove? — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-14",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Gas Smell Near a Fireplace: When to Stop and Get Help — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace smell Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Use a clear safety-first stop-use message for suspected gas leak, abnormal ignition, soot, or abnormal combustion.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-15",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Why Chimney Bricks Start Spalling — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney masonry repair Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-16",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Clicking but Not Igniting — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-17",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "WETT After Chimney Repair: When Re-Inspection Can Make Sense — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-18",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Why Temperature Swings Can Expose Chimney Masonry Problems — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-19",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Pilot Is On but the Main Burner Won't Light — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace pilot Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-20",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Cracked Chimney Mortar Joints: Repair Now or Wait? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney masonry repair Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-21",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "What Documents Should You Have Ready for a WETT Inspection? — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-22",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "First Snowfall Fireplace Checklist — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-23",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace Burner Lights and Then Goes Out — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-24",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Water Stains Near a Chimney: Where the Leak May Actually Be Coming From — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney leak repair Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-25",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "What Does a WETT Inspector Look At? — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-26",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "What a Sudden Cold Snap Can Reveal About Your Fireplace — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-27",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Thermocouple vs Thermopile in a Gas Fireplace — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-28",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Rust on a Chimney Chase Cover: When Is Replacement Worth Considering? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-29",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Common Issues Found During Wood-Burning Appliance Inspections — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-09-30",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Snowmelt Around a Chimney: Why Leaks Can Appear During a Warm Spell — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "First-use season: problems discovered when homeowners start using fireplaces again. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-01",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Standing Pilot vs IPI Gas Fireplaces: What's the Difference? — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace pilot Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-02",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Storm Collar vs Chase Cover vs Chimney Cap: What's the Difference? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-03",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why Your Gas Fireplace Isn't Producing Enough Heat — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-04",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "What a Chimney Liner Does and Why Its Condition Matters — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-05",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why Gas Fireplace Glass Fogs Up When You Start It — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-06",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Cracked Clay Flue Tiles: What Homeowners Should Know — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-07",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why Soot Appears on Gas Fireplace Glass — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Use a clear safety-first stop-use message for suspected gas leak, abnormal ignition, soot, or abnormal combustion.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-08",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Stainless-Steel Chimney Liners: When Are They Used? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-09",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Blue vs Yellow Gas Fireplace Flames: What Is Normal? — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-10",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Does Chimney Waterproofing Fix a Leak? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney leak repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-11",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Blower Not Working: What to Check First — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-12",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace Makes Popping or Ticking Sounds — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-13",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Why Chimneys Leak After Heavy Rain — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney leak repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-14",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace Makes a Whistling Noise — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-15",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Wood Stove Clearances: Why Measurements Matter — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-16",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Delayed Ignition in a Gas Fireplace: Why It Should Be Checked — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Use a clear safety-first stop-use message for suspected gas leak, abnormal ignition, soot, or abnormal combustion.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-17",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Why Snowmelt Can Reveal Chimney Leaks — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney leak repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-18",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "What a Weak Pilot Flame Can Tell You About a Gas Fireplace — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace pilot Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-19",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Hearth and Floor Protection Around Wood-Burning Appliances — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-20",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace Works One Day and Not the Next — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-21",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Windy Winter Weather and Fireplace Draft: What Changes? — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-22",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Thermostat Problems: Fireplace or Control? — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-23",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Chimney Problems After a Roof Replacement: What to Check — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-24",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Remote and Receiver Troubleshooting Before a Service Call — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace remote Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-25",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Single-Wall vs Double-Wall Connector Pipe: Why It Matters — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-26",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Will a Gas Fireplace Work During a Power Outage? — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-27",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "After Heavy Snow: A Quick Fireplace and Chimney Exterior Check — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-28",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why Extreme Cold Can Expose Gas Fireplace Problems — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace winter problem Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-29",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Why a Cold Chimney Can Draft Poorly on the First Fire — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-30",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Snow or Ice Near a Direct-Vent Termination: What Homeowners Should Know — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace winter problem Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-10-31",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Factory-Built Fireplace WETT Inspection: What Homeowners Should Know — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-01",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace May Shut Down During a Cold Snap — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace winter problem Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-02",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Why Freeze-Thaw Weather Is Hard on Chimney Crowns and Mortar — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-03",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Starting Your Gas Fireplace After Months of Summer Shutdown — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-04",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Wind and Chimney Downdrafts: What Homeowners Should Know — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-05",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "When to Schedule Gas Fireplace Service Before Winter — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace service Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-06",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "Masonry Fireplace WETT Inspection: What Gets Attention? — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-07",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Getting Your Fireplace Ready for Thanksgiving Weekend — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-08",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Repair or Replacement: How to Think About the Decision — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-09",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Birds or Animals in a Chimney: What to Do Before Using the Fireplace — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-10",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "WETT Inspection vs Chimney Cleaning: You May Need One, the Other, or Both — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-11",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "The Week Before Winter: What to Check on Gas and Wood Fireplaces — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-12",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Can You Run a Gas Fireplace for Long Periods? — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-13",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Chimney Cleaning vs Chimney Inspection: What's the Difference? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney cleaning Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-14",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "WETT",
+      "topic": "WETT and Municipal Permits: They Are Not the Same Thing — Edmonton Homeowner Guide",
+      "primaryKeyword": "WETT inspection Edmonton",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Edmonton; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/edmonton/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-15",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Why a Warm Fall Can Still Be the Right Time for Chimney Work — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Peak service season: high-intent troubleshooting, repair decisions, inspection, cleaning, and active-use issues. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-16",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "How Often Should a Gas Fireplace Be Serviced? — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace service Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-17",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Cold Morning, Warm Afternoon: How Shoulder-Season Weather Affects Fireplace Use — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-18",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "What Does a Gas Fireplace Technician Check During a Service Call? — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace service Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-19",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Chimney Repair vs Rebuild: How the Decision Is Made — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney repair Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-20",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why Gas Fireplace Glass Gets Extremely Hot — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-21",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "What to Check After the First Week of Regular Fireplace Use — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-22",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Odors: Dust, Materials, or Something More Serious? — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace smell Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-23",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "What Is Tuckpointing and When Does a Chimney Need It? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney masonry repair Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-24",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Pilot Is Lit but the Wall Switch Does Nothing — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace pilot Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-25",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Holiday Fireplace Readiness: A December Checklist — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-26",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "What an Ignition Module Does in an Electronic-Ignition Fireplace — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-27",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "White Staining on Chimney Brick: What Efflorescence Can Tell You — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney masonry repair Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-28",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why a Gas Fireplace Burner Flame Looks Uneven — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-29",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "How to Prepare Your Wood Stove for a WETT Inspection — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-11-30",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why Your Gas Fireplace Won't Relight Immediately — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-01",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Why Winter Wind Can Make Existing Draft Problems More Noticeable — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-02",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Cold Air Coming From a Gas Fireplace When It's Off — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace winter problem Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-03",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Can Chimney Masonry Be Repaired in Cold Weather? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney masonry repair Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-04",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Is Exterior Frost or Condensation Around a Fireplace Vent Normal? — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace winter problem Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-05",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "How to Read a WETT Inspection Report Without Panicking — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-06",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Why Windy Weather Can Affect a Fireplace Pilot or Flame — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace pilot Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-07",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "What a Mid-Winter Warm Spell Can Reveal About Chimney Leaks — Calgary Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Calgary, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-08",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Keeping a Gas Fireplace Vent Clear After Snowfall — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace winter problem Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-09",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "What Happens During a Professional Chimney Cleaning? — Calgary Homeowner Guide",
+      "primaryKeyword": "chimney cleaning Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Calgary residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/calgary/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-10",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Service Before Holiday Guests Arrive — Edmonton Homeowner Guide",
+      "primaryKeyword": "gas fireplace service Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Edmonton illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/edmonton/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-11",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "When Is the Best Time of Year to Book a WETT Inspection? — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-12",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Before a Deep Freeze: Fireplace and Chimney Checks — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-13",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "What to Check Before You Rely on Your Gas Fireplace for Winter — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-14",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Pre-Christmas Chimney Cleaning: Why Waiting Until the Last Minute Is Risky — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney cleaning Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-15",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "Wood-Burning Appliance Inspection Before Winter: A Practical Checklist — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-16",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Christmas Week Fireplace Safety and Reliability Checklist — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-17",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "What Information Helps a Technician Diagnose a Gas Fireplace Faster? — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-18",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "Wood Fireplace Smells Smoky Even When It's Off: Why? — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney repair Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-19",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "WETT Myths: What an Inspection Does and Does Not Guarantee — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-20",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Why December Is When Small Fireplace Problems Become Big Annoyances — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-21",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "Gas Fireplace",
+      "topic": "Gas Fireplace Gas Valve Problems: Symptoms vs Diagnosis — Calgary Homeowner Guide",
+      "primaryKeyword": "gas fireplace repair Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the symptom in homeowner-friendly language and list multiple possible causes without declaring a failed part.",
+        "Include only safe homeowner observations/checks; do not provide gas adjustments, bypasses, or invasive repair instructions.",
+        "Explain when Phoenix should inspect or diagnose the fireplace and what information the customer should record."
+      ],
+      "imageInstructions": "AI image: realistic residential gas fireplace in Calgary illustrating the topic; no fake Phoenix branding and no unsafe repair scene. Real image: Phoenix field photo of a gas fireplace, pilot/control area, vent termination, flame, glass, or technician service relevant to this article.",
+      "internalLinkTarget": "/calgary/gas-fireplace-repair",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-22",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Chimney Repair & Cleaning",
+      "topic": "What a Chimney Sweep Can and Cannot Tell From Cleaning Alone — Edmonton Homeowner Guide",
+      "primaryKeyword": "chimney cleaning Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Explain the component or symptom and how water, deposits, draft, weather, or deterioration may be involved.",
+        "Treat the chimney as a system: crown, flashing, masonry, liner, cap/chase components, roof interface, and draft where relevant.",
+        "Explain inspection/cleaning/repair options without assuming the cause before an on-site evaluation."
+      ],
+      "imageInstructions": "AI image: realistic Edmonton residential chimney illustrating the topic with plausible masonry/roof details. Real image: Phoenix field photo of a chimney, crown, flashing, masonry, chase cover, liner, leak evidence, or chimney-cleaning work relevant to this article.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-23",
+      "website": "phoenixfireplace.ca",
+      "city": "Calgary",
+      "category": "WETT",
+      "topic": "WETT Before Christmas: Why Early Booking Helps — Calgary Homeowner Guide",
+      "primaryKeyword": "WETT inspection Calgary",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Calgary context naturally, including rapid temperature swings and freeze-thaw/Chinook conditions only when relevant; do not force them into unrelated topics.",
+      "requiredPoints": [
+        "Explain the WETT-related question in plain homeowner language without promising compliance or a passing result.",
+        "Describe the visible appliance, venting/chimney, clearance, hearth, documentation, or inspection considerations relevant to the topic.",
+        "Tell readers to verify insurer, permit, code, or jurisdiction-specific requirements when those details matter."
+      ],
+      "imageInstructions": "AI image: realistic Canadian wood-burning fireplace/stove inspection scene in Calgary; do not invent WETT badges or certification marks. Real image: Phoenix field photo of a wood fireplace/stove, hearth, chimney, venting, or inspection context relevant to this article.",
+      "internalLinkTarget": "/calgary/wett",
+      "status": "pending"
+    },
+    {
+      "date": "2026-12-24",
+      "website": "phoenixfireplace.ca",
+      "city": "Edmonton",
+      "category": "Weather-Wise Local / Seasonal",
+      "topic": "Planning Fireplace Service Around Alberta Winter Weather — Edmonton Homeowner Guide",
+      "primaryKeyword": "fireplace chimney seasonal maintenance Edmonton",
+      "writingAngle": "Winter and holiday season: cold-weather failures, snow/ice, draft, leak, reliability, and Christmas readiness. Use Edmonton context naturally, including earlier sustained cold and longer cold periods only when relevant; do not force weather references into unrelated topics.",
+      "requiredPoints": [
+        "Connect the article to the actual seasonal stage in Alberta rather than writing generic weather filler.",
+        "Explain how the weather pattern can reveal or worsen fireplace/chimney symptoms without claiming weather is always the cause.",
+        "Give practical preparation or observation steps and connect genuine problems to the appropriate Phoenix service."
+      ],
+      "imageInstructions": "AI image: realistic seasonal residential scene in Edmonton, Alberta matching the weather/topic; no fake service work. Real image: Phoenix local field photo showing the relevant fireplace/chimney condition, snow/rain/frost context, or exterior service condition.",
+      "internalLinkTarget": "/edmonton/services",
+      "status": "pending"
+    }
+  ]
+}
