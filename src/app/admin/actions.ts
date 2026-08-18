@@ -424,7 +424,7 @@ export async function saveArticleAction(formData: FormData) {
     if (new Date(scheduledAt).getTime() <= Date.now()) {
       redirectWithActionError(
         errorPath,
-        "Scheduled publish time must be in the future (Alberta time).",
+        "Scheduled publish time must be in the future (Calgary time).",
       );
     }
   }

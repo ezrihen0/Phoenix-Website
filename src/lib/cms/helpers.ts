@@ -1,6 +1,12 @@
 import type { Article } from "@/lib/cms/types";
+import {
+  formatSiteDate,
+  formatSiteDateTime,
+  getDateTimePartsInSiteTimeZone,
+  SITE_TIMEZONE,
+} from "@/lib/datetime";
 
-export const ARTICLE_TIMEZONE = "America/Edmonton";
+export const ARTICLE_TIMEZONE = SITE_TIMEZONE;
 
 export function slugify(input: string) {
   return input
@@ -13,18 +19,11 @@ export function slugify(input: string) {
 }
 
 export function formatArticleDate(value: string) {
-  return new Intl.DateTimeFormat("en-CA", {
-    dateStyle: "long",
-    timeZone: ARTICLE_TIMEZONE,
-  }).format(new Date(value));
+  return formatSiteDate(value);
 }
 
 export function formatArticleDateTime(value: string) {
-  return new Intl.DateTimeFormat("en-CA", {
-    dateStyle: "long",
-    timeStyle: "short",
-    timeZone: ARTICLE_TIMEZONE,
-  }).format(new Date(value));
+  return formatSiteDateTime(value, { showTimeZone: true });
 }
 
 export function getArticleSortTimestamp(article: Article) {
@@ -52,6 +51,10 @@ export function getArticleAdminDateLabel(article: Article) {
 }
 
 function getDateTimePartsInTimeZone(date: Date, timeZone: string) {
+  if (timeZone === SITE_TIMEZONE) {
+    return getDateTimePartsInSiteTimeZone(date);
+  }
+
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone,
     year: "numeric",
@@ -117,7 +120,7 @@ export function parseScheduleDateTime(date: string, time: string) {
     utcMs += minuteDelta * 60 * 1000;
   }
 
-  throw new Error("Could not resolve the scheduled publish time in Alberta time.");
+  throw new Error("Could not resolve the scheduled publish time in Calgary time.");
 }
 
 export function formatScheduleInputValues(isoUtc: string) {

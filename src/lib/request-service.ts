@@ -1,3 +1,4 @@
+import { SITE_TIMEZONE } from "@/lib/datetime";
 import { services } from "@/lib/site-data";
 
 export const SERVICE_REQUEST_URGENCY_OPTIONS = [
@@ -45,7 +46,7 @@ export type ServiceRequestContactMethod = (typeof SERVICE_REQUEST_CONTACT_METHOD
 
 export function getUpcomingWeekdayOptions(now = new Date()) {
   const todayName = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/Edmonton",
+    timeZone: SITE_TIMEZONE,
     weekday: "long",
   }).format(now);
 

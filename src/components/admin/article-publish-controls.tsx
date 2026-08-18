@@ -45,7 +45,7 @@ export function ArticlePublishControls({
 
     try {
       const iso = parseScheduleDateTime(scheduleDate, scheduleTime);
-      return `Scheduled for:\n${formatArticleDateTime(iso)} (Alberta time)`;
+      return `Scheduled for:\n${formatArticleDateTime(iso)}`;
     } catch {
       return null;
     }
@@ -99,7 +99,7 @@ export function ArticlePublishControls({
     <div className={`space-y-4 ${layout === "stacked" ? "md:col-span-2" : ""}`}>
       {article?.status === "scheduled" && article.scheduledAt ? (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          Currently scheduled for {formatArticleDateTime(article.scheduledAt)} (Alberta time).
+          Currently scheduled for {formatArticleDateTime(article.scheduledAt)}.
         </div>
       ) : null}
 

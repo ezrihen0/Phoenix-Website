@@ -12,7 +12,7 @@ export const siteConfig = {
   email: "phoenixfireplace0@gmail.com",
   serviceRadius: "Serving Calgary and surrounding communities within 100 km.",
   hoursLabel: "Sunday-Friday",
-  hoursDetail: "9AM-6PM local dispatch",
+  hoursDetail: "9AM-6PM Calgary time",
   mapEmbedUrl:
     "https://maps.google.com/maps?q=Calgary&t=m&z=9&output=embed&iwloc=near",
   serviceAreas: [

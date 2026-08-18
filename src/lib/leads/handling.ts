@@ -1,3 +1,8 @@
+import {
+  formatSiteDateTime,
+  formatSiteTime,
+  SITE_TIMEZONE,
+} from "@/lib/datetime";
 import type {
   Lead,
   LeadDisposition,
@@ -127,17 +132,14 @@ export function getLeadSlaClasses(tier: LeadSlaTier): string {
 }
 
 export function formatLeadDateTime(value: string): string {
-  return new Intl.DateTimeFormat("en-CA", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
+  return formatSiteDateTime(value, { showTimeZone: true });
 }
 
 export function formatLeadTime(value: string): string {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeStyle: "short",
-  }).format(new Date(value));
+  return formatSiteTime(value, { showTimeZone: true });
 }
+
+export { SITE_TIMEZONE };
 
 export function getLeadHandlingTimeMinutes(lead: Pick<Lead, "createdAt" | "handledAt">): number | null {
   if (!lead.handledAt) {
