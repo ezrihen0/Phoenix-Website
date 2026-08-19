@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Cormorant_Garamond } from "next/font/google";
 
-import { GoogleAnalytics } from "@/components/google-analytics";
+import { GoogleAnalyticsHead } from "@/components/google-analytics";
+import { GoogleAnalyticsTracker } from "@/components/google-analytics-tracker";
 import { MobileActionDock } from "@/components/mobile-action-dock";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -77,6 +78,9 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
       className={`${bricolage.variable} ${cormorant.variable} h-full scroll-smooth antialiased`}
     >
+      <head>
+        <GoogleAnalyticsHead />
+      </head>
       <body className="min-h-full bg-[var(--color-paper)] text-[var(--color-ink)]">
         <StructuredData data={[buildWebsiteSchema(), buildOrganizationSchema()]} />
         <div className="relative flex min-h-screen flex-col overflow-x-clip pb-24 lg:pb-0">
@@ -86,7 +90,7 @@ export default async function RootLayout({
           <MobileActionDock settings={settings} />
         </div>
         <VercelAnalytics />
-        <GoogleAnalytics />
+        <GoogleAnalyticsTracker />
       </body>
     </html>
   );
