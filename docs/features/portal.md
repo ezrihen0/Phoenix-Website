@@ -19,4 +19,6 @@ On that host, `/` redirects same-host to `/portal` and `/login` redirects same-h
 - Do not query WizField from the frontend or from production website code while the adapter is **DEFERRED**.
 - `getPortalConnectionStatus()` reports `deferred` until that adapter is real.
 
+The `/portal` profile shell may render an isolated **UI preview** view-model (`src/lib/portal/ui-preview.ts`) so layout work can proceed. That preview is labeled on the page, is not a live customer, and must never be returned from the WizField adapter. Do not restore a mock customer through `getPortalSnapshot()`.
+
 WizField production coupling is out of scope until the owner explicitly opens it.
