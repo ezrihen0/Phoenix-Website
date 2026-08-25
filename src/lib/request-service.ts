@@ -1,4 +1,6 @@
+import { isCitySlug, type CitySlug } from "@/lib/cities";
 import { SITE_TIMEZONE } from "@/lib/datetime";
+import { resolveCanonicalServiceSlug } from "@/lib/service-taxonomy";
 import { services } from "@/lib/site-data";
 
 export const SERVICE_REQUEST_URGENCY_OPTIONS = [
@@ -163,4 +165,133 @@ export function getUrgencyDetailOptions(urgency: string) {
   }
 
   return [];
+}
+
+export const REQUEST_SERVICE_PATH = "/request-service";
+
+export const REQUEST_SERVICE_CTA_LOCATIONS = [
+  "header",
+  "footer",
+  "mobile-dock",
+  "city-home",
+  "city-contact",
+  "city-services",
+  "city-about",
+  "service-landing",
+  "wett",
+  "gas-fireplace-repair",
+  "article",
+  "request-service-form",
+] as const;
+
+export type RequestServiceCtaLocation = (typeof REQUEST_SERVICE_CTA_LOCATIONS)[number];
+
+export const REQUEST_SERVICE_CTA_LABELS: Record<RequestServiceCtaLocation, string> = {
+  header: "Header",
+  footer: "Footer",
+  "mobile-dock": "Mobile dock",
+  "city-home": "City home",
+  "city-contact": "City contact",
+  "city-services": "City services",
+  "city-about": "City about",
+  "service-landing": "Service page",
+  wett: "WETT page",
+  "gas-fireplace-repair": "Gas repair page",
+  article: "Article",
+  "request-service-form": "Request Service form",
+};
+
+export function getRequestServiceCtaLabel(value?: string) {
+  if (value && isRequestServiceCta(value)) {
+    return REQUEST_SERVICE_CTA_LABELS[value];
+  }
+
+  const trimmed = value?.trim();
+  return trimmed || undefined;
+}
+
+const PROBLEM_MAX_LENGTH = 500;
+const UTM_MAX_LENGTH = 120;
+
+function isRequestServiceCta(value: string): value is RequestServiceCtaLocation {
+  return (REQUEST_SERVICE_CTA_LOCATIONS as readonly string[]).includes(value);
+}
+
+function sanitizePlainText(value?: string, maxLength = PROBLEM_MAX_LENGTH) {
+  if (!value) {
+    return undefined;
+  }
+
+  const cleaned = value.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  return cleaned ? cleaned.slice(0, maxLength) : undefined;
+}
+
+function sanitizeFromPath(value?: string) {
+  if (!value) {
+    return undefined;
+  }
+
+  const path = value.trim().split("?")[0];
+  if (!path.startsWith("/") || path.startsWith("//") || path.includes("://")) {
+    return undefined;
+  }
+
+  if (/^\/(admin|api|portal)(\/|$)/.test(path)) {
+    return undefined;
+  }
+
+  if (path.length > 200) {
+    return undefined;
+  }
+
+  return path;
+}
+
+export type RequestServiceQueryContext = {
+  city?: CitySlug;
+  serviceSlug?: string;
+  serviceTitle?: string;
+  problem?: string;
+  urgency?: string;
+  ctaLocation: RequestServiceCtaLocation;
+  fromPath?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+};
+
+export function parseRequestServiceSearchParams(searchParams: {
+  city?: string;
+  service?: string;
+  problem?: string;
+  urgency?: string;
+  cta?: string;
+  from?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+}): RequestServiceQueryContext {
+  const city = searchParams.city && isCitySlug(searchParams.city) ? searchParams.city : undefined;
+  const serviceSlug =
+    (searchParams.service && resolveCanonicalServiceSlug(searchParams.service)) ||
+    SERVICE_REQUEST_CATALOG.find((item) => item.title === searchParams.service)?.slug;
+  const serviceTitle = serviceSlug
+    ? SERVICE_REQUEST_CATALOG.find((item) => item.slug === serviceSlug)?.title
+    : undefined;
+  const urgency = SERVICE_REQUEST_URGENCY_OPTIONS.find((option) => option === searchParams.urgency);
+  const ctaLocation =
+    searchParams.cta && isRequestServiceCta(searchParams.cta) ? searchParams.cta : "request-service-form";
+
+  return {
+    city,
+    serviceSlug,
+    serviceTitle,
+    problem: sanitizePlainText(searchParams.problem),
+    urgency,
+    ctaLocation,
+    fromPath: sanitizeFromPath(searchParams.from),
+    utmSource: sanitizePlainText(searchParams.utm_source, UTM_MAX_LENGTH),
+    utmMedium: sanitizePlainText(searchParams.utm_medium, UTM_MAX_LENGTH),
+    utmCampaign: sanitizePlainText(searchParams.utm_campaign, UTM_MAX_LENGTH),
+  };
 }

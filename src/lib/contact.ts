@@ -3,7 +3,7 @@ import "server-only";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-import { CITY_SLUGS, defaultCitySlug, getCityBySlug } from "@/lib/cities";
+import { CITY_SLUGS, defaultCitySlug, evaluateServiceArea, getCityBySlug } from "@/lib/cities";
 import { getSiteSettings, saveLead } from "@/lib/cms/storage";
 import type { Lead, LeadDeliveryStatus } from "@/lib/cms/types";
 import { sendLeadNotificationEmail } from "@/lib/email/lead-notifications";
@@ -15,6 +15,7 @@ import {
   CANADIAN_PROVINCE_CODES,
   formatServiceAddress,
   formatServiceAddressLines,
+  getRequestServiceCtaLabel,
   normalizeServiceAddressParts,
 } from "@/lib/request-service";
 
@@ -39,7 +40,7 @@ const serviceRequestTitleSchema = z.enum(
 );
 
 export const serviceRequestSchema = z.object({
-  city: z.enum(CITY_SLUGS).optional().default(defaultCitySlug),
+  city: z.enum(CITY_SLUGS),
   firstName: z.string().trim().min(2, "First name is required."),
   lastName: z.string().trim().min(2, "Last name is required."),
   phone: z.string().trim().min(10, "Phone number is required."),
@@ -57,6 +58,9 @@ export const serviceRequestSchema = z.object({
   }),
   addressPostalCode: z.string().trim().min(6, "Postal code is required."),
   address: z.string().trim().optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  ctaLocation: z.string().trim().optional(),
   preferredContactMethod: z.enum(SERVICE_REQUEST_CONTACT_METHODS).optional().default("Phone"),
   sourceUrl: z.string().trim().optional(),
   utmSource: z.string().trim().optional(),
@@ -108,6 +112,10 @@ function getRecaptchaMinScore() {
   return Math.min(1, Math.max(0, parsed));
 }
 
+function recaptchaRequiredInProduction() {
+  return process.env.VERCEL_ENV === "production";
+}
+
 async function verifyRecaptchaToken(
   token: string | undefined,
   remoteIp?: string,
@@ -116,6 +124,13 @@ async function verifyRecaptchaToken(
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY?.trim();
 
   if (!secretKey || !siteKey) {
+    if (recaptchaRequiredInProduction()) {
+      return {
+        ok: false,
+        message: "We could not verify your submission right now. Please call the office.",
+      };
+    }
+
     return { ok: true };
   }
 
@@ -332,8 +347,9 @@ async function sendWebsiteLeadEmail(
   const settings = await getSiteSettings();
   const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
   const customerName = `${payload.firstName} ${payload.lastName}`;
-  const subject = `[Phoenix Website Lead] ${city?.name || "Website"} | ${payload.service} | ${customerName}`;
+  const subject = `[Phoenix Request Service] ${city?.name || "Alberta"} | ${payload.service} | ${customerName}`;
   const adminLeadsUrl = `${settings.siteUrl.replace(/\/$/, "")}/admin/leads`;
+  const ctaLabel = getRequestServiceCtaLabel(payload.ctaLocation) || "Not provided";
   const addressLines = formatServiceAddressLines(payload);
   const formattedAddress = formatServiceAddress(payload) || "Not provided";
   const addressHtml = addressLines.length
@@ -351,7 +367,8 @@ async function sendWebsiteLeadEmail(
     `Lead ID: ${leadId}`,
     `Admin inbox: ${adminLeadsUrl}`,
     `City: ${city?.name || "Unknown"}`,
-    `Source: Website`,
+    `Source: Request Service`,
+    `CTA: ${ctaLabel}`,
     `Name: ${customerName}`,
     `Phone: ${payload.phone}`,
     `Email: ${payload.email}`,
@@ -379,7 +396,8 @@ async function sendWebsiteLeadEmail(
         <p><strong>Lead ID:</strong> ${escapeHtml(leadId)}</p>
         <p><strong>Admin inbox:</strong> <a href="${escapeHtml(adminLeadsUrl)}">${escapeHtml(adminLeadsUrl)}</a></p>
         <p><strong>City:</strong> ${escapeHtml(city?.name || "Unknown")}</p>
-        <p><strong>Source:</strong> Website</p>
+        <p><strong>Source:</strong> Request Service</p>
+        <p><strong>CTA:</strong> ${escapeHtml(ctaLabel)}</p>
         <p><strong>Name:</strong> ${escapeHtml(customerName)}</p>
         <p><strong>Phone:</strong> ${escapeHtml(payload.phone)}</p>
         <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
@@ -391,6 +409,9 @@ async function sendWebsiteLeadEmail(
         <p><strong>Preferred day:</strong> ${escapeHtml(normalizeOptional(payload.preferredDay) || payload.urgencyDetail)}</p>
         <p><strong>Preferred time:</strong> ${escapeHtml(normalizeOptional(payload.preferredTime) || "Not provided")}</p>
         <p><strong>Page:</strong> ${escapeHtml(normalizeOptional(payload.sourceUrl) || "Not provided")}</p>
+        <p><strong>UTM source:</strong> ${escapeHtml(normalizeOptional(payload.utmSource) || "Not provided")}</p>
+        <p><strong>UTM medium:</strong> ${escapeHtml(normalizeOptional(payload.utmMedium) || "Not provided")}</p>
+        <p><strong>UTM campaign:</strong> ${escapeHtml(normalizeOptional(payload.utmCampaign) || "Not provided")}</p>
         <p><strong>What is happening:</strong></p>
         <p>${escapeHtml(payload.message).replace(/\n/g, "<br />")}</p>
       `,
@@ -435,6 +456,10 @@ export async function routeServiceRequestSubmission(
   const leadId = crypto.randomUUID();
   const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
   const addressParts = normalizeServiceAddressParts(payload);
+  const coverage =
+    payload.latitude != null && payload.longitude != null
+      ? evaluateServiceArea(payload.latitude, payload.longitude)
+      : undefined;
 
   const leadRecord: Lead = {
     id: leadId,
@@ -456,11 +481,17 @@ export async function routeServiceRequestSubmission(
     urgency: payload.urgency,
     urgencyDetail: payload.urgencyDetail,
     preferredContactMethod: payload.preferredContactMethod,
+    ctaLocation: normalizeOptional(payload.ctaLocation),
     sourceUrl: normalizeOptional(payload.sourceUrl),
     utmSource: normalizeOptional(payload.utmSource),
     utmMedium: normalizeOptional(payload.utmMedium),
     utmCampaign: normalizeOptional(payload.utmCampaign),
     createdAt,
+    latitude: payload.latitude,
+    longitude: payload.longitude,
+    nearestHub: coverage?.nearestCity,
+    serviceAreaDistanceKm: coverage?.distanceKm,
+    inServiceArea: coverage?.inCoverage,
     disposition: "pending",
     emailDeliveryStatus: "skipped",
     emailDeliveryNote: "Notification pending.",

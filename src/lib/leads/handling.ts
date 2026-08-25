@@ -53,7 +53,7 @@ export function getLeadDispositionLabel(disposition: LeadDisposition): string {
 }
 
 export function getLeadSourceLabel(source: LeadSource): string {
-  return source === "website" ? "Website" : "Contact form";
+  return source === "website" ? "Request Service" : "Contact form";
 }
 
 export function getLeadDomainLabel(lead: Pick<Lead, "source" | "sourceUrl">): string {
@@ -62,13 +62,13 @@ export function getLeadDomainLabel(lead: Pick<Lead, "source" | "sourceUrl">): st
   }
 
   if (!lead.sourceUrl) {
-    return "Website";
+    return "Request Service";
   }
 
   try {
     return new URL(lead.sourceUrl).hostname.replace(/^www\./, "");
   } catch {
-    return "Website";
+    return "Request Service";
   }
 }
 

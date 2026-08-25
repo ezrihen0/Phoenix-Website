@@ -8,7 +8,6 @@ import { ArticleRelatedServices } from "@/components/articles/article-related-se
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
-import { defaultCitySlug, getCityHref } from "@/lib/cities";
 import { getArticleByline } from "@/lib/cms/article-authorship";
 import { buildArticleSchema, buildBreadcrumbSchema, createPageMetadata } from "@/lib/seo";
 import { buildRelatedArticles, estimateReadingTime, formatArticleDate } from "@/lib/cms/helpers";
@@ -22,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug, { city: defaultCitySlug });
+  const article = await getArticleBySlug(slug, { scope: "general" });
 
   if (!article) {
     return createPageMetadata({
@@ -35,7 +34,7 @@ export async function generateMetadata({
   return createPageMetadata({
     title: article.seoTitle,
     description: article.seoDescription,
-    path: getCityHref(defaultCitySlug, `/articles/${article.slug}`),
+    path: `/articles/${article.slug}`,
     keywords: article.keywords,
     imagePath: article.coverImage || undefined,
     imageAlt: article.coverImageAlt || article.title,
@@ -53,8 +52,8 @@ export default async function ArticlePage({
 }) {
   const { slug } = await params;
   const [article, articles, settings] = await Promise.all([
-    getArticleBySlug(slug, { city: defaultCitySlug }),
-    listArticles({ city: defaultCitySlug }),
+    getArticleBySlug(slug, { scope: "general" }),
+    listArticles({ scope: "general" }),
     getPublicSiteSettings(),
   ]);
 
@@ -74,7 +73,7 @@ export default async function ArticlePage({
             { name: "Articles", path: "/articles" },
             { name: article.title, path: `/articles/${article.slug}` },
           ]),
-          buildArticleSchema(article, defaultCitySlug),
+          buildArticleSchema(article),
         ]}
       />
 
@@ -118,11 +117,11 @@ export default async function ArticlePage({
       <section className="pb-20">
         <div className="page-frame grid gap-10 lg:grid-cols-[1fr_0.72fr] lg:items-start">
           <div className="rounded-[2rem] border border-[var(--color-border)] bg-white/78 p-6 sm:p-8">
-            <ArticleBody markdown={article.body} city={defaultCitySlug} />
+            <ArticleBody markdown={article.body} />
           </div>
 
           <aside className="space-y-6">
-            <ArticleRelatedServices article={article} city={defaultCitySlug} />
+            <ArticleRelatedServices article={article} />
             <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
             <SectionHeading
               eyebrow="Related reading"
@@ -131,7 +130,7 @@ export default async function ArticlePage({
             />
             <div className="mt-4 grid gap-4">
               {relatedArticles.map((relatedArticle) => (
-                <ArticleCard key={relatedArticle.id} article={relatedArticle} city={defaultCitySlug} />
+                <ArticleCard key={relatedArticle.id} article={relatedArticle} />
               ))}
             </div>
             </div>

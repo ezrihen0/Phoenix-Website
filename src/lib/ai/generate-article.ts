@@ -11,7 +11,7 @@ import {
 import { saveArticle, listArticles, getSiteSettings } from "@/lib/cms/storage";
 import { slugify } from "@/lib/cms/helpers";
 import type { Article, GeneratedArticleDraft } from "@/lib/cms/types";
-import { getServiceLandingHref, serviceLandingPages, services } from "@/lib/site-data";
+import { getServiceLandingHref, services } from "@/lib/site-data";
 
 const aiArticleSchema = z.object({
   title: z.string().min(12),
@@ -44,17 +44,12 @@ function buildPromptContext(city: CitySlug, existingArticles: Article[]) {
 
   const serviceLinks = services.map((service) => ({
     title: service.title,
-    href: getCityHref(city, `/services#${service.slug}`),
-  }));
-
-  const serviceGuideLinks = serviceLandingPages.map((servicePage) => ({
-    title: servicePage.title,
-    href: getServiceLandingHref(servicePage.slug, city),
+    href: getServiceLandingHref(service.slug, city),
   }));
 
   return {
     recentArticles,
-    serviceLinks: [...serviceLinks, ...serviceGuideLinks],
+    serviceLinks,
   };
 }
 
@@ -121,7 +116,7 @@ function pickNextCityForGeneration(existingArticles: Article[]) {
     return defaultCitySlug;
   }
 
-  const currentIndex = CITY_SLUGS.indexOf(latestAiArticle.city);
+  const currentIndex = latestAiArticle.city ? CITY_SLUGS.indexOf(latestAiArticle.city) : -1;
 
   if (currentIndex === -1) {
     return defaultCitySlug;
@@ -165,6 +160,7 @@ export async function generateDailyArticle(options?: { force?: boolean; city?: C
 
   const article: Article = {
     id: crypto.randomUUID(),
+    scope: "city",
     city,
     slug,
     title: draft.title,

@@ -1,9 +1,6 @@
-import { getCityBySlug, getCityHref, type CitySlug } from "@/lib/cities";
-import {
-  getServiceDetailPath,
-  getServiceLandingHref,
-  getServiceLandingPage,
-} from "@/lib/site-data";
+import { getCityBySlug, getCityHref, isCitySlug, type CitySlug } from "@/lib/cities";
+import { getServiceHref } from "@/lib/service-taxonomy";
+import { getServiceLandingPage } from "@/lib/site-data";
 
 export type ContextualLink = {
   title: string;
@@ -12,35 +9,7 @@ export type ContextualLink = {
 };
 
 export function resolvePublicServiceHref(serviceSlug: string, city?: CitySlug) {
-  const landingSlugs = new Set([
-    "gas-fireplace-maintenance",
-    "chimney-sweeping-inspection",
-    "chimney-repair-masonry",
-    "gas-fireplace-installation",
-  ]);
-
-  if (landingSlugs.has(serviceSlug)) {
-    return getServiceLandingHref(serviceSlug, city);
-  }
-
-  if (serviceSlug === "wett-inspections") {
-    return city ? getCityHref(city, "/wett") : "/wett";
-  }
-
-  if (serviceSlug === "gas-fireplace-repair") {
-    return city ? getCityHref(city, "/gas-fireplace-repair") : "/gas-fireplace-repair";
-  }
-
-  if (serviceSlug === "chimney-sweep-repair") {
-    return getServiceLandingHref("chimney-sweeping-inspection", city);
-  }
-
-  if (serviceSlug === "masonry-rebuilds") {
-    return getServiceLandingHref("chimney-repair-masonry", city);
-  }
-
-  const detailPath = getServiceDetailPath(serviceSlug);
-  return city ? getCityHref(city, detailPath) : detailPath;
+  return getServiceHref(serviceSlug, city);
 }
 
 export function resolveRelatedServiceLink(
@@ -75,7 +44,7 @@ export function resolveRelatedServiceLink(
   const cityName = cityConfig?.name ?? city;
 
   return {
-    href: getServiceLandingHref(slug, city),
+    href: getServiceHref(slug, city),
     title: landing.title,
     description: landing.directAnswer.city(cityName)[0],
   };
@@ -99,7 +68,9 @@ export function getWettContextualLinks(city?: CitySlug): ContextualLink[] {
       title: "WETT inspection guidance",
       description:
         "Read when to book, what to prepare, and how inspection timing differs from repair or sweeping visits.",
-      path: city ? `/articles/when-to-book-a-wett-inspection-in-${city}` : "/articles",
+      path: city
+        ? `/articles/when-to-book-a-wett-inspection`
+        : "/articles/when-to-book-a-wett-inspection",
     },
   ];
 }
@@ -122,7 +93,7 @@ export function getGasRepairContextualLinks(city: CitySlug): ContextualLink[] {
       title: "Gas fireplace troubleshooting guide",
       description:
         "Informational checks for ignition and shutdown symptoms before you book a repair visit.",
-      path: `/articles/gas-fireplace-not-turning-on-${city}`,
+      path: `/articles/gas-fireplace-not-turning-on`,
     },
   ];
 }
@@ -158,13 +129,23 @@ export function getCityHubLinks(city: CitySlug): ContextualLink[] {
 }
 
 export function resolveContextualLinkHref(path: string, city?: CitySlug) {
-  if (city) {
-    return getCityHref(city, path);
+  if (!city) {
+    return path;
   }
 
-  return path;
+  if (path === "/articles" || path.startsWith("/articles/")) {
+    return path;
+  }
+
+  const firstSegment = path.split("?")[0].split("/").filter(Boolean)[0];
+
+  if (firstSegment && isCitySlug(firstSegment)) {
+    return path;
+  }
+
+  return getCityHref(city, path);
 }
 
-export function getGasTroubleshootingArticleSlug(city: CitySlug) {
-  return `gas-fireplace-not-turning-on-${city}`;
+export function getGasTroubleshootingArticleSlug(_city: CitySlug) {
+  return "gas-fireplace-not-turning-on";
 }

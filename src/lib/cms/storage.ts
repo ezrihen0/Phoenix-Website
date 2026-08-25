@@ -53,11 +53,13 @@ export type CmsStorageStatus = {
 type ListArticlesOptions = {
   includeDrafts?: boolean;
   city?: CitySlug;
+  scope?: "general" | "city";
 };
 
 type GetArticleOptions = {
   includeDrafts?: boolean;
   city?: CitySlug;
+  scope?: "general" | "city";
 };
 
 type ListEvidenceOptions = {
@@ -221,8 +223,11 @@ function sortLeads(leads: Lead[]) {
   });
 }
 
-function normalizeArticleRecord(article: Article & { city?: string }) {
-  const city = getCityBySlug(article.city || "")?.slug || defaultCitySlug;
+function normalizeArticleRecord(article: Article & { city?: string; scope?: string }) {
+  const hasCity = Boolean(getCityBySlug(article.city || ""));
+  const scope: Article["scope"] =
+    article.scope === "city" || (article.scope !== "general" && hasCity) ? "city" : "general";
+  const city = scope === "city" ? getCityBySlug(article.city || "")?.slug : undefined;
   const createdAt = article.createdAt || article.updatedAt || new Date().toISOString();
   const updatedAt = article.updatedAt || createdAt;
   const status =
@@ -240,6 +245,7 @@ function normalizeArticleRecord(article: Article & { city?: string }) {
 
   return {
     ...article,
+    scope,
     city,
     keywords: article.keywords || [],
     relatedSlugs: article.relatedSlugs || [],
@@ -293,6 +299,7 @@ function normalizeEvidenceRecord(record: Partial<EvidenceRecord> & { jobCity?: s
           source: image.source || "site-asset",
           url: image.url?.trim() || "",
           isPrimary: Boolean(image.isPrimary),
+          pairRole: image.pairRole === "before" || image.pairRole === "after" ? image.pairRole : "other",
           publicAlt: image.publicAlt?.trim() || undefined,
           publicCaption: image.publicCaption?.trim() || undefined,
           internalSourceDescription: image.internalSourceDescription?.trim() || undefined,
@@ -467,6 +474,9 @@ export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
     defaultAuthorName: settings.defaultAuthorName,
     blogIndexTitle: settings.blogIndexTitle,
     blogIndexDescription: settings.blogIndexDescription,
+    googleRating: settings.googleRating,
+    googleReviewCount: settings.googleReviewCount,
+    googleReviewsUrl: settings.googleReviewsUrl,
   };
 }
 
@@ -502,15 +512,27 @@ export async function listArticles(options?: ListArticlesOptions) {
   }
 
   const sorted = sortArticles(mergedArticles.map(normalizeArticleRecord));
-  const filteredByCity = options?.city
-    ? sorted.filter((article) => article.city === options.city)
-    : sorted;
+  const filtered = sorted.filter((article) => {
+    if (options?.scope === "general") {
+      return article.scope === "general";
+    }
+
+    if (options?.city) {
+      return article.scope === "city" && article.city === options.city;
+    }
+
+    if (options?.scope === "city") {
+      return article.scope === "city";
+    }
+
+    return true;
+  });
 
   if (options?.includeDrafts) {
-    return filteredByCity;
+    return filtered;
   }
 
-  return filteredByCity.filter((article) => article.status === "published");
+  return filtered.filter((article) => article.status === "published");
 }
 
 export async function getArticleBySlug(
@@ -522,7 +544,8 @@ export async function getArticleBySlug(
 
   const articles = await listArticles({
     includeDrafts: true,
-    city: options?.city || defaultCitySlug,
+    city: options?.city,
+    scope: options?.scope || (options?.city ? "city" : "general"),
   });
   const article = articles.find((entry) => entry.slug === slug);
 

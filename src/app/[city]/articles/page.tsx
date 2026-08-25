@@ -66,11 +66,13 @@ export default async function CityArticlesPage({
     return <CityPlaceholderPage city={city} section="articles" />;
   }
 
-  const [articles, settings] = await Promise.all([
+  const [cityArticles, generalArticles, settings] = await Promise.all([
     listArticles({ city: city.slug }),
+    listArticles({ scope: "general" }),
     getPublicSiteSettings(),
   ]);
   const siteSettings = getCitySettings(settings, city.slug);
+  const articles = [...cityArticles, ...generalArticles.filter((article) => !cityArticles.some((entry) => entry.id === article.id))];
 
   return (
     <>
@@ -90,14 +92,15 @@ export default async function CityArticlesPage({
                 {siteSettings.blogIndexTitle}
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-lg">
-                {siteSettings.blogIndexDescription}
+                City-specific articles appear here only when geography changes the answer. Alberta guidance lives on the
+                general articles hub.
               </p>
             </div>
           </Reveal>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {articles.map((article, index) => (
               <Reveal key={article.id} delay={index * 90}>
-                <ArticleCard article={article} city={city.slug} />
+                <ArticleCard article={article} />
               </Reveal>
             ))}
           </div>

@@ -5,7 +5,7 @@ import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-s
 import { GenerateAiArticleForm } from "@/components/admin/generate-ai-article-form";
 import { requireArticlesAccess } from "@/lib/auth/permissions";
 import { cities, getCityBySlug, getCityHref } from "@/lib/cities";
-import { formatArticleDateTime, getArticleAdminDateLabel } from "@/lib/cms/helpers";
+import { formatArticleDateTime, getArticleAdminDateLabel, getArticleHref } from "@/lib/cms/helpers";
 import { getCmsStorageStatus, listArticles } from "@/lib/cms/storage";
 import { deleteArticleAction } from "@/app/admin/actions";
 
@@ -230,7 +230,7 @@ export default async function AdminArticlesPage({
                     {statusLabel(article.status)}
                   </span>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
-                    {article.city} · {article.aiGenerated ? "AI-assisted" : "Manual"}
+                    {article.scope === "general" ? "Alberta" : article.city} · {article.aiGenerated ? "AI-assisted" : "Manual"}
                   </p>
                 </div>
                 <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-muted)]">
@@ -251,7 +251,7 @@ export default async function AdminArticlesPage({
                   Edit
                 </Link>
                 <Link
-                  href={getCityHref(article.city, `/articles/${article.slug}`)}
+                  href={getArticleHref(article)}
                   className="rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-semibold"
                 >
                   View
@@ -259,7 +259,7 @@ export default async function AdminArticlesPage({
                 <form action={deleteArticleAction}>
                   <input type="hidden" name="articleId" value={article.id} />
                   <input type="hidden" name="slug" value={article.slug} />
-                  <input type="hidden" name="city" value={article.city} />
+                  <input type="hidden" name="city" value={article.city || ""} />
                   <button
                     type="submit"
                     className="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700"

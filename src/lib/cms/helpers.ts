@@ -1,4 +1,5 @@
 import type { Article } from "@/lib/cms/types";
+import { getCityHref } from "@/lib/cities";
 import {
   formatSiteDate,
   formatSiteDateTime,
@@ -24,6 +25,18 @@ export function formatArticleDate(value: string) {
 
 export function formatArticleDateTime(value: string) {
   return formatSiteDateTime(value, { showTimeZone: true });
+}
+
+export function isGeneralArticle(article: Pick<Article, "scope" | "city">) {
+  return article.scope === "general" || !article.city;
+}
+
+export function getArticleHref(article: Pick<Article, "scope" | "city" | "slug">) {
+  if (article.scope === "city" && article.city) {
+    return getCityHref(article.city, `/articles/${article.slug}`);
+  }
+
+  return `/articles/${article.slug}`;
 }
 
 export function getArticleSortTimestamp(article: Article) {
@@ -146,7 +159,11 @@ export function buildRelatedArticles(
   articles: Article[],
   limit = 3,
 ) {
-  const localArticles = articles.filter((article) => article.city === current.city);
+  const localArticles = articles.filter((article) =>
+    current.scope === "general"
+      ? article.scope === "general"
+      : article.city === current.city,
+  );
   const related = current.relatedSlugs
     .map((slug) => localArticles.find((article) => article.slug === slug))
     .filter((article): article is Article => article != null)

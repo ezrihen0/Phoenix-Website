@@ -8,8 +8,9 @@ import {
   markLeadNotAddedAction,
 } from "@/app/admin/lead-actions";
 import { LeadDispositionDialog } from "@/components/admin/lead-disposition-dialog";
+import { getCityBySlug } from "@/lib/cities";
 import type { Lead, LeadDispositionReason } from "@/lib/cms/types";
-import { formatServiceAddressLines } from "@/lib/request-service";
+import { formatServiceAddressLines, getRequestServiceCtaLabel } from "@/lib/request-service";
 import {
   formatDurationMinutes,
   formatLeadDateTime,
@@ -83,7 +84,10 @@ export function LeadCard({ lead }: LeadCardProps) {
             <div className="flex flex-wrap items-center gap-3">
               <DispositionBadge disposition={disposition} elapsedMinutes={elapsedMinutes} slaTier={slaTier} />
               <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
-                {lead.city}
+                {getLeadSourceLabel(lead.source)}
+              </span>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
+                {getCityBySlug(lead.city)?.name || lead.city}
               </span>
               <StatusPill label="Email" status={lead.emailDeliveryStatus} />
             </div>
@@ -242,27 +246,74 @@ function DispositionBadge({
 }
 
 function AttributionBlock({ lead }: { lead: Lead }) {
+  const cityName = getCityBySlug(lead.city)?.name || lead.city;
+  const ctaLabel = getRequestServiceCtaLabel(lead.ctaLocation);
+  const nearestHubName = lead.nearestHub ? getCityBySlug(lead.nearestHub)?.name || lead.nearestHub : undefined;
+  const mapHref =
+    lead.latitude != null && lead.longitude != null
+      ? `https://maps.google.com/?q=${lead.latitude},${lead.longitude}`
+      : undefined;
+
   return (
     <div className="grid gap-2 rounded-[1.25rem] border border-[var(--color-border)] bg-white/60 p-4 text-sm text-[var(--color-muted)] sm:grid-cols-2">
       <p>
-        <span className="font-semibold text-[var(--color-ink)]">Website / Domain:</span>{" "}
+        <span className="font-semibold text-[var(--color-ink)]">Domain:</span>{" "}
         {getLeadDomainLabel(lead)}
       </p>
       <p>
-        <span className="font-semibold text-[var(--color-ink)]">City:</span> {lead.city}
+        <span className="font-semibold text-[var(--color-ink)]">City:</span> {cityName}
       </p>
       <p>
         <span className="font-semibold text-[var(--color-ink)]">Source:</span>{" "}
         {getLeadSourceLabel(lead.source)}
       </p>
       <p>
-        <span className="font-semibold text-[var(--color-ink)]">Campaign:</span>{" "}
-        {lead.utmCampaign || "Not provided"}
+        <span className="font-semibold text-[var(--color-ink)]">CTA:</span> {ctaLabel || "Not provided"}
       </p>
       <p className="sm:col-span-2 break-all">
-        <span className="font-semibold text-[var(--color-ink)]">Landing Page:</span>{" "}
-        {lead.sourceUrl || "Not provided"}
+        <span className="font-semibold text-[var(--color-ink)]">Source page:</span>{" "}
+        {lead.sourceUrl ? (
+          <a href={lead.sourceUrl} className="font-semibold text-[var(--color-ink)] underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
+            {lead.sourceUrl}
+          </a>
+        ) : (
+          "Not provided"
+        )}
       </p>
+      <p>
+        <span className="font-semibold text-[var(--color-ink)]">UTM source:</span>{" "}
+        {lead.utmSource || "Not provided"}
+      </p>
+      <p>
+        <span className="font-semibold text-[var(--color-ink)]">UTM medium:</span>{" "}
+        {lead.utmMedium || "Not provided"}
+      </p>
+      <p className="sm:col-span-2">
+        <span className="font-semibold text-[var(--color-ink)]">UTM campaign:</span>{" "}
+        {lead.utmCampaign || "Not provided"}
+      </p>
+      {lead.inServiceArea != null || nearestHubName || mapHref ? (
+        <p className="sm:col-span-2">
+          <span className="font-semibold text-[var(--color-ink)]">Coverage:</span>{" "}
+          {lead.inServiceArea == null
+            ? "Address submitted without a map pin"
+            : lead.inServiceArea
+              ? "Inside 100 km hub radius"
+              : "Outside 100 km hub radius"}
+          {nearestHubName ? ` · nearest hub ${nearestHubName}` : ""}
+          {typeof lead.serviceAreaDistanceKm === "number"
+            ? ` · ${lead.serviceAreaDistanceKm.toFixed(1)} km`
+            : ""}
+          {mapHref ? (
+            <>
+              {" · "}
+              <a href={mapHref} className="font-semibold text-[var(--color-ink)] underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
+                Open map pin
+              </a>
+            </>
+          ) : null}
+        </p>
+      ) : null}
       <p>
         <span className="font-semibold text-[var(--color-ink)]">Received:</span>{" "}
         {formatLeadDateTime(lead.createdAt)}

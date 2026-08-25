@@ -130,6 +130,8 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
   },
 };
 
+export const SERVICE_RADIUS_KM = 100;
+
 export const defaultCitySlug: CitySlug = "calgary";
 
 export const cities = CITY_SLUGS.map((slug) => cityDefinitions[slug]);
@@ -151,8 +153,105 @@ export function getCityHref(city: CitySlug, path = "/") {
   return `/${city}${normalizedPath}`;
 }
 
-export function getRequestServiceHref(city?: CitySlug | null) {
-  return getCityHref(city || defaultCitySlug, "/request-service");
+export function isGeneralPublicPath(pathname?: string | null) {
+  if (!pathname) {
+    return false;
+  }
+
+  const path = pathname.split("?")[0];
+
+  return (
+    path === "/" ||
+    path === "/services" ||
+    path.startsWith("/services/") ||
+    path === "/articles" ||
+    path.startsWith("/articles/") ||
+    path === "/request-service" ||
+    path === "/thank-you"
+  );
+}
+
+export function isPortalPath(pathname?: string | null) {
+  if (!pathname) {
+    return false;
+  }
+
+  return pathname.split("?")[0].startsWith("/portal");
+}
+
+const REQUEST_SERVICE_QUERY_SLUGS = new Set([
+  "gas-fireplace-repair",
+  "gas-fireplace-maintenance",
+  "gas-fireplace-installation",
+  "chimney-sweeping-inspection",
+  "chimney-repair-masonry",
+  "wett-inspections",
+]);
+
+export type RequestServiceHrefOptions = {
+  city?: CitySlug | null;
+  service?: string | null;
+  problem?: string | null;
+  urgency?: string | null;
+  cta?: string | null;
+  from?: string | null;
+};
+
+function sanitizeRequestServiceFromPath(value?: string | null) {
+  if (!value) {
+    return undefined;
+  }
+
+  const path = value.trim().split("?")[0];
+  if (!path.startsWith("/") || path.startsWith("//") || path.includes("://")) {
+    return undefined;
+  }
+
+  if (/^\/(admin|api|portal)(\/|$)/.test(path)) {
+    return undefined;
+  }
+
+  if (path.length > 200) {
+    return undefined;
+  }
+
+  return path;
+}
+
+export function getRequestServiceHref(input?: CitySlug | null | RequestServiceHrefOptions) {
+  const options: RequestServiceHrefOptions =
+    input == null || typeof input === "string" ? { city: input || undefined } : input;
+
+  const params = new URLSearchParams();
+
+  if (options.city && isCitySlug(options.city)) {
+    params.set("city", options.city);
+  }
+
+  if (options.service && REQUEST_SERVICE_QUERY_SLUGS.has(options.service)) {
+    params.set("service", options.service);
+  }
+
+  const problem = options.problem?.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim().slice(0, 500);
+  if (problem) {
+    params.set("problem", problem);
+  }
+
+  if (options.urgency?.trim()) {
+    params.set("urgency", options.urgency.trim());
+  }
+
+  if (options.cta?.trim()) {
+    params.set("cta", options.cta.trim());
+  }
+
+  const from = sanitizeRequestServiceFromPath(options.from);
+  if (from) {
+    params.set("from", from);
+  }
+
+  const query = params.toString();
+  return query ? `/request-service?${query}` : "/request-service";
 }
 
 export function getCityFromPathname(pathname?: string | null) {
@@ -259,4 +358,18 @@ export function getNearestCityByCoordinates(latitude: number, longitude: number)
 
     return currentDistance < nearestDistance ? city : nearestCity;
   }, cities[0]);
+}
+
+export function evaluateServiceArea(latitude: number, longitude: number) {
+  const nearest = getNearestCityByCoordinates(latitude, longitude);
+  const distanceKm = Math.round(
+    getDistanceInKilometers(latitude, longitude, nearest.latitude, nearest.longitude),
+  );
+
+  return {
+    nearestCity: nearest.slug,
+    nearestCityName: nearest.name,
+    distanceKm,
+    inCoverage: distanceKm <= SERVICE_RADIUS_KM,
+  };
 }

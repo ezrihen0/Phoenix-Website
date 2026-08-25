@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { getArticleHref, isGeneralArticle } from "@/lib/cms/helpers";
 import { cities, citySupportsArticles, getCityHref } from "@/lib/cities";
 import { listArticles } from "@/lib/cms/storage";
 import { absoluteUrl } from "@/lib/seo";
@@ -17,16 +18,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.78,
     },
+    {
+      url: absoluteUrl("/services"),
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: absoluteUrl("/articles"),
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.68,
+    },
   ];
 
   const provinceServiceRoutes: MetadataRoute.Sitemap = serviceLandingPages.map((servicePage) => ({
     url: absoluteUrl(getServiceLandingHref(servicePage.slug)),
     lastModified: new Date(),
     changeFrequency: "monthly",
-    priority: 0.82,
+    priority: 0.55,
   }));
 
-  const staticRoutes: MetadataRoute.Sitemap = cities.flatMap((city) => {
+  const staticRoutes: MetadataRoute.Sitemap = cities
+    .filter((city) => city.launchStage === "full")
+    .flatMap((city) => {
     const baseRoutes = [
       getCityHref(city.slug),
       getCityHref(city.slug, "/gas-fireplace-repair"),
@@ -69,13 +84,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   const articleRoutes: MetadataRoute.Sitemap = articles
-    .filter((article) => citySupportsArticles(article.city))
+    .filter((article) => article.scope !== "city" || Boolean(article.city && citySupportsArticles(article.city)))
     .map((article) => ({
-      url: absoluteUrl(getCityHref(article.city, `/articles/${article.slug}`)),
+      url: absoluteUrl(getArticleHref(article)),
       lastModified: new Date(article.updatedAt || article.publishedAt),
       changeFrequency: "monthly" as const,
-      priority: 0.75,
-    }));
+      priority: isGeneralArticle(article) ? 0.78 : 0.62,
+    }))
+    .filter((entry, index, all) => all.findIndex((item) => item.url === entry.url) === index);
 
   return [...rootRoutes, ...provinceServiceRoutes, ...staticRoutes, ...articleRoutes];
 }

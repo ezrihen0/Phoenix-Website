@@ -6,9 +6,12 @@ export type LeadDeliveryStatus = "sent" | "skipped" | "failed";
 
 export type ArticleAuthorType = "organization" | "person";
 
+export type ArticleScope = "general" | "city";
+
 export type Article = {
   id: string;
-  city: CitySlug;
+  scope: ArticleScope;
+  city?: CitySlug;
   slug: string;
   title: string;
   excerpt: string;
@@ -52,6 +55,9 @@ export type SiteSettings = {
   sendLeadEmails: boolean;
   notificationEmail: string;
   googleAppPassword: string;
+  googleRating?: number;
+  googleReviewCount?: number;
+  googleReviewsUrl?: string;
 };
 
 export type PublicSiteSettings = Pick<
@@ -70,6 +76,9 @@ export type PublicSiteSettings = Pick<
   | "defaultAuthorName"
   | "blogIndexTitle"
   | "blogIndexDescription"
+  | "googleRating"
+  | "googleReviewCount"
+  | "googleReviewsUrl"
 >;
 
 export type LeadSource = "contact-form" | "website";
@@ -101,11 +110,17 @@ export type Lead = {
   urgency?: string;
   urgencyDetail?: string;
   preferredContactMethod?: string;
+  ctaLocation?: string;
   sourceUrl?: string;
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
   createdAt: string;
+  latitude?: number;
+  longitude?: number;
+  nearestHub?: CitySlug;
+  serviceAreaDistanceKm?: number;
+  inServiceArea?: boolean;
   bookingDeliveryStatus?: LeadDeliveryStatus;
   bookingDeliveryNote?: string;
   emailDeliveryStatus: LeadDeliveryStatus;

@@ -26,12 +26,12 @@ export default async function ThankYouPage() {
     <section className="section-pad">
       <div className="page-frame">
         <div className="mx-auto max-w-6xl overflow-hidden rounded-[2.8rem] border border-[var(--color-border)] bg-[var(--color-card)] shadow-[0_28px_80px_rgba(31,26,22,0.14)]">
-          <div className="relative overflow-hidden border-b border-[var(--color-border)] bg-[linear-gradient(180deg,rgba(31,41,55,1)_0%,rgba(15,23,42,1)_100%)] px-6 py-12 text-[var(--color-paper)] sm:px-10 sm:py-16 lg:px-12">
-            <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.22),transparent_58%)]" />
+            <div className="relative overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-ink)] px-6 py-12 text-[var(--color-paper)] sm:px-10 sm:py-16 lg:px-12">
+            <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(201,95,43,0.28),transparent_58%)]" />
             <div className="relative grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
               <div className="text-center lg:text-left">
-                <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-emerald-300/25 bg-emerald-400/14 shadow-[0_0_0_12px_rgba(255,255,255,0.03)] lg:mx-0 sm:h-28 sm:w-28">
-                  <CheckCircle2 className="h-14 w-14 text-emerald-300 sm:h-16 sm:w-16" />
+                <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-ember)]/20 shadow-[0_0_0_12px_rgba(255,255,255,0.03)] lg:mx-0 sm:h-28 sm:w-28">
+                  <CheckCircle2 className="h-14 w-14 text-[var(--color-gold)] sm:h-16 sm:w-16" />
                 </div>
                 <p className="mt-6 text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-[var(--color-gold)]">
                   Request Received

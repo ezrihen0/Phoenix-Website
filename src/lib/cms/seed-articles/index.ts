@@ -1,594 +1,313 @@
-import type { CitySlug } from "@/lib/cities";
 import type { Article } from "@/lib/cms/types";
 
 const AUTHOR = "Phoenix Editorial Team";
-const CREATED_AT = "2026-04-15T00:00:00.000Z";
+const CREATED_AT = "2026-08-24T00:00:00.000Z";
 
-const SEED_IDS = [
-  "seed-calgary-spring-fireplace-checklist",
-  "seed-edmonton-spring-fireplace-checklist",
-  "seed-red-deer-spring-fireplace-checklist",
-  "seed-calgary-wett-booking-guide",
-  "seed-edmonton-wett-booking-guide",
-  "seed-red-deer-wett-booking-guide",
-  "seed-calgary-gas-fireplace-troubleshooting",
-  "seed-edmonton-gas-fireplace-troubleshooting",
-  "seed-red-deer-gas-fireplace-troubleshooting",
-] as const;
-
-export function isKnownSeedId(id: string) {
-  return SEED_IDS.includes(id as (typeof SEED_IDS)[number]);
-}
-
-export function getSeedArticleById(id: string) {
-  return SEED_ARTICLES.find((article) => article.id === id);
-}
-
-function articleLinks(city: CitySlug, slugs: { seasonal: string; wett: string; gas: string }) {
+function generalArticle(
+  partial: Omit<Article, "scope" | "authorName" | "authorType" | "aiGenerated" | "status" | "createdAt" | "updatedAt"> & {
+    publishedAt: string;
+  },
+): Article {
   return {
-    seasonal: `/${city}/articles/${slugs.seasonal}`,
-    wett: `/${city}/articles/${slugs.wett}`,
-    gas: `/${city}/articles/${slugs.gas}`,
-    wettService: `/${city}/wett`,
-    gasRepair: `/${city}/gas-fireplace-repair`,
-    gasMaintenance: `/${city}/services/gas-fireplace-maintenance`,
-    chimneyInspection: `/${city}/services/chimney-sweeping-inspection`,
-    chimneyRepair: `/${city}/services/chimney-repair-masonry`,
-    gasInstallation: `/${city}/services/gas-fireplace-installation`,
+    scope: "general",
+    authorName: AUTHOR,
+    authorType: "organization",
+    aiGenerated: false,
+    status: "published",
+    createdAt: CREATED_AT,
+    updatedAt: CREATED_AT,
+    ...partial,
   };
 }
 
 export const SEED_ARTICLES: Article[] = [
-  {
-    id: "seed-calgary-spring-fireplace-checklist",
-    city: "calgary",
-    slug: "spring-fireplace-maintenance-checklist-calgary",
-    title: "What Should Calgary Homeowners Check on Their Fireplace This Spring?",
+  generalArticle({
+    id: "seed-general-spring-fireplace-checklist",
+    slug: "spring-fireplace-maintenance-checklist",
+    title: "What Should Alberta Homeowners Check on Their Fireplace This Spring?",
     excerpt:
-      "After Calgary’s long heating season, spring is the practical window to inspect soot, draft, gas performance, and exterior masonry before fall bookings tighten.",
-    seoTitle: "Spring Fireplace Maintenance Checklist Calgary | Post-Winter Inspection Guide",
+      "After a long heating season, spring is the practical window to inspect soot, draft, gas performance, and exterior masonry before fall bookings tighten.",
+    seoTitle: "Spring Fireplace Maintenance Checklist Alberta | Phoenix",
     seoDescription:
-      "A Calgary-focused spring fireplace checklist covering safe visual checks, common post-winter wear signs, and when professional chimney or gas service makes sense.",
-    keywords: [
-      "spring fireplace maintenance Calgary",
-      "fireplace checklist Calgary",
-      "chimney inspection after winter Calgary",
-    ],
-    relatedSlugs: [
-      "when-to-book-a-wett-inspection-in-calgary",
-      "gas-fireplace-not-turning-on-calgary",
-    ],
+      "A practical spring fireplace checklist for Alberta homes: safe visual checks, common post-winter wear signs, and when chimney or gas service makes sense.",
+    keywords: ["spring fireplace maintenance Alberta", "fireplace checklist", "chimney inspection after winter"],
+    relatedSlugs: ["when-to-book-a-wett-inspection", "gas-fireplace-not-turning-on"],
     relatedServiceSlugs: ["chimney-sweeping-inspection", "gas-fireplace-maintenance"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
     coverImage: "/images/photos/hero-fireplace.jpg",
-    coverImageAlt: "Finished living room with a gas fireplace ready for seasonal inspection",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
+    coverImageAlt: "Living room gas fireplace ready for seasonal inspection",
     publishedAt: "2026-03-20T14:00:00.000Z",
-    aiGenerated: false,
-    body: `If you heated regularly through winter, plan a spring fireplace review while issues are still minor and appointment windows are wider. Start with safe visual checks indoors and out, note anything that changed during the season, and book service if ignition, draft, odor, or masonry concerns are already present.
+    body: `If you heated regularly through winter, plan a spring fireplace review while issues are still minor. Start with safe visual checks indoors and out. Note anything that changed during the season, then book service if ignition, draft, odor, or masonry concerns are already present.
 
-Calgary homes often mix newer gas inserts in suburban builds with older masonry systems in established neighbourhoods. Spring is useful because you can compare how the unit behaved during peak use without waiting for the next cold snap to confirm a problem.
+Alberta winters mix freeze-thaw masonry stress with long idle periods on gas fireplaces. Spring is useful because you can compare how the unit behaved during peak use without waiting for the next cold snap.
 
-## Practical spring checklist for Calgary homes
+## Practical spring checklist
 
 - Check the firebox, glass, and surround for soot staining, moisture marks, or unusual odours.
 - Walk the exterior chimney or vent termination for cracked mortar, loose cap pieces, or staining below the crown.
 - For gas units, note delayed ignition, weak flame colour, or frequent shutdowns that appeared late in the season.
 - For wood-burning systems, recall whether draft felt weaker, smoke lingered, or creosote odour increased.
-- Test carbon monoxide and smoke alarms and replace batteries if needed.
-- Confirm exterior vents, caps, and terminations are clear of debris after wind and melt cycles.
+- Test carbon monoxide and smoke alarms.
+- Confirm exterior vents and caps are clear of debris after wind and melt cycles.
 
 ## What common signs may indicate
 
-- **Soot or odour after gas use** may point to incomplete combustion, dirty burners, or venting restriction worth professional review.
-- **White or damp staining on masonry** may suggest moisture entry that can accelerate freeze-thaw damage before next winter.
-- **Delayed gas ignition** often traces to pilot or ignition components that worsened with heavy use rather than a single cold-start glitch.
-- **Changed draft in a wood system** may reflect creosote buildup, blockages, or structural wear that is easier to schedule in spring.
+Soot or odour after gas use may point to incomplete combustion, dirty burners, or venting restriction. White or damp staining on masonry may suggest moisture entry that freeze-thaw can worsen. Changed draft in a wood system may reflect creosote buildup or blockages.
 
-## When professional service becomes relevant
+This checklist is informational. It is not a substitute for appliance-specific service and does not authorize unsafe DIY work on gas, combustion, or venting components.
 
-Book chimney sweeping or inspection if a wood-burning system had heavy use, visible creosote, or draft changes you cannot explain. For gas fireplaces, choose maintenance when ignition is inconsistent, the flame pattern changed, or the unit has not been professionally cleaned on a reasonable interval.
-
-This checklist is informational. It helps you decide what to monitor and when to escalate — it is not a substitute for appliance-specific service. See our [chimney sweeping and inspection guide](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).chimneyInspection}) for inspection visits, or the [gas fireplace maintenance guide](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).gasMaintenance}) if performance slipped during winter.
-
-## Related reading
-
-- [When to book a WETT inspection in Calgary](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).wett})
-- [Gas fireplace not turning on in Calgary? Safe checks to start with](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).gas})
-`,
-  },
-  {
-    id: "seed-edmonton-spring-fireplace-checklist",
-    city: "edmonton",
-    slug: "spring-fireplace-maintenance-checklist-edmonton",
-    title: "What Should Edmonton Homeowners Check on Their Fireplace This Spring?",
+See [chimney sweeping and inspection](/services/chimney-sweeping-inspection) and [gas fireplace maintenance](/services/gas-fireplace-maintenance).`,
+  }),
+  generalArticle({
+    id: "seed-general-wett-booking-guide",
+    slug: "when-to-book-a-wett-inspection",
+    title: "When Should You Book a WETT Inspection?",
     excerpt:
-      "Edmonton’s extended heating season makes spring the best time to inspect wear, venting, and gas performance before homeowners shift focus to summer projects.",
-    seoTitle: "Spring Fireplace Maintenance Checklist Edmonton | After a Long Heating Season",
+      "WETT inspections are documentation visits. They are commonly requested for insurance and real-estate files, but those requests are not universal.",
+    seoTitle: "When to Book a WETT Inspection in Alberta | Phoenix",
     seoDescription:
-      "An Edmonton spring fireplace checklist with practical post-winter checks, what common warning signs may mean, and when to schedule chimney or gas service.",
-    keywords: [
-      "spring fireplace maintenance Edmonton",
-      "fireplace checklist Edmonton",
-      "chimney inspection Edmonton spring",
-    ],
+      "Learn when a WETT inspection is typically requested, how it differs from sweeping or repair, and what a customer-facing report usually covers.",
+    keywords: ["WETT inspection Alberta", "when to book WETT", "wood fireplace inspection"],
     relatedSlugs: [
-      "when-to-book-a-wett-inspection-in-edmonton",
-      "gas-fireplace-not-turning-on-edmonton",
-    ],
-    relatedServiceSlugs: ["chimney-sweeping-inspection", "gas-fireplace-maintenance"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
-    coverImage: "/images/photos/hero-fireplace.jpg",
-    coverImageAlt: "Living room fireplace area prepared for a seasonal maintenance review",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-03-20T14:00:00.000Z",
-    aiGenerated: false,
-    body: `Spring is when Edmonton homeowners can finally step back and assess how the fireplace performed across a long, continuous heating period. The goal is simple: catch soot, venting, ignition, and masonry issues early while service schedules are still flexible.
-
-Because furnaces and fireplaces often run heavily into late cold spells, wear can accumulate quietly. A short spring review helps you separate normal seasonal fatigue from problems that should go to a technician before fall demand returns.
-
-## Edmonton spring fireplace checklist
-
-- Review indoor surfaces around the appliance for soot, moisture, or persistent odours.
-- Inspect exterior brick, crown, cap, and flashing for cracks, gaps, or staining after winter moisture cycles.
-- For gas fireplaces, record any startup delay, flame instability, or shutdowns that increased near the end of heating season.
-- For wood-burning units, note draft changes, smoke spillage, or difficulty maintaining a stable burn.
-- Check that exterior vent terminals and chimney caps are intact after ice, wind, and spring melt.
-- Replace smoke and carbon monoxide alarm batteries if they were not changed recently.
-
-## What each sign may indicate
-
-- **More frequent gas shutdowns** can reflect dirty burners, airflow issues, or failing ignition parts stressed by extended runtime.
-- **Exterior mortar gaps** may allow water entry that becomes costly if left through summer rains and the next freeze cycle.
-- **Persistent smoky odour in a wood system** may signal creosote accumulation or a venting restriction that inspection should clarify.
-- **Glass darkening faster than usual** on gas units often means cleaning and maintenance are overdue rather than a one-time use issue.
-
-## When to schedule professional help
-
-Arrange chimney sweeping or inspection if a wood-burning fireplace had heavy use or draft behaviour changed. Choose gas fireplace maintenance when ignition is unreliable, flame quality shifted, or the appliance skipped annual service.
-
-Use this article to plan observations and timing. For service visits, see the [chimney sweeping and inspection guide](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).chimneyInspection}) or [gas fireplace maintenance guide](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).gasMaintenance}).
-
-## Related reading
-
-- [When to book a WETT inspection in Edmonton](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).wett})
-- [Gas fireplace not turning on in Edmonton? Start with safe checks](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).gas})
-`,
-  },
-  {
-    id: "seed-red-deer-spring-fireplace-checklist",
-    city: "red-deer",
-    slug: "spring-fireplace-maintenance-checklist-red-deer",
-    title: "What Should Red Deer Homeowners Check on Their Fireplace This Spring?",
-    excerpt:
-      "For Red Deer homes — including many with longer vent runs or rural access considerations — spring is the right time for a calm post-winter fireplace review.",
-    seoTitle: "Spring Fireplace Maintenance Checklist Red Deer | Post-Winter Home Review",
-    seoDescription:
-      "A Red Deer spring fireplace checklist covering safe homeowner checks, what warning signs may mean, and when chimney or gas service is appropriate.",
-    keywords: [
-      "spring fireplace maintenance Red Deer",
-      "fireplace checklist Red Deer",
-      "chimney inspection Red Deer",
-    ],
-    relatedSlugs: [
-      "when-to-book-a-wett-inspection-in-red-deer",
-      "gas-fireplace-not-turning-on-red-deer",
-    ],
-    relatedServiceSlugs: ["chimney-sweeping-inspection", "gas-fireplace-maintenance"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
-    coverImage: "/images/photos/hero-fireplace.jpg",
-    coverImageAlt: "Residential fireplace and mantel ready for spring maintenance planning",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-03-20T14:00:00.000Z",
-    aiGenerated: false,
-    body: `After winter use, Red Deer homeowners benefit from a structured spring review even when the fireplace seemed fine day to day. The point is to catch venting, cleanliness, and exterior wear before small issues carry into the next heating season.
-
-Homes in and around Red Deer often balance town-house convenience with rural or acreage properties where exterior access and vent terminations deserve extra attention once snow clears.
-
-## Spring checklist tailored to Red Deer properties
-
-- Inspect the appliance surround, glass, and hearth for soot, moisture, or odours that persisted after use ended.
-- Check chimney exteriors, caps, and vent terminations for damage, leaning components, or animal debris after melt.
-- For gas units, note whether startup took longer or flames looked uneven toward the end of winter.
-- For wood-burning systems, recall whether kindling lit easily and smoke cleared as expected.
-- Confirm area around exterior vents is clear for safe airflow before summer projects begin.
-- Test alarms and replace batteries on smoke and carbon monoxide detectors.
-
-## What signs may mean in practice
-
-- **Exterior cap damage** can admit moisture or block draft paths; it is worth fixing before summer storms.
-- **Hard starts on gas units** after a long season often indicate maintenance needs rather than a temporary glitch.
-- **Uneven soot patterns** may suggest airflow or venting issues that inspection can clarify.
-- **Musty or sharp odours** when the system is idle can mean debris, moisture, or creosote issues inside the vent path.
-
-## When to involve a technician
-
-Schedule inspection or sweeping when wood-burning use was heavy or draft behaviour changed. Book gas maintenance when ignition is inconsistent, shutdowns increased, or the unit missed regular cleaning intervals.
-
-This page is planning guidance, not a repair procedure. For visits, see [chimney sweeping and inspection](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).chimneyInspection}) or [gas fireplace maintenance](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).gasMaintenance}).
-
-## Related reading
-
-- [When to book a WETT inspection in Red Deer](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).wett})
-- [Gas fireplace not turning on in Red Deer? Safe first checks](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).gas})
-`,
-  },
-  {
-    id: "seed-calgary-wett-booking-guide",
-    city: "calgary",
-    slug: "when-to-book-a-wett-inspection-in-calgary",
-    title: "When Should Calgary Homeowners Book a WETT Inspection?",
-    excerpt:
-      "Most Calgary WETT bookings are driven by paperwork needs — insurance, a purchase or sale, or verifying an existing wood-burning setup — not casual curiosity.",
-    seoTitle: "When to Book a WETT Inspection in Calgary | Insurance and Real-Estate Timing",
-    seoDescription:
-      "Learn when Calgary homeowners typically need WETT inspection documentation for insurance, real-estate files, and wood-burning appliance verification.",
-    keywords: [
-      "WETT inspection Calgary",
-      "fireplace inspection for home sale Calgary",
-      "insurance fireplace inspection Calgary",
-    ],
-    relatedSlugs: [
-      "spring-fireplace-maintenance-checklist-calgary",
-      "gas-fireplace-not-turning-on-calgary",
+      "did-your-insurer-ask-for-a-wett-inspection",
+      "selling-a-home-with-a-wood-burning-fireplace",
+      "buying-a-home-with-a-wood-burning-fireplace",
     ],
     relatedServiceSlugs: ["wett-inspections"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
     coverImage: "/images/photos/wett-inspection.jpg",
-    coverImageAlt: "Technician reviewing fireplace and venting components during an inspection visit",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-03-29T13:00:00.000Z",
-    aiGenerated: false,
-    body: `Book a WETT inspection when someone involved in the decision — an insurer, buyer, seller, or broker — needs documented review of a wood-burning appliance and its visible venting setup. The inspection report supports file requirements; it is not the same as booking repair work.
+    coverImageAlt: "WETT inspection tools prepared for a wood-burning system review",
+    publishedAt: "2026-04-02T14:00:00.000Z",
+    body: `A WETT inspection is a reporting visit. It reviews the wood-burning appliance, clearances, venting path, and visible chimney condition, then explains findings in language a homeowner, insurer, or real-estate file can use.
 
-In Calgary, that need often appears during real-estate timelines or when insurance asks for current documentation on a stove, insert, or fireplace system.
+It is not the same as a chimney sweep, and it is not an automatic repair. Sweeping can improve visibility. Repair follows diagnosis. WETT documents the system.
 
-## Common Calgary situations that trigger a booking
+## Common reasons people book
 
-### Insurance review
+- An insurer asked for documentation before renewing or binding coverage.
+- A home is being listed or purchased with a wood-burning fireplace or stove.
+- A newly installed or recently changed wood-burning system needs a clear record.
+- The homeowner wants a formal review before using the system again.
 
-Insurers may request inspection documentation when a property includes a wood-burning appliance, especially if records are outdated or the system changed since the last policy review.
+Do not treat insurer, lender, or real-estate requirements as universal. Ask what the requesting party actually needs.
 
-### Real-estate transactions
+## What the report should help you understand
 
-Purchase or sale conditions frequently require a report covering visible condition, clearances, and obvious defects before firm dates or possession.
+You should leave with a clearer picture of what was inspected, what was found, and what options exist next. If defects appear, Phoenix can outline the repair path without treating replacement as the default.
 
-### After appliance changes
-
-If a stove or insert was added or altered, documentation can clarify whether visible installation details match file expectations. Confirm requirements with your broker or insurer rather than assuming one checklist fits every case.
-
-## How this differs from repair service
-
-A WETT inspection visit documents what is visible and reportable for the file. If the inspection surfaces repair needs, that work is scoped separately. Phoenix can help coordinate inspection timing; certification and report authorship belong to the qualified inspector performing the visit.
-
-For inspection scheduling in Calgary, start on the [WETT inspections page](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).wettService}). If you already expect masonry or venting follow-up, reviewing [chimney sweeping and inspection](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).chimneyInspection}) and [chimney repair options](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).chimneyRepair}) can help you plan next steps.
-
-## Timing tip for Calgary files
-
-If documentation is already on a deadline, book before the condition date rather than assuming same-week availability during busy real-estate periods.
-
-## Related reading
-
-- [Spring fireplace maintenance checklist for Calgary](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).seasonal})
-- [Gas fireplace not turning on in Calgary? Safe checks first](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).gas})
-`,
-  },
-  {
-    id: "seed-edmonton-wett-booking-guide",
-    city: "edmonton",
-    slug: "when-to-book-a-wett-inspection-in-edmonton",
-    title: "When Should Edmonton Homeowners Book a WETT Inspection?",
+Book a [WETT inspection](/request-service?service=wett-inspections&cta=article&from=/articles/when-to-book-a-wett-inspection) after you choose Calgary, Edmonton, or Red Deer, or start from the [Alberta services hub](/services).`,
+  }),
+  generalArticle({
+    id: "seed-general-insurance-wett",
+    slug: "did-your-insurer-ask-for-a-wett-inspection",
+    title: "Did Your Home Insurance Company Suddenly Ask for a WETT Inspection? Here's What They're Actually Looking For",
     excerpt:
-      "Edmonton WETT inspections are usually booked for insurance files, property transfers, or verifying a wood-burning appliance — plan early if a deadline is attached.",
-    seoTitle: "When to Book a WETT Inspection in Edmonton | Home Sale and Insurance Guide",
+      "An insurance request for a WETT inspection is a documentation request, not proof that the fireplace is unsafe. Here is what the visit is actually for.",
+    seoTitle: "Insurance WETT Inspection Request Explained | Phoenix Alberta",
     seoDescription:
-      "Understand when Edmonton homeowners commonly need WETT inspection documentation for insurance, purchases, sales, and wood-burning appliance files.",
-    keywords: [
-      "WETT inspection Edmonton",
-      "home sale fireplace inspection Edmonton",
-      "wood stove inspection Edmonton",
-    ],
-    relatedSlugs: [
-      "spring-fireplace-maintenance-checklist-edmonton",
-      "gas-fireplace-not-turning-on-edmonton",
-    ],
+      "If your insurer asked for a WETT inspection, learn what the report documents, what it is not, and how to book without treating every requirement as universal.",
+    keywords: ["insurance WETT inspection", "WETT for home insurance Alberta", "wood stove insurance inspection"],
+    relatedSlugs: ["when-to-book-a-wett-inspection", "selling-a-home-with-a-wood-burning-fireplace"],
     relatedServiceSlugs: ["wett-inspections"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
-    coverImage: "/images/photos/wett-inspection.jpg",
-    coverImageAlt: "Close view of fireplace components being checked during a WETT-related inspection",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-03-29T13:00:00.000Z",
-    aiGenerated: false,
-    body: `A WETT inspection is the right step when documentation is required for a wood-burning appliance — not when you simply want general fireplace cleaning. Edmonton homeowners most often book when insurance, a purchase agreement, or a sale condition names inspection reporting.
+    coverImage: "/images/photos/wett-report.jpg",
+    coverImageAlt: "Inspection documentation prepared for a wood-burning fireplace review",
+    publishedAt: "2026-08-24T15:00:00.000Z",
+    body: `If an insurer asked for a WETT inspection, they usually want a current picture of the wood-burning system: the appliance, clearances, venting, and visible chimney condition. They are not asking Phoenix to guess whether the fireplace “passes” over the phone.
 
-Allow lead time during active real-estate seasons. Inspectors can be booked out when many files share similar condition dates.
+## What the insurer is typically trying to understand
 
-## Typical Edmonton booking scenarios
+- Whether the system is a wood-burning appliance that needs documented review.
+- Whether obvious installation, clearance, or chimney concerns are visible.
+- Whether the homeowner has a report they can share instead of informal photos.
 
-### Insurance documentation
+Requirements vary. One insurer’s request is not a provincial rule. Ask the insurer what document they need and any deadline they mentioned.
 
-Policies may ask for proof that a wood stove, insert, or fireplace system was reviewed within an acceptable timeframe, especially after upgrades or ownership changes.
+## What a WETT visit is not
 
-### Purchase and sale conditions
+It is not a chimney sweep. It is not a repair visit. If the flue is heavily soiled, sweeping may be needed first so the system can be observed properly. Phoenix explains that sequence instead of selling a default replacement.
 
-Buyers and sellers use inspection reports to satisfy financing, insurance, or contractual conditions tied to solid-fuel appliances.
-
-### Verification after installation work
-
-When an appliance was recently installed or modified, a report may be needed to confirm visible clearances and connections for the property file.
-
-## Inspection versus repair planning
-
-Inspection visits focus on reportable visible conditions. Recommended repairs, if any, are separate decisions. Phoenix can help with scheduling coordination; the inspecting professional produces the WETT report.
-
-Use the [WETT inspections page](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).wettService}) for Edmonton booking. If you anticipate chimney or masonry follow-up, see [chimney sweeping and inspection](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).chimneyInspection}).
-
-## Related reading
-
-- [Spring fireplace checklist for Edmonton](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).seasonal})
-- [Gas fireplace not turning on in Edmonton](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).gas})
-`,
-  },
-  {
-    id: "seed-red-deer-wett-booking-guide",
-    city: "red-deer",
-    slug: "when-to-book-a-wett-inspection-in-red-deer",
-    title: "When Should Red Deer Homeowners Book a WETT Inspection?",
+[Request a WETT inspection](/request-service?service=wett-inspections&cta=article&from=/articles/did-your-insurer-ask-for-a-wett-inspection) and mention the insurance deadline when you book.`,
+  }),
+  generalArticle({
+    id: "seed-general-seller-wett",
+    slug: "selling-a-home-with-a-wood-burning-fireplace",
+    title: "Selling a Home With a Wood-Burning Fireplace? You May Need a WETT Inspection",
     excerpt:
-      "Red Deer homeowners usually book WETT inspections when a lender, insurer, or sale file requires documented review of a wood-burning appliance.",
-    seoTitle: "When to Book a WETT Inspection in Red Deer | Documentation and Timing",
+      "Sellers usually need a WETT report because buyers, insurers, or listing conditions asked for documentation — not because every sale legally requires one.",
+    seoTitle: "Selling a Home With a Wood Fireplace: WETT Inspection Guide | Phoenix",
     seoDescription:
-      "See when Red Deer homeowners typically need WETT inspection reports for insurance, property transfers, and wood-burning appliance verification.",
-    keywords: [
-      "WETT inspection Red Deer",
-      "fireplace inspection Red Deer",
-      "wood stove inspection Red Deer",
-    ],
-    relatedSlugs: [
-      "spring-fireplace-maintenance-checklist-red-deer",
-      "gas-fireplace-not-turning-on-red-deer",
-    ],
+      "A seller-focused guide to WETT inspections: what the report is for, how it differs from repair, and how to time the visit around a listing or closing.",
+    keywords: ["WETT inspection home sale", "selling house wood fireplace Alberta", "WETT for sellers"],
+    relatedSlugs: ["buying-a-home-with-a-wood-burning-fireplace", "when-to-book-a-wett-inspection"],
     relatedServiceSlugs: ["wett-inspections"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
+    coverImage: "/images/photos/about-crew.jpg",
+    coverImageAlt: "Technician speaking with a homeowner before an inspection visit",
+    publishedAt: "2026-08-24T15:10:00.000Z",
+    body: `If you are selling a home with a wood-burning fireplace or stove, a WETT inspection is often requested so the listing file, buyer, or insurer can see the system’s condition in writing.
+
+That request is common. It is not automatically required in every transaction. Confirm what your realtor, buyer, or insurer actually asked for.
+
+## What sellers usually need from the visit
+
+- A customer-facing report, not an internal technician note.
+- Clear findings: what was inspected, what was found, and what options exist.
+- Timing that fits a listing or closing deadline.
+
+If the chimney is too dirty to observe, sweeping may come first. That is diagnosis, not a sales tactic.
+
+Same facts as a buyer-focused article; the priority here is disclosure and file timing. [Book WETT](/request-service?service=wett-inspections&cta=article&from=/articles/selling-a-home-with-a-wood-burning-fireplace) and mention the closing date.`,
+  }),
+  generalArticle({
+    id: "seed-general-buyer-wett",
+    slug: "buying-a-home-with-a-wood-burning-fireplace",
+    title: "Buying a Home With a Wood-Burning Fireplace? Here's Why a WETT Inspection Matters",
+    excerpt:
+      "Buyers use a WETT inspection to understand the wood-burning system before they rely on it — and before they assume the listing photos tell the whole story.",
+    seoTitle: "Buying a Home With a Wood Fireplace: WETT Inspection | Phoenix",
+    seoDescription:
+      "A buyer-focused WETT inspection guide: what to learn about the appliance, venting, and chimney before you use a wood-burning fireplace in a new home.",
+    keywords: ["WETT inspection home purchase", "buying house wood fireplace Alberta", "WETT for buyers"],
+    relatedSlugs: ["selling-a-home-with-a-wood-burning-fireplace", "when-to-book-a-wett-inspection"],
+    relatedServiceSlugs: ["wett-inspections"],
     coverImage: "/images/photos/wett-inspection.jpg",
-    coverImageAlt: "Inspector evaluating a wood-burning fireplace setup and visible venting",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-03-29T13:00:00.000Z",
-    aiGenerated: false,
-    body: `Book a WETT inspection when your file needs professional documentation of a wood-burning fireplace, insert, or stove — commonly for insurance renewal, a rural property transfer, or a sale condition in the Red Deer area.
+    coverImageAlt: "Wood-burning fireplace and chimney system being reviewed",
+    publishedAt: "2026-08-24T15:20:00.000Z",
+    body: `If you are buying a home with a wood-burning fireplace, a WETT inspection helps you understand the system you are inheriting: appliance type, clearances, venting path, and visible chimney condition.
 
-Because some properties sit farther from immediate service corridors, earlier booking helps avoid deadline pressure if travel coordination is required.
+Sellers and buyers look at the same facts. The buyer’s question is different: is this system something you can use, and what work might follow?
 
-## When Red Deer homeowners typically need documentation
+## What buyers should want explained
 
-### Property sale or purchase
+- Whether the appliance and chimney can be observed well enough to report on.
+- What findings, if any, affect safe use.
+- Which next steps are maintenance, repair, or further evaluation.
 
-Conditions may require a report confirming visible appliance condition, clearances, and obvious defects before removal of subjects.
+Do not treat a WETT report as a renovation quote. It is documentation. Repair options come after diagnosis.
 
-### Insurance requests
-
-Carriers may ask for inspection reporting when solid-fuel appliances are part of the risk profile or when prior records are missing.
-
-### Post-install verification
-
-After adding or replacing an appliance, owners sometimes need reportable confirmation for their insurer or municipality-facing file. Requirements vary — confirm with the requesting party.
-
-## Keep inspection and repair decisions separate
-
-The inspection produces documentation. Repair or upgrade work, if recommended, is scoped afterward. Phoenix can coordinate inspection visits; report content comes from the qualified inspector.
-
-Schedule through the [WETT inspections page](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).wettService}). For chimney maintenance context, see [chimney sweeping and inspection](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).chimneyInspection}).
-
-## Related reading
-
-- [Spring fireplace checklist for Red Deer](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).seasonal})
-- [Gas fireplace not turning on in Red Deer](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).gas})
-`,
-  },
-  {
-    id: "seed-calgary-gas-fireplace-troubleshooting",
-    city: "calgary",
-    slug: "gas-fireplace-not-turning-on-calgary",
-    title: "Gas Fireplace Not Turning On in Calgary? Safe Checks to Start With",
+Mention your possession date when you [request service](/request-service?service=wett-inspections&cta=article&from=/articles/buying-a-home-with-a-wood-burning-fireplace).`,
+  }),
+  generalArticle({
+    id: "seed-general-gas-not-turning-on",
+    slug: "gas-fireplace-not-turning-on",
+    title: "Gas Fireplace Not Turning On? Safe Checks to Start With",
     excerpt:
-      "If your Calgary gas fireplace will not start, begin with power, gas supply, and remote or wall-switch basics — then stop if odours, repeated clicking, or error codes persist.",
-    seoTitle: "Gas Fireplace Not Turning On Calgary | Safe Homeowner Troubleshooting",
+      "Some ignition problems have simple homeowner checks. Gas, venting, and combustion work still belong to a technician.",
+    seoTitle: "Gas Fireplace Not Turning On | Safe Checks | Phoenix Alberta",
     seoDescription:
-      "Diagnostic guidance for Calgary homeowners when a gas fireplace will not light, including safe basic checks, common failure categories, and when to book repair.",
-    keywords: [
-      "gas fireplace not turning on Calgary",
-      "gas fireplace troubleshooting Calgary",
-      "fireplace ignition problem Calgary",
-    ],
-    relatedSlugs: [
-      "spring-fireplace-maintenance-checklist-calgary",
-      "when-to-book-a-wett-inspection-in-calgary",
-    ],
-    relatedServiceSlugs: ["gas-fireplace-repair", "gas-fireplace-maintenance"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
+      "Safe homeowner checks when a gas fireplace will not ignite, plus when a $99 diagnostic visit is the right next step instead of guessing parts over the phone.",
+    keywords: ["gas fireplace not turning on", "gas fireplace ignition Alberta", "fireplace will not ignite"],
+    relatedSlugs: ["turning-on-your-gas-fireplace-before-winter", "gas-fireplace-blower-not-working"],
+    relatedServiceSlugs: ["gas-fireplace-repair"],
     coverImage: "/images/photos/service-gasfireplace.jpg",
-    coverImageAlt: "Technician servicing a gas fireplace ignition and burner assembly",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-04-05T13:00:00.000Z",
-    aiGenerated: false,
-    body: `When a gas fireplace will not turn on, start with the safe, simple checks: confirm the unit has power, the wall switch or remote has fresh batteries, and the gas supply valve is in the expected on position if you know how to verify it safely. If the appliance smells abnormal, clicks repeatedly without lighting, or throws an error code you cannot clear, stop and book service.
+    coverImageAlt: "Gas fireplace firebox opened during diagnostic service",
+    publishedAt: "2026-04-10T14:00:00.000Z",
+    body: `When a gas fireplace will not ignite, start with checks that do not involve opening gas components or bypassing safety devices.
 
-This article explains likely categories of failure so you can decide whether basic checks are enough — it is not a repair guide and it is not a substitute for qualified gas appliance service.
+## Safe checks
 
-## Safe checks Calgary homeowners can try
+- Confirm the unit has power if it is millivolt or electronic ignition with a switch or remote.
+- Check that the gas shutoff serving the fireplace is open.
+- Replace remote or thermostat batteries if the control is wireless.
+- Look at the glass and firebox for obvious soot or debris — do not disassemble the burner.
 
-- Confirm the fireplace circuit breaker is on and any power switch feeding the unit is enabled.
-- Replace remote batteries and test the wall switch if the unit uses one.
-- Look for obvious obstructions around the intake or glass that could affect airflow messages on some models.
-- Review the owner manual for a simple reset sequence if one is provided for your model.
-- Note error codes or blinking patterns to share with a technician later.
+If the unit still will not light, clicks without firing, or shuts down immediately, stop. Those symptoms need diagnosis.
 
-Do not disassemble gas valves, bypass safety sensors, or open components beyond what the manufacturer describes for homeowners.
+Phoenix does not price complex repairs by guessing over the phone. When the problem is unknown, a $99 diagnostic/inspection visit comes first: assessment, findings, options, then an accurate quote.
 
-## Common failure categories
-
-- **Power or control issues** — tripped breakers, failed switches, or remote signal problems.
-- **Ignition and pilot problems** — worn ignitors, dirty pilot assemblies, or delayed ignition after heavy seasonal use.
-- **Gas supply or valve settings** — interruptions or valves not in the expected operating position.
-- **Safety shutdowns** — airflow, overheat, or flame-proving faults that require diagnostic tools to interpret.
-
-## When to stop troubleshooting
-
-Stop and schedule professional service if you smell gas, hear repeated ignition attempts without flame, see soot or smoke, or the unit shuts down immediately after lighting. Those patterns usually need on-site diagnosis rather than further homeowner testing.
-
-## Where repair and maintenance fit
-
-Use this page to understand the issue and perform safe basics. When repair is appropriate, see [gas fireplace repair in Calgary](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).gasRepair}). For preventive cleaning and performance checks, see [gas fireplace maintenance](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).gasMaintenance}).
-
-## Related reading
-
-- [Spring fireplace maintenance checklist for Calgary](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).seasonal})
-- [When to book a WETT inspection in Calgary](${articleLinks("calgary", { seasonal: "spring-fireplace-maintenance-checklist-calgary", wett: "when-to-book-a-wett-inspection-in-calgary", gas: "gas-fireplace-not-turning-on-calgary" }).wett})
-`,
-  },
-  {
-    id: "seed-edmonton-gas-fireplace-troubleshooting",
-    city: "edmonton",
-    slug: "gas-fireplace-not-turning-on-edmonton",
-    title: "Gas Fireplace Not Turning On in Edmonton? What to Check Safely",
+[Book gas fireplace repair](/request-service?service=gas-fireplace-repair&cta=article&from=/articles/gas-fireplace-not-turning-on) after choosing your city.`,
+  }),
+  generalArticle({
+    id: "seed-general-gas-before-winter",
+    slug: "turning-on-your-gas-fireplace-before-winter",
+    title: "Turning On Your Gas Fireplace Before Winter? Here's What You Can Check Yourself — and When to Call a Technician",
     excerpt:
-      "When an Edmonton gas fireplace fails to start after heavy winter use, check power, controls, and basic gas supply first — then call for service if ignition keeps failing.",
-    seoTitle: "Gas Fireplace Not Turning On Edmonton | Diagnostic Homeowner Guide",
+      "First-use-of-season startup is a common time for ignition complaints. Here is what you can check safely, and when maintenance or repair is the better path.",
+    seoTitle: "Gas Fireplace Startup Before Winter | Phoenix Alberta",
     seoDescription:
-      "Informational troubleshooting for Edmonton gas fireplaces that will not light, including safe checks, likely failure types, and when repair service is appropriate.",
-    keywords: [
-      "gas fireplace not turning on Edmonton",
-      "gas fireplace repair Edmonton",
-      "fireplace won't start Edmonton",
-    ],
-    relatedSlugs: [
-      "spring-fireplace-maintenance-checklist-edmonton",
-      "when-to-book-a-wett-inspection-in-edmonton",
-    ],
-    relatedServiceSlugs: ["gas-fireplace-repair", "gas-fireplace-maintenance"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
-    coverImage: "/images/photos/service-gasfireplace.jpg",
-    coverImageAlt: "Gas fireplace burner area being inspected during a service call",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-04-05T13:00:00.000Z",
-    aiGenerated: false,
-    body: `If your gas fireplace will not light, begin with safe homeowner checks: verify power to the unit, test the wall switch or remote batteries, and confirm you are following the manufacturer’s normal startup sequence. When ignition fails repeatedly, unusual odours appear, or the unit logs an error state, stop and arrange professional diagnosis.
+      "Safe seasonal startup checks for gas fireplaces, plus when to book maintenance versus repair diagnostics before heating season.",
+    keywords: ["gas fireplace winter startup", "first time using gas fireplace", "gas fireplace maintenance Alberta"],
+    relatedSlugs: ["gas-fireplace-not-turning-on", "spring-fireplace-maintenance-checklist"],
+    relatedServiceSlugs: ["gas-fireplace-maintenance", "gas-fireplace-repair"],
+    coverImage: "/images/photos/gallery-02.jpeg",
+    coverImageAlt: "Gas fireplace with open glass doors and burning logs",
+    publishedAt: "2026-08-24T15:30:00.000Z",
+    body: `The first cold stretch is when many Alberta gas fireplaces are asked to work after months idle. Dust, pet hair, and a weak pilot show up then.
 
-Extended Edmonton heating seasons can leave ignition components and burners dirty enough that startup problems surface late in winter or on the first spring attempt — that context helps explain timing even before a technician identifies the exact part.
+## What you can check yourself
 
-## Safe first checks
+- Confirm the control, switch, or remote has power.
+- Confirm the fireplace gas shutoff is open.
+- Look for blocked vents or obvious debris at the termination — do not climb unsafely.
+- Note whether the problem is delayed ignition, no ignition, or shutdown after lighting.
 
-- Reset tripped breakers and confirm any dedicated power switch is on.
-- Swap remote batteries and test a wall switch if equipped.
-- Check that intake paths and glass gaskets are reasonably clean and unobstructed.
-- Record error flashes or codes from the control panel for the service visit.
-- Avoid opening gas controls or internal panels not meant for homeowner access.
+## When to call
 
-## Likely problem categories
+If the fireplace still runs but is overdue for cleaning, book [maintenance](/services/gas-fireplace-maintenance). If it will not ignite or keep running, book [repair diagnostics](/request-service?service=gas-fireplace-repair&cta=article&from=/articles/turning-on-your-gas-fireplace-before-winter). Unknown problems start with a $99 diagnostic visit, not a guessed part.
 
-- **Controls and power** — failed switches, loose connections, or remote pairing issues.
-- **Ignition assembly wear** — dirty pilots, weak ignitors, or delayed flame proving after long runtime seasons.
-- **Airflow or venting-related safeties** — shutdowns triggered when the appliance cannot confirm safe operation.
-- **Deferred maintenance** — performance issues that appear as “won’t start” but reflect cleaning or adjustment needs.
-
-## When troubleshooting should end
-
-Treat repeated clicking, gas odour, partial ignition, or immediate shutdown as stop conditions. Those symptoms need trained diagnosis with proper test equipment.
-
-## Service boundaries
-
-This article supports understanding only. For repair intent, use [gas fireplace repair in Edmonton](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).gasRepair}). For preventive service, see [gas fireplace maintenance](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).gasMaintenance}).
-
-## Related reading
-
-- [Spring fireplace checklist for Edmonton](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).seasonal})
-- [WETT inspection timing in Edmonton](${articleLinks("edmonton", { seasonal: "spring-fireplace-maintenance-checklist-edmonton", wett: "when-to-book-a-wett-inspection-in-edmonton", gas: "gas-fireplace-not-turning-on-edmonton" }).wett})
-`,
-  },
-  {
-    id: "seed-red-deer-gas-fireplace-troubleshooting",
-    city: "red-deer",
-    slug: "gas-fireplace-not-turning-on-red-deer",
-    title: "Gas Fireplace Not Turning On in Red Deer? Start With These Safe Steps",
+Do not remove safety devices, drill orifices, or work on gas valves.`,
+  }),
+  generalArticle({
+    id: "seed-general-blower",
+    slug: "gas-fireplace-blower-not-working",
+    title: "Is Your Gas Fireplace Blower Not Working? Here's What It Actually Does and What Can Go Wrong",
     excerpt:
-      "For Red Deer gas fireplaces that refuse to start, verify power and controls first, note any error indicators, and arrange service if ignition problems repeat.",
-    seoTitle: "Gas Fireplace Not Turning On Red Deer | Safe Troubleshooting Guide",
+      "A blower moves room air across the fireplace. It is not the burner. Knowing the difference keeps a comfort complaint from being treated as an ignition emergency.",
+    seoTitle: "Gas Fireplace Blower Not Working | Phoenix Alberta",
     seoDescription:
-      "Red Deer homeowner guide for gas fireplaces that will not turn on, covering basic safe checks, common issue types, and when to choose repair or maintenance service.",
-    keywords: [
-      "gas fireplace not turning on Red Deer",
-      "gas fireplace troubleshooting Red Deer",
-      "fireplace repair Red Deer",
-    ],
-    relatedSlugs: [
-      "spring-fireplace-maintenance-checklist-red-deer",
-      "when-to-book-a-wett-inspection-in-red-deer",
-    ],
-    relatedServiceSlugs: ["gas-fireplace-repair", "gas-fireplace-maintenance"],
-    status: "published",
-    authorName: AUTHOR,
-    authorType: "organization",
+      "What a gas fireplace blower does, why it may stop, and when the issue is a blower versus a fireplace that will not heat or ignite.",
+    keywords: ["gas fireplace blower not working", "fireplace fan not working", "gas fireplace blower repair"],
+    relatedSlugs: ["gas-fireplace-not-turning-on", "turning-on-your-gas-fireplace-before-winter"],
+    relatedServiceSlugs: ["gas-fireplace-repair"],
     coverImage: "/images/photos/service-gasfireplace.jpg",
-    coverImageAlt: "Service technician reviewing a gas fireplace that failed to ignite",
-    createdAt: CREATED_AT,
-    updatedAt: CREATED_AT,
-    publishedAt: "2026-04-05T13:00:00.000Z",
-    aiGenerated: false,
-    body: `A gas fireplace that will not start is usually addressed first with simple safety checks: power on, remote or wall switch working, and the normal startup sequence followed exactly as the manual describes. If the unit still will not light after those steps, or if you notice gas odour or endless ignition clicking, stop and book qualified service.
+    coverImageAlt: "Gas fireplace with circulating blower components",
+    publishedAt: "2026-08-24T15:40:00.000Z",
+    body: `A gas fireplace blower circulates room air across the heat exchanger so the living space warms faster. If the flame is present but the room stays cool, the blower may be the issue. If there is no flame, that is an ignition or fuel problem, not a fan problem.
 
-Red Deer properties — including some with longer vent layouts or units that sat idle between intermittent cold spells — may see startup issues appear suddenly even when the fireplace worked fine earlier in the season.
+## What commonly goes wrong
 
-## Homeowner-safe checks
+- The blower has a separate switch, rheostat, or temperature sensor.
+- Dust and pet hair bind the motor after a summer idle.
+- A thermal snap-switch never closes if the firebox is not getting hot.
+- Wiring or a control module failed.
 
-- Confirm electrical supply and any appliance-specific power switch.
-- Replace remote batteries and test alternate controls if available.
-- Inspect visible intake areas and glass for heavy sooting that can accompany performance problems.
-- Write down indicator lights or error codes before calling for service.
-- Do not adjust gas valves or disable safety interlocks.
+Do not reach into the blower compartment while the unit is powered. If the fireplace itself will not light, follow the [ignition guide](/articles/gas-fireplace-not-turning-on) instead.
 
-## Common categories behind a no-start condition
+[Request service](/request-service?service=gas-fireplace-repair&cta=article&from=/articles/gas-fireplace-blower-not-working) and describe whether you have flame without airflow, or no flame at all.`,
+  }),
+  generalArticle({
+    id: "seed-general-chimney-not-swept",
+    slug: "chimney-not-swept-in-years",
+    title: "Haven't Had Your Chimney Swept in Years? Here's What to Check Before Using Your Fireplace Again",
+    excerpt:
+      "A sweep is not just passing a brush through a flue. If buildup blocks observation, cleaning comes first so the system can be inspected and explained.",
+    seoTitle: "Chimney Not Swept in Years | What to Do Next | Phoenix",
+    seoDescription:
+      "What to do if a wood-burning chimney has not been swept in years: visibility, inspection, and when WETT or masonry repair is a separate visit.",
+    keywords: ["chimney not swept", "chimney sweep after years", "creosote buildup Alberta"],
+    relatedSlugs: ["when-to-book-a-wett-inspection", "spring-fireplace-maintenance-checklist"],
+    relatedServiceSlugs: ["chimney-sweeping-inspection"],
+    coverImage: "/images/photos/service-sweep.jpeg",
+    coverImageAlt: "Chimney sweeping and inspection equipment",
+    publishedAt: "2026-08-24T15:50:00.000Z",
+    body: `If a wood-burning chimney has not been swept in years, do not assume a quick brush pass is the whole job. Buildup can hide liner damage, blockages, and moisture paths. Phoenix treats sweeping as the step that restores visibility so inspection can mean something.
 
-- **Control or power faults** affecting startup signals.
-- **Ignition or pilot issues** from wear or cleaning backlog.
-- **Flame-proving or airflow safeties** shutting the unit down when conditions are out of range.
-- **Maintenance-related performance loss** that shows up as failed ignition rather than a visible broken part.
+## The sequence
 
-## When to call for service instead of continuing
+1. Sweep to improve visibility.
+2. Inspect accessible flue, cap, crown, flashing, and draft conditions.
+3. Explain findings.
+4. Recommend the appropriate next step: routine care, repair, or a separate WETT report if documentation is required.
 
-Odour, repeated unsuccessful ignition, smoke, or immediate shutdown after flame are all clear lines to stop DIY effort and schedule repair.
+Final sweep pricing depends on the system, condition, level of buildup, and chimney height/accessibility.
 
-## Repair versus this diagnostic article
+A sweep is not a WETT inspection. If an insurer or sale file needs a report, that is a [WETT visit](/articles/when-to-book-a-wett-inspection).
 
-This page helps you sort symptoms and safe checks. Repair booking belongs on the [gas fireplace repair page](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).gasRepair}). Preventive visits fit the [gas fireplace maintenance guide](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).gasMaintenance}).
-
-## Related reading
-
-- [Spring fireplace checklist for Red Deer](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).seasonal})
-- [When to book a WETT inspection in Red Deer](${articleLinks("red-deer", { seasonal: "spring-fireplace-maintenance-checklist-red-deer", wett: "when-to-book-a-wett-inspection-in-red-deer", gas: "gas-fireplace-not-turning-on-red-deer" }).wett})
-`,
-  },
+[Book chimney sweeping and inspection](/services/chimney-sweeping-inspection).`,
+  }),
 ];
+
+export function isKnownSeedId(id: string) {
+  return SEED_ARTICLES.some((article) => article.id === id);
+}
+
+export function getSeedArticleById(id: string) {
+  return SEED_ARTICLES.find((article) => article.id === id);
+}

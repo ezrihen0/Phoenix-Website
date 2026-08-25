@@ -147,7 +147,7 @@ export default async function CityArticlePage({
             />
             <div className="mt-4 grid gap-4">
               {relatedArticles.map((relatedArticle) => (
-                <ArticleCard key={relatedArticle.id} article={relatedArticle} city={city.slug} />
+                <ArticleCard key={relatedArticle.id} article={relatedArticle} />
               ))}
             </div>
             </div>

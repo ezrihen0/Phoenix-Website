@@ -79,7 +79,14 @@ export async function ServiceLandingPageView({
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    href={getRequestServiceHref(city)}
+                    href={getRequestServiceHref({
+                      city,
+                      service: servicePage.slug,
+                      cta: "service-landing",
+                      from: city
+                        ? getCityHref(city, `/services/${servicePage.slug}`)
+                        : getServiceLandingHref(servicePage.slug),
+                    })}
                     className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                   >
                     {servicePage.ctaLabel}
@@ -361,7 +368,14 @@ export async function ServiceLandingPageView({
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href={getRequestServiceHref(city)}
+                  href={getRequestServiceHref({
+                    city,
+                    service: servicePage.slug,
+                    cta: "service-landing",
+                    from: city
+                      ? getCityHref(city, `/services/${servicePage.slug}`)
+                      : getServiceLandingHref(servicePage.slug),
+                  })}
                   className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                 >
                   {servicePage.ctaLabel}

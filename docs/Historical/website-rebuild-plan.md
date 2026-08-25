@@ -1,5 +1,12 @@
 # Website Rebuild Plan
 
+> **HISTORICAL — NOT AUTHORITATIVE**
+>
+> This document predates the live multi-city Phoenix site and Phoenix Project SOT V1.
+> Do not use it for URLs, phone numbers, taxonomy, SEO, or implementation decisions.
+>
+> Current authority: [Phoenix Project SOT V1](../sot/Phoenix_Project_SOT_V1.md)
+
 ## Goal
 
 Recreate https://fireplacerepairscalgary.ca/ as a faster, cleaner, easier-to-maintain marketing site while preserving the current business goals:

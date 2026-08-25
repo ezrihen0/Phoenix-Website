@@ -70,7 +70,7 @@ export default async function CityAboutPage({
   }
 
   const siteSettings = getCitySettings(await getPublicSiteSettings(), city.slug);
-  const aboutPoints = getAboutPoints(city.name);
+  const aboutPoints = getAboutPoints(city);
 
   return (
     <>
@@ -98,7 +98,11 @@ export default async function CityAboutPage({
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
-                href={getRequestServiceHref(city.slug)}
+                href={getRequestServiceHref({
+                  city: city.slug,
+                  cta: "city-about",
+                  from: getCityHref(city.slug, "/about"),
+                })}
                 className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
               >
                 Request Service

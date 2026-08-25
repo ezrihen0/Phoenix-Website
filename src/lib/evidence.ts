@@ -1,5 +1,5 @@
 import type { CitySlug } from "@/lib/cities";
-import { serviceLandingPages } from "@/lib/site-data";
+import { canonicalServices } from "@/lib/service-taxonomy";
 
 export const EVIDENCE_STATUS_VALUES = [
   "draft",
@@ -45,11 +45,14 @@ export type EvidenceInternalFields = {
   internalLocationNote?: string;
 };
 
+export type EvidenceImagePairRole = "before" | "after" | "other";
+
 export type EvidenceImageRecord = {
   id: string;
   source: EvidenceImageSource;
   url: string;
   isPrimary: boolean;
+  pairRole?: EvidenceImagePairRole;
   publicAlt?: string;
   publicCaption?: string;
   internalSourceDescription?: string;
@@ -80,6 +83,7 @@ export type PublicEvidenceImage = {
   alt: string;
   caption?: string;
   isPrimary: boolean;
+  pairRole?: EvidenceImagePairRole;
 };
 
 export type PublicEvidence = {
@@ -98,16 +102,10 @@ export type EvidenceServiceOption = {
   title: string;
 };
 
-export const evidenceServiceOptions: EvidenceServiceOption[] = [
-  ...serviceLandingPages.map((servicePage) => ({
-    slug: servicePage.slug,
-    title: servicePage.title,
-  })),
-  {
-    slug: "wett-inspections",
-    title: "WETT Inspections",
-  },
-];
+export const evidenceServiceOptions: EvidenceServiceOption[] = canonicalServices.map((service) => ({
+  slug: service.slug,
+  title: service.title,
+}));
 
 const supportedEvidenceServiceSlugSet = new Set(
   evidenceServiceOptions.map((option) => option.slug),
@@ -168,6 +166,7 @@ export function toPublicEvidence(record: EvidenceRecord): PublicEvidence | null 
       alt: image.publicAlt?.trim() || "",
       caption: image.publicCaption?.trim() || undefined,
       isPrimary: image.isPrimary,
+      pairRole: image.pairRole,
     }));
 
   return {

@@ -3,11 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-import {
-  isGaConfigured,
-  trackPhoneClick,
-  trackThankYouView,
-} from "@/lib/analytics/events";
+import { trackCtaClick, isGaConfigured, trackPhoneClick, trackThankYouView } from "@/lib/analytics/events";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
 
@@ -45,6 +41,11 @@ export function GoogleAnalyticsTracker() {
       }
 
       const target = event.target as HTMLElement | null;
+      const cta = target?.closest("[data-cta]") as HTMLElement | null;
+      if (cta) {
+        trackCtaClick(cta.getAttribute("data-cta") || "unknown", cta.textContent?.trim() || undefined);
+      }
+
       const anchor = target?.closest('a[href^="tel:"]') as HTMLAnchorElement | null;
 
       if (!anchor) {

@@ -123,7 +123,7 @@ export default async function AdminDashboardPage({
         />
         <ActionPanel
           title="Lead inbox"
-          description="Review every website and contact-form submission, including inbox email delivery status."
+          description="Review every Request Service submission, including inbox email delivery status."
           href="/admin/leads"
           cta="Open lead inbox"
         />

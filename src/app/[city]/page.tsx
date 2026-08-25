@@ -4,9 +4,9 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, MapPinned, Phone, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 
-import { ContextualLinksGrid } from "@/components/internal-links/contextual-links-grid";
+import { GoogleReviewsBadge } from "@/components/google-reviews-badge";
 import { CityPlaceholderPage } from "@/components/city-placeholder-page";
-import { ContactForm } from "@/components/forms/contact-form";
+import { ContextualLinksGrid } from "@/components/internal-links/contextual-links-grid";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { ServiceGuidesGrid } from "@/components/service-guides-grid";
@@ -98,7 +98,7 @@ export default async function CityHomePage({
   const siteSettings = getCitySettings(await getPublicSiteSettings(), city.slug);
   const trustMetrics = getTrustMetrics(city.name);
   const valuePillars = getValuePillars(city.name);
-  const homeFaqs = getHomeFaqs(city.name, city.serviceAreas);
+  const homeFaqs = getHomeFaqs(city.name, city.serviceAreas, city.weatherContext);
 
   return (
     <>
@@ -149,7 +149,11 @@ export default async function CityHomePage({
                     </p>
                     <div className="flex flex-wrap justify-center gap-3 pb-6 pt-2 sm:pb-8">
                       <Link
-                        href={getRequestServiceHref(city.slug)}
+                        href={getRequestServiceHref({
+                          city: city.slug,
+                          cta: "city-home",
+                          from: getCityHref(city.slug),
+                        })}
                         className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
                       >
                         Request Service
@@ -193,6 +197,9 @@ export default async function CityHomePage({
                       <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">{metric.label}</p>
                     </div>
                   ))}
+                  <div className="rounded-[1.6rem] bg-white/75 p-5">
+                    <GoogleReviewsBadge settings={siteSettings} />
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -418,8 +425,10 @@ export default async function CityHomePage({
               </p>
               <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">{siteSettings.serviceRadius}</p>
               <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
-                Core areas include {city.serviceAreas.join(", ")}.
+                {city.weatherContext} Nearby communities such as {city.serviceAreas.slice(0, 6).join(", ")} stay in
+                the 100 km hub — they are not separate landing pages.
               </p>
+              <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">{city.regulationContext}</p>
             </div>
           </div>
           <div className="grid gap-4">
@@ -436,7 +445,7 @@ export default async function CityHomePage({
       </section>
 
       <section className="section-pad bg-[var(--color-ink)] text-[var(--color-paper)]">
-        <div className="page-frame grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <div className="page-frame max-w-3xl space-y-5">
           <div className="space-y-5">
             <p className="eyebrow text-[var(--color-gold)]">Request service</p>
             <h2 className="display-title text-balance text-5xl font-semibold leading-[0.95] sm:text-6xl">
@@ -444,12 +453,19 @@ export default async function CityHomePage({
             </h2>
             <p className="max-w-xl text-base leading-8 text-[var(--color-paper)]/76">
               Whether you are dealing with a cold unit, a chimney concern, or an insurance-driven inspection,
-              the request form gives us enough detail to send back the right next step quickly.
+              Request Service gives us enough detail to send back the right next step quickly.
             </p>
+            <Link
+              href={getRequestServiceHref({
+                city: city.slug,
+                cta: "city-home",
+                from: getCityHref(city.slug),
+              })}
+              className="inline-flex w-fit rounded-full bg-[var(--color-ember)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
+            >
+              Request Service
+            </Link>
           </div>
-          <Reveal delay={120}>
-            <ContactForm settings={siteSettings} />
-          </Reveal>
         </div>
       </section>
     </>

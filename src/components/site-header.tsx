@@ -11,6 +11,7 @@ import {
   PhoenixLogoEasterEgg,
   type PhoenixFlightState,
 } from "@/components/phoenix-logo-easter-egg";
+import { WeatherBanner } from "@/components/weather/weather-banner";
 import {
   cities,
   getCityBySlug,
@@ -19,9 +20,11 @@ import {
   getCitySettings,
   getRequestServiceHref,
   getScopedPath,
+  isPortalPath,
 } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
-import { getServiceLandingHref, navigationLinks, serviceLandingPages } from "@/lib/site-data";
+import { canonicalServices, getServiceHref } from "@/lib/service-taxonomy";
+import { navigationLinks } from "@/lib/site-data";
 
 type SiteHeaderProps = {
   settings: PublicSiteSettings;
@@ -39,14 +42,24 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
   const city = currentCity ? getCityBySlug(currentCity) : undefined;
   const effectiveSettings = getCitySettings(settings, currentCity);
   const showCityNavigation = Boolean(currentCity);
-  const requestServiceHref = getRequestServiceHref(currentCity);
+  const requestServiceHref = getRequestServiceHref({
+    city: currentCity,
+    cta: "header",
+    from: pathname,
+  });
   const isChooserPage = pathname === "/";
   const isProvinceWideServicesRoute =
-    pathname === "/services" || pathname?.startsWith("/services/");
-  const showServicesNavigation = showCityNavigation || isProvinceWideServicesRoute;
+    pathname === "/services" ||
+    pathname?.startsWith("/services/") ||
+    pathname === "/request-service";
+  const showServicesNavigation =
+    showCityNavigation ||
+    isProvinceWideServicesRoute ||
+    pathname === "/articles" ||
+    Boolean(pathname?.startsWith("/articles/"));
   const navigationMenuItems = showCityNavigation
     ? navigationLinks
-    : navigationLinks.filter((item) => item.href === "/services");
+    : navigationLinks.filter((item) => item.href === "/services" || item.href === "/articles");
   const easterEggPath = currentCity === "calgary" ? getCityHref("calgary") : null;
   const [isOpen, setIsOpen] = useState(false);
   const [isServicesMenuOpen, setIsServicesMenuOpen] = useState(false);
@@ -193,8 +206,13 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
     pathname?.startsWith("/services/") ||
     (cityServicesPrefix ? pathname?.startsWith(cityServicesPrefix) : false);
 
+  if (isPortalPath(pathname)) {
+    return null;
+  }
+
   return (
     <>
+      {currentCity ? <WeatherBanner city={currentCity} /> : null}
       <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[rgba(244,236,223,0.82)] backdrop-blur-xl">
         <div className="hidden border-b border-[var(--color-border)] bg-[var(--color-ink)] text-[0.78rem] text-[var(--color-paper)] md:block">
           <div className="page-bleed flex flex-wrap items-center justify-between gap-3 px-4 py-3">
@@ -226,6 +244,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                 </a>
                 <Link
                   href={requestServiceHref}
+                  data-cta="header-info-bar"
                   className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-4 py-2 font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
                 >
                   Request Service
@@ -331,15 +350,15 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                               </p>
                             </Link>
                             <div className="mt-1.5 grid gap-1">
-                              {serviceLandingPages.map((servicePage) => (
+                              {canonicalServices.map((service) => (
                                 <Link
-                                  key={servicePage.slug}
-                                  href={getServiceLandingHref(servicePage.slug, currentCity)}
+                                  key={service.slug}
+                                  href={getServiceHref(service.slug, currentCity)}
                                   className="rounded-[1.05rem] px-3.5 py-2.5 transition hover:bg-white/72 focus-visible:bg-white/72"
                                 >
-                                  <p className="text-[0.82rem] font-semibold leading-5 text-[var(--color-ink)]">{servicePage.navLabel}</p>
+                                  <p className="text-[0.82rem] font-semibold leading-5 text-[var(--color-ink)]">{service.navLabel}</p>
                                   <p className="mt-0.5 text-[0.74rem] leading-5 text-[var(--color-muted)]">
-                                    {servicePage.menuDescription}
+                                    {service.tagline}
                                   </p>
                                 </Link>
                               ))}
@@ -395,6 +414,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               </a>
               <Link
                 href={requestServiceHref}
+                data-cta="header-nav"
                 className="rounded-full border border-[rgba(34,58,51,0.18)] bg-[var(--color-forest)] px-5 py-2.5 text-sm font-semibold shadow-[0_14px_30px_rgba(34,58,51,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(34,58,51,0.3)]"
                 style={{ color: "var(--color-paper)" }}
               >
@@ -413,6 +433,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               </Link>
               <Link
                 href={requestServiceHref}
+                data-cta="header-nav"
                 className="rounded-full bg-[var(--color-ember)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
               >
                 Request Service
@@ -440,6 +461,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               )}
               <Link
                 href={requestServiceHref}
+                data-cta="header-mobile"
                 className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-[var(--color-forest)] px-3 py-3 text-[0.82rem] font-semibold text-[var(--color-paper)] sm:px-4 sm:text-sm"
               >
                 Request Service
@@ -500,18 +522,18 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                           >
                             All fireplace and chimney services
                           </Link>
-                          {serviceLandingPages.map((servicePage) => (
+                          {canonicalServices.map((service) => (
                             <Link
-                              key={servicePage.slug}
-                              href={getServiceLandingHref(servicePage.slug, currentCity)}
+                              key={service.slug}
+                              href={getServiceHref(service.slug, currentCity)}
                               className="rounded-[1.1rem] border border-transparent bg-white/78 px-4 py-3.5 text-[0.87rem] leading-5 transition hover:bg-white"
                               onClick={() => {
                                 setIsOpen(false);
                                 setIsServicesMobileOpen(false);
                               }}
                             >
-                              <p className="font-semibold text-[var(--color-ink)]">{servicePage.navLabel}</p>
-                              <p className="mt-1 text-[0.78rem] leading-5 text-[var(--color-muted)]">{servicePage.menuDescription}</p>
+                              <p className="font-semibold text-[var(--color-ink)]">{service.navLabel}</p>
+                              <p className="mt-1 text-[0.78rem] leading-5 text-[var(--color-muted)]">{service.tagline}</p>
                             </Link>
                           ))}
                         </div>
@@ -556,6 +578,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               ) : null}
               <Link
                 href={requestServiceHref}
+                data-cta="header-mobile-menu"
                 onClick={() => setIsOpen(false)}
                 className="rounded-2xl bg-[var(--color-ember)] px-4 py-3 text-center font-semibold text-white"
               >

@@ -1,169 +1,67 @@
 # Phoenix Chimney & Fireplace Services
 
-Next.js marketing site rebuild for the Calgary fireplace and chimney business, using the existing live-site media locally and capturing website requests through Phoenix Request Service.
+Alberta revenue website for Phoenix Chimney & Fireplace: Calgary, Edmonton, and Red Deer.
 
-The project now also includes a lightweight article CMS, a simple credential-based admin login, and a scheduled AI article generator designed for Vercel deployment.
+**Authority:** [Phoenix Project SOT V1](docs/sot/Phoenix_Project_SOT_V1.md). Older planning notes under `docs/Historical/` are not authoritative. The [pre-SOT audit](docs/Audit/phoenix-pre-sot-audit.md) is a 2026-08-24 snapshot, not live architecture.
+
+Canadian Global SOT and Province Architecture files are not in this repository (INVESTIGATE). Until the owner supplies them, inherit those rules only as summarized in Phoenix SOT V1.
+
+The site connects search → education → diagnosis → Request Service → lead → job. It is city-first. Do not add town pages merely because they fall inside the 100 km service radius.
 
 ## Stack
 
-- Next.js App Router
-- TypeScript
-- Tailwind CSS v4
-- Local image assets copied from the live site
-- Server-side contact and Request Service routes that save leads into the Phoenix admin inbox
-- Signed cookie admin sessions with env-based credentials and basic brute-force throttling
-- Local JSON fallback plus Vercel Blob storage for articles and editable site settings
-- OpenAI-powered daily article generation via a protected cron route
+- Next.js App Router, TypeScript, Tailwind CSS v4
+- Centralized metadata and schema in `src/lib/seo.ts`
+- Leads persist first in the Phoenix admin inbox; email (Brevo or Gmail) is notification only
+- Signed-cookie admin sessions (`admin` and `office` roles)
+- Local JSON under `data/cms/` in development; Vercel Blob in production
+- Scheduled publish cron only (`/api/cron/publish-scheduled`). AI article auto-generation is disabled.
 
-## Routes
+## Public URL pattern
 
-- `/`
-- `/services`
-- `/wett`
-- `/about`
-- `/contact`
-- `/articles`
-- `/articles/[slug]`
-- `/admin`
-- `/admin/login`
+- `/` — Alberta organization hub / city chooser
+- `/services` — general Alberta service hub
+- `/services/[slug]` — general service resource
+- `/articles` and `/articles/[slug]` — general articles
+- `/calgary`, `/edmonton`, `/red-deer` — city homes and nested revenue pages
+- `/request-service` — one global Smart Form (noindex); `/{city}/request-service` 301s here with city context
+- `/thank-you` — post-conversion (noindex)
+- `/portal/login` — customer portal foundation (noindex; WizField deferred)
 
-## SEO Included
+Canonical city service URLs and redirect policy: [docs/features/url-and-taxonomy.md](docs/features/url-and-taxonomy.md).
 
-- page-level metadata and canonicals
-- robots.txt
-- sitemap.xml
-- manifest.webmanifest
-- Open Graph and Twitter image routes
-- LocalBusiness, WebSite, Service, FAQ, and Breadcrumb structured data
-- article pages with SEO metadata and article schema
-
-## Local Development
-
-1. Install dependencies:
+## Local development
 
 ```bash
 npm install
-```
-
-2. Copy the env template:
-
-```bash
 cp .env.example .env.local
-```
-
-3. Start the dev server:
-
-```bash
 npm run dev
 ```
 
-4. Build for production verification:
+Production build check:
 
 ```bash
 npm run build
 ```
 
-## Lead Intake
+## Lead intake
 
-Website requests go to `/[city]/request-service` and `/api/request-service`. Contact form submissions go to `/api/contact`. Both save into the existing Admin Leads inbox and can email `Service@phoenixfireplace.ca`.
+One Request Service funnel posts to `/api/request-service` (and the contact API remains a compatibility path). Leads are stored before any email is sent. Office staff disposition them in `/admin/leads`.
 
 ## Admin and CMS
 
-Admin access is handled with a direct username and password stored in environment variables. Successful logins create a signed, httpOnly session cookie and repeated failed attempts are rate-limited before the admin panel is accessible.
+Env-based credentials create an httpOnly signed session. Admin can edit site settings, articles, evidence, and leads. Office can operate approved content and lead workflows but cannot change taxonomy, URLs, or SOT.
 
-The admin area supports:
+## Deployment
 
-- site setting updates for business details and contact data
-- article create, edit, delete, and publish flows
-- manual AI article generation for review
+- Vercel: Next.js preset, set `NEXT_PUBLIC_SITE_URL` and secrets from `.env.example`
+- Docker / Node: standalone output, health check at `/api/health`
+- `vercel.json` schedules `/api/cron/publish-scheduled` at 15:05 UTC and hourly `/api/cron/refresh-weather`. Weather recommendation rules stay off until thresholds are validated.
 
-Content storage works in two modes:
+Do not re-enable `/api/cron/generate-article`. Articles require human review.
 
-- local development: JSON files under `data/cms/`
-- Vercel: `@vercel/blob` using `BLOB_READ_WRITE_TOKEN`
+## Content notes
 
-## AI Article Automation
-
-The route `/api/cron/generate-article` generates one SEO article per day when called with `Authorization: Bearer ${CRON_SECRET}`.
-
-The included `vercel.json` schedules that route daily at `08:05 UTC`. Generated articles are saved as published posts and linked back into service pages and recent articles for internal-linking coverage.
-
-## Deployment Readiness
-
-The project now includes deployment wiring for both managed and self-hosted setups:
-
-- standalone Next.js output enabled in `next.config.ts`
-- `sharp` installed for production image optimization
-- Docker multi-stage build via `Dockerfile`
-- health endpoint at `/api/health`
-- runtime deployment version support via `DEPLOYMENT_VERSION`
-- configurable site URL via `NEXT_PUBLIC_SITE_URL`
-- original live-site favicon assets restored and wired into metadata/manifest
-- `vercel.json` daily cron for automated article generation
-
-### Required Environment Variables
-
-Use `.env.example` as the template. The main deployment variables are:
-
-- `NEXT_PUBLIC_SITE_URL`: canonical public URL used for metadata and sitemap generation
-- `DEPLOYMENT_VERSION`: deployment identifier used by Next.js to reduce version-skew issues during rollouts
-- `ADMIN_USERNAME`: username allowed into `/admin`
-- `ADMIN_PASSWORD_HASH`: preferred password format, generated as a scrypt hash
-- `ADMIN_PASSWORD`: optional plain-text fallback for local setup only if you do not want to pre-hash the password
-- `ADMIN_SESSION_SECRET`: session signing secret used for the admin cookie
-- `BLOB_READ_WRITE_TOKEN`: required on Vercel if admin edits and generated articles must persist
-- `OPENAI_API_KEY`: required for AI article generation
-- `OPENAI_MODEL`: optional OpenAI model override, defaults to `gpt-4.1`
-- `CRON_SECRET`: shared secret for the scheduled article route
-
-### Vercel Deployment
-
-1. Import the GitHub repository into Vercel.
-2. Keep the framework preset as Next.js.
-3. Add the variables from `.env.example` in the Vercel project settings.
-4. Set `NEXT_PUBLIC_SITE_URL` to the production domain before the production build.
-5. Set `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, `BLOB_READ_WRITE_TOKEN`, `OPENAI_API_KEY`, and `CRON_SECRET`.
-6. Deploy.
-
-The included `vercel.json` enables daily scheduled AI article generation.
-
-### Docker / Node Deployment
-
-Build the container:
-
-```bash
-docker build -t papoon-fireplacerepair .
-```
-
-Run it:
-
-```bash
-docker run --rm -p 3000:3000 --env-file .env.production.local papoon-fireplacerepair
-```
-
-If you prefer a plain Node host instead of Docker:
-
-```bash
-npm run build
-npm run start:standalone
-```
-
-### Health Check
-
-Use this endpoint for container or platform health probes:
-
-```txt
-/api/health
-```
-
-## Content Notes
-
-- The site uses `(825) 823-9556` as the business phone across Calgary, Edmonton, and Red Deer.
-- Business hours and contact info are seeded from `src/lib/cms/defaults.ts` and become editable through `/admin/settings`.
-
-## Suggested Next Build Steps
-
-1. Confirm final business phone, hours, and email.
-2. Configure admin credentials, Blob storage, and OpenAI secrets in Vercel.
-3. Review the seeded articles and tune the AI system prompt for brand voice.
-4. Add analytics IDs and conversion tracking once the production property is ready.
+- Phone `(825) 823-9556` is shared across Alberta hubs unless a city override is set
+- Hours and NAP live in CMS settings (`src/lib/cms/defaults.ts`) and optional env for LocalBusiness schema
+- Google rating is an owner-editable verified field — never fabricate 5.0

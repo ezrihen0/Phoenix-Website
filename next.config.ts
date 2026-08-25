@@ -13,11 +13,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/services",
-        destination: "/calgary/services",
-        permanent: true,
-      },
-      {
         source: "/wett",
         destination: "/calgary/wett",
         permanent: true,
@@ -33,24 +28,101 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/articles",
-        destination: "/calgary/articles",
-        permanent: true,
-      },
-      {
-        source: "/articles/:slug",
-        destination: "/calgary/articles/:slug",
-        permanent: true,
-      },
-      {
         source: "/gas-fireplace-repair",
         destination: "/calgary/gas-fireplace-repair",
+        permanent: true,
+      },
+      {
+        source: "/calgary/articles/spring-fireplace-maintenance-checklist-calgary",
+        destination: "/articles/spring-fireplace-maintenance-checklist",
+        permanent: true,
+      },
+      {
+        source: "/edmonton/articles/spring-fireplace-maintenance-checklist-edmonton",
+        destination: "/articles/spring-fireplace-maintenance-checklist",
+        permanent: true,
+      },
+      {
+        source: "/red-deer/articles/spring-fireplace-maintenance-checklist-red-deer",
+        destination: "/articles/spring-fireplace-maintenance-checklist",
+        permanent: true,
+      },
+      {
+        source: "/calgary/articles/when-to-book-a-wett-inspection-in-calgary",
+        destination: "/articles/when-to-book-a-wett-inspection",
+        permanent: true,
+      },
+      {
+        source: "/edmonton/articles/when-to-book-a-wett-inspection-in-edmonton",
+        destination: "/articles/when-to-book-a-wett-inspection",
+        permanent: true,
+      },
+      {
+        source: "/red-deer/articles/when-to-book-a-wett-inspection-in-red-deer",
+        destination: "/articles/when-to-book-a-wett-inspection",
+        permanent: true,
+      },
+      {
+        source: "/calgary/articles/gas-fireplace-not-turning-on-calgary",
+        destination: "/articles/gas-fireplace-not-turning-on",
+        permanent: true,
+      },
+      {
+        source: "/edmonton/articles/gas-fireplace-not-turning-on-edmonton",
+        destination: "/articles/gas-fireplace-not-turning-on",
+        permanent: true,
+      },
+      {
+        source: "/red-deer/articles/gas-fireplace-not-turning-on-red-deer",
+        destination: "/articles/gas-fireplace-not-turning-on",
+        permanent: true,
+      },
+      {
+        source: "/calgary/request-service",
+        destination: "/request-service?city=calgary",
+        permanent: true,
+      },
+      {
+        source: "/edmonton/request-service",
+        destination: "/request-service?city=edmonton",
+        permanent: true,
+      },
+      {
+        source: "/red-deer/request-service",
+        destination: "/request-service?city=red-deer",
         permanent: true,
       },
     ];
   },
   async headers() {
     return [
+      {
+        source: "/portal",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive",
+          },
+        ],
+      },
+      {
+        source: "/portal/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive",
+          },
+        ],
+      },
+      {
+        source: "/request-service",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive",
+          },
+        ],
+      },
       {
         source: "/:path*",
         headers: [

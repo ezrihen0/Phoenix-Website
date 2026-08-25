@@ -13,6 +13,7 @@ import {
   getCitySettings,
   getRequestServiceHref,
   getScopedPath,
+  isGeneralPublicPath,
 } from "@/lib/cities";
 import type { PublicSiteSettings } from "@/lib/cms/types";
 import { footerLinks } from "@/lib/site-data";
@@ -28,7 +29,7 @@ export function SiteFooter({ settings }: SiteFooterProps) {
   const effectiveSettings = getCitySettings(settings, currentCity);
 
   if (!currentCity) {
-    if (pathname !== "/") {
+    if (!isGeneralPublicPath(pathname)) {
       return null;
     }
 
@@ -104,7 +105,12 @@ export function SiteFooter({ settings }: SiteFooterProps) {
               Change city
             </Link>
             <Link
-              href={getRequestServiceHref(currentCity)}
+              href={getRequestServiceHref({
+                city: currentCity,
+                cta: "footer",
+                from: pathname,
+              })}
+              data-cta="footer-request-service"
               className="rounded-full bg-[var(--color-ember)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
             >
               Request Service

@@ -96,6 +96,15 @@ const settingsSchema = z.object({
   ),
   notificationEmail: z.string().trim().email(),
   googleAppPassword: z.string().trim().optional().default(""),
+  googleRating: z.preprocess(
+    (value) => (value === "" || value == null ? undefined : Number(value)),
+    z.number().min(1).max(5).optional(),
+  ),
+  googleReviewCount: z.preprocess(
+    (value) => (value === "" || value == null ? undefined : Number(value)),
+    z.number().int().min(1).optional(),
+  ),
+  googleReviewsUrl: z.string().trim().url().optional().or(z.literal("")),
 });
 
 const aiModelSchema = z.object({
@@ -159,6 +168,7 @@ const evidenceImageSchema = z.object({
   source: z.enum(EVIDENCE_IMAGE_SOURCE_VALUES),
   url: z.string().trim().min(1),
   isPrimary: z.boolean(),
+  pairRole: z.enum(["before", "after", "other"]).optional(),
   publicAlt: z.string(),
   publicCaption: z.string(),
   internalSourceDescription: z.string(),
@@ -263,7 +273,7 @@ function getEvidenceServiceSlugs(formData: FormData) {
   );
 }
 
-function revalidatePublicContent(articleRoutes: Array<{ city: CitySlug; slug: string }> = []) {
+function revalidatePublicContent(articleRoutes: Array<{ city?: CitySlug; slug: string }> = []) {
   revalidatePath("/");
   revalidatePath("/sitemap.xml");
   revalidatePath("/feed.xml");
@@ -296,8 +306,14 @@ function revalidatePublicContent(articleRoutes: Array<{ city: CitySlug; slug: st
   revalidatePath("/admin/publish");
   revalidatePath("/admin/settings");
 
+  revalidatePath("/articles");
+
   for (const route of articleRoutes) {
-    revalidatePath(getCityHref(route.city, `/articles/${route.slug}`));
+    if (route.city) {
+      revalidatePath(getCityHref(route.city, `/articles/${route.slug}`));
+    } else {
+      revalidatePath(`/articles/${route.slug}`);
+    }
   }
 }
 
@@ -436,6 +452,7 @@ export async function saveArticleAction(formData: FormData) {
 
     const nextArticle = {
       id: existingArticle?.id || articleId,
+      scope: "city" as const,
       city: parsed.city,
       slug,
       title: parsed.title,

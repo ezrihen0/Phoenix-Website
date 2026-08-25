@@ -17,7 +17,7 @@ function isAuthorized(request: Request) {
   return authorization === `Bearer ${cronSecret}`;
 }
 
-function revalidatePublishedArticles(articleRoutes: Array<{ city: CitySlug; slug: string }> = []) {
+function revalidatePublishedArticles(articleRoutes: Array<{ city?: CitySlug; slug: string }> = []) {
   revalidatePath("/");
   revalidatePath("/sitemap.xml");
   revalidatePath("/feed.xml");
@@ -48,8 +48,14 @@ function revalidatePublishedArticles(articleRoutes: Array<{ city: CitySlug; slug
   revalidatePath("/admin/articles");
   revalidatePath("/admin/publish");
 
+  revalidatePath("/articles");
+
   for (const route of articleRoutes) {
-    revalidatePath(getCityHref(route.city, `/articles/${route.slug}`));
+    if (route.city) {
+      revalidatePath(getCityHref(route.city, `/articles/${route.slug}`));
+    } else {
+      revalidatePath(`/articles/${route.slug}`);
+    }
   }
 }
 

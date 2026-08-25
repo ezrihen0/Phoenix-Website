@@ -27,14 +27,10 @@ function isWeakHighlight(text: string) {
 }
 
 export function ServiceLocalContext({ servicePage, city }: ServiceLocalContextProps) {
-  if (servicePage.cityCoverage) {
-    return null;
-  }
-
   const cityConfig = getCityBySlug(city);
   const highlight = cityConfig ? servicePage.cityHighlights[cityConfig.slug] : undefined;
 
-  if (!highlight || isWeakHighlight(highlight)) {
+  if (!cityConfig) {
     return null;
   }
 
@@ -45,17 +41,26 @@ export function ServiceLocalContext({ servicePage, city }: ServiceLocalContextPr
           <article className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6 sm:p-8">
             <div className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-ember)]">
               <MapPinned className="h-4 w-4" />
-              {cityConfig?.name} context
+              {cityConfig.name} local context
             </div>
             <h2 className="mt-4 text-balance text-2xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-3xl">
-              How this service shows up in {cityConfig?.name}
+              How this service shows up in {cityConfig.name}
             </h2>
-            <p className="mt-4 text-sm leading-7 text-[var(--color-muted)] sm:text-base">{highlight}</p>
+            {highlight && !isWeakHighlight(highlight) ? (
+              <p className="mt-4 text-sm leading-7 text-[var(--color-muted)] sm:text-base">{highlight}</p>
+            ) : (
+              <p className="mt-4 text-sm leading-7 text-[var(--color-muted)] sm:text-base">
+                {cityConfig.weatherContext} {cityConfig.regulationContext}
+              </p>
+            )}
+            <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
+              {cityConfig.serviceRadius} Core areas include {cityConfig.serviceAreas.slice(0, 6).join(", ")}.
+            </p>
             <Link
               href={getCityHref(city, "/services")}
               className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]"
             >
-              Compare all {cityConfig?.name} services
+              Compare all {cityConfig.name} services
               <ArrowRight className="h-4 w-4" />
             </Link>
           </article>

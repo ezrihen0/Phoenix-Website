@@ -236,6 +236,24 @@ export function buildLocalBusinessSchema(city?: CitySlug) {
     ...(address ? { address } : {}),
     ...(geo ? { geo } : {}),
     ...(sameAs.length > 0 ? { sameAs } : {}),
+    ...(getSchemaAggregateRating()),
+  };
+}
+
+function getSchemaAggregateRating() {
+  const rating = Number.parseFloat(process.env.GOOGLE_RATING || "");
+  const count = Number.parseInt(process.env.GOOGLE_REVIEW_COUNT || "", 10);
+
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5 || !Number.isFinite(count) || count < 1) {
+    return {};
+  }
+
+  return {
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: rating.toFixed(1),
+      reviewCount: count,
+    },
   };
 }
 
@@ -284,8 +302,13 @@ export function buildOrganizationSchema() {
   };
 }
 
-export function buildArticleSchema(article: Article, city: CitySlug) {
-  const articleUrl = absoluteUrl(getCityHref(city, `/articles/${article.slug}`));
+export function buildArticleSchema(article: Article, city?: CitySlug) {
+  const citySlug = article.city || city;
+  const path =
+    article.scope === "city" && citySlug
+      ? getCityHref(citySlug, `/articles/${article.slug}`)
+      : `/articles/${article.slug}`;
+  const articleUrl = absoluteUrl(path);
   const imageUrl = article.coverImage ? absoluteUrl(article.coverImage) : absoluteUrl(siteConfig.socialPreview);
   const authorSchema =
     article.authorType === "person"

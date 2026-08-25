@@ -9,6 +9,7 @@ import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { FromTheField } from "@/components/services/from-the-field";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings, getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { getWettContextualLinks } from "@/lib/internal-links";
@@ -112,7 +113,7 @@ export default async function CityWettPage({
                 <p className="max-w-2xl text-base leading-8 text-[var(--color-paper)]/78 sm:text-lg">
                   When a sale, policy review, or safety concern depends on credible documentation,
                   Phoenix inspects the full wood-burning system and produces reporting that is fast,
-                  understandable, and organized around visible findings.
+                  understandable, and organized around visible findings. {city.regulationContext} {city.weatherContext}
                 </p>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {wettBenefits.map((benefit) => (
@@ -128,7 +129,12 @@ export default async function CityWettPage({
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <Link
-                    href={getRequestServiceHref(city.slug)}
+                    href={getRequestServiceHref({
+                      city: city.slug,
+                      service: "wett-inspections",
+                      cta: "wett",
+                      from: getCityHref(city.slug, "/wett"),
+                    })}
                     className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                   >
                     Request WETT inspection
@@ -227,7 +233,12 @@ export default async function CityWettPage({
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href={getRequestServiceHref(city.slug)}
+                  href={getRequestServiceHref({
+                    city: city.slug,
+                    service: "wett-inspections",
+                    cta: "wett",
+                    from: getCityHref(city.slug, "/wett"),
+                  })}
                   className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                 >
                   Request inspection
@@ -243,6 +254,8 @@ export default async function CityWettPage({
           </div>
         </div>
       </section>
+
+      <FromTheField serviceSlug="wett-inspections" city={city.slug} />
 
       <section className="pb-20">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">

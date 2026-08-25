@@ -4,7 +4,7 @@ export const OFFICE_CHECKLIST_TASKS = [
   {
     id: "review-new-overnight-leads",
     label: "Review new / overnight leads",
-    description: "Confirm new and overnight website leads have been reviewed.",
+    description: "Confirm new and overnight Request Service leads have been reviewed.",
   },
   {
     id: "review-todays-calendar",

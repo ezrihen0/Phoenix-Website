@@ -2,16 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock3 } from "lucide-react";
 
-import { estimateReadingTime, formatArticleDate } from "@/lib/cms/helpers";
-import { getScopedPath, type CitySlug } from "@/lib/cities";
+import { estimateReadingTime, formatArticleDate, getArticleHref } from "@/lib/cms/helpers";
 import type { Article } from "@/lib/cms/types";
 
 type ArticleCardProps = {
   article: Article;
-  city?: CitySlug;
 };
 
-export function ArticleCard({ article, city }: ArticleCardProps) {
+export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <article className="overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] shadow-[0_18px_40px_rgba(31,26,22,0.06)]">
       {article.coverImage ? (
@@ -38,7 +36,7 @@ export function ArticleCard({ article, city }: ArticleCardProps) {
         </h2>
         <p className="text-sm leading-7 text-[var(--color-muted)]">{article.excerpt}</p>
         <Link
-          href={getScopedPath(`/articles/${article.slug}`, city)}
+          href={getArticleHref(article)}
           className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-forest)]"
         >
           Read article

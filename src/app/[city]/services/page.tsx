@@ -77,7 +77,7 @@ export default async function CityServicesPage({
   }
 
   const siteSettings = getCitySettings(await getPublicSiteSettings(), city.slug);
-  const servicesFaqs = getHomeFaqs(city.name, city.serviceAreas);
+  const servicesFaqs = getHomeFaqs(city.name, city.serviceAreas, city.weatherContext);
 
   return (
     <>
@@ -123,7 +123,11 @@ export default async function CityServicesPage({
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
-                  href={getRequestServiceHref(city.slug)}
+                  href={getRequestServiceHref({
+                    city: city.slug,
+                    cta: "city-services",
+                    from: getCityHref(city.slug, "/services"),
+                  })}
                   className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                 >
                   Request Service
@@ -184,7 +188,12 @@ export default async function CityServicesPage({
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                       <Link
-                        href={getRequestServiceHref(city.slug)}
+                        href={getRequestServiceHref({
+                          city: city.slug,
+                          service: service.slug,
+                          cta: "city-services",
+                          from: getCityHref(city.slug, "/services"),
+                        })}
                         className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
                       >
                         Request this service

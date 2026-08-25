@@ -72,6 +72,22 @@ export default async function AdminSettingsPage({
           <Field label="Default author name" name="defaultAuthorName" defaultValue={settings.defaultAuthorName} required />
           <Field label="Blog index title" name="blogIndexTitle" defaultValue={settings.blogIndexTitle} required className="md:col-span-2" />
           <Field label="Blog index description" name="blogIndexDescription" defaultValue={settings.blogIndexDescription} required className="md:col-span-2" />
+          <Field
+            label="Verified Google rating (optional, never invent 5.0)"
+            name="googleRating"
+            defaultValue={settings.googleRating?.toString() || ""}
+          />
+          <Field
+            label="Google review count"
+            name="googleReviewCount"
+            defaultValue={settings.googleReviewCount?.toString() || ""}
+          />
+          <Field
+            label="Google reviews URL"
+            name="googleReviewsUrl"
+            defaultValue={settings.googleReviewsUrl || ""}
+            className="md:col-span-2"
+          />
           <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
             <span>AI model</span>
             <select
@@ -95,7 +111,7 @@ export default async function AdminSettingsPage({
             />
             <span>
               <span className="block font-semibold text-[var(--color-ink)]">Email new leads to the recipient inbox</span>
-              Send each website and contact-form lead to the recipient inbox below. Uses Brevo when BREVO_API_KEY is set on the server; otherwise Gmail SMTP with the app password.
+              Send each Request Service lead to the recipient inbox below. Uses Brevo when BREVO_API_KEY is set on the server; otherwise Gmail SMTP with the app password.
             </span>
           </label>
           <Field label="Recipient inbox email (receives notifications)" name="notificationEmail" defaultValue={settings.notificationEmail} required />

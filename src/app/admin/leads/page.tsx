@@ -25,7 +25,7 @@ export default async function AdminLeadsPage({
     return (
       <AdminShell
         title="Lead inbox"
-        description="Review incoming leads, record booking outcomes, and track office handling time."
+        description="Review incoming Request Service leads, record booking outcomes, and track office handling time."
         currentPath="/admin/leads"
         userLabel={session.username}
         userRole={session.role}
@@ -56,7 +56,7 @@ export default async function AdminLeadsPage({
   return (
     <AdminShell
       title="Lead inbox"
-      description="Review incoming leads, record booking outcomes, and track office handling time."
+      description="Review incoming Request Service leads, record booking outcomes, and track office handling time."
       currentPath="/admin/leads"
       userLabel={session.username}
       userRole={session.role}

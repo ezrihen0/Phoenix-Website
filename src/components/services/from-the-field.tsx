@@ -39,6 +39,7 @@ export async function FromTheField({ serviceSlug, city }: FromTheFieldProps) {
   });
 
   if (evidence.length === 0) {
+    // Do not render a From the Field section that implies unpublished or invented jobs.
     return null;
   }
 
@@ -79,6 +80,27 @@ export async function FromTheField({ serviceSlug, city }: FromTheFieldProps) {
                         alt={primaryImage.alt || "Verified field example"}
                         className="h-full w-full object-cover"
                       />
+                    </div>
+                  ) : null}
+                  {record.images.some((image) => image.pairRole === "before") &&
+                  record.images.some((image) => image.pairRole === "after") ? (
+                    <div className="grid grid-cols-2 gap-px bg-[var(--color-border)]">
+                      {(["before", "after"] as const).map((role) => {
+                        const image = record.images.find((entry) => entry.pairRole === role);
+                        if (!image) {
+                          return null;
+                        }
+
+                        return (
+                          <div key={role} className="relative aspect-[4/3] bg-[var(--color-paper)]">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={image.url} alt={image.alt || role} className="h-full w-full object-cover" />
+                            <p className="absolute bottom-2 left-2 rounded-full bg-black/55 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-white">
+                              {role}
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
                   ) : null}
                   <div className="space-y-4 p-6">

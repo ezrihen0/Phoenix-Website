@@ -5,7 +5,6 @@ import { CalendarDays, Clock3, Mail, MapPinned, Phone } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { CityPlaceholderPage } from "@/components/city-placeholder-page";
-import { ContactForm } from "@/components/forms/contact-form";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
@@ -100,7 +99,15 @@ export default async function CityContactPage({
                 {siteSettings.hoursLabel} · {siteSettings.hoursDetail}
               </ContactCard>
               <ContactCard icon={<CalendarDays className="h-5 w-5" />} label="Request service">
-                <Link href={getRequestServiceHref(city.slug)}>Request Service</Link>
+                <Link
+                  href={getRequestServiceHref({
+                    city: city.slug,
+                    cta: "city-contact",
+                    from: getCityHref(city.slug, "/contact"),
+                  })}
+                >
+                  Request Service
+                </Link>
               </ContactCard>
               <ContactCard icon={<MapPinned className="h-5 w-5" />} label="Coverage">
                 {siteSettings.serviceRadius}
@@ -109,7 +116,25 @@ export default async function CityContactPage({
           </div>
 
           <Reveal delay={120}>
-            <ContactForm city={city.slug} settings={siteSettings} />
+            <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-8">
+              <p className="eyebrow">Request service</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-ink)]">
+                Send the issue through the global request form.
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
+                {city.name} will be preselected. You can still change city or service before you submit.
+              </p>
+              <Link
+                href={getRequestServiceHref({
+                  city: city.slug,
+                  cta: "city-contact",
+                  from: getCityHref(city.slug, "/contact"),
+                })}
+                className="mt-6 inline-flex rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
+              >
+                Request Service
+              </Link>
+            </div>
           </Reveal>
         </div>
       </section>

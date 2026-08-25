@@ -1,4 +1,4 @@
-import { getCityHref } from "@/lib/cities";
+import { getArticleHref } from "@/lib/cms/helpers";
 import { listArticles } from "@/lib/cms/storage";
 import { absoluteUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-data";
@@ -10,7 +10,7 @@ export async function GET() {
   const lastBuildDate = articles[0]?.updatedAt || new Date().toISOString();
   const items = articles
     .map((article) => {
-      const url = absoluteUrl(getCityHref(article.city, `/articles/${article.slug}`));
+      const url = absoluteUrl(getArticleHref(article));
       const coverImage = article.coverImage ? absoluteUrl(article.coverImage) : "";
 
       return `

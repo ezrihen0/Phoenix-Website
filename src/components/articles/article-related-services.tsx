@@ -1,25 +1,40 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { getCityBySlug, type CitySlug } from "@/lib/cities";
+import { getCanonicalService, getServiceHref } from "@/lib/service-taxonomy";
+import type { CitySlug } from "@/lib/cities";
 import type { Article } from "@/lib/cms/types";
 import { resolveRelatedServiceLink } from "@/lib/internal-links";
 
 type ArticleRelatedServicesProps = {
   article: Pick<Article, "relatedServiceSlugs">;
-  city: CitySlug;
+  city?: CitySlug;
 };
 
 export function ArticleRelatedServices({ article, city }: ArticleRelatedServicesProps) {
   const slugs = (article.relatedServiceSlugs || []).slice(0, 3);
-  const cityConfig = getCityBySlug(city);
 
-  if (slugs.length === 0 || !cityConfig) {
+  if (slugs.length === 0) {
     return null;
   }
 
   const links = slugs
-    .map((slug) => resolveRelatedServiceLink(slug, city))
+    .map((slug) => {
+      if (city) {
+        return resolveRelatedServiceLink(slug, city);
+      }
+
+      const service = getCanonicalService(slug);
+      if (!service) {
+        return null;
+      }
+
+      return {
+        href: getServiceHref(slug),
+        title: service.title,
+        description: service.description,
+      };
+    })
     .filter((link): link is NonNullable<typeof link> => link != null);
 
   if (links.length === 0) {

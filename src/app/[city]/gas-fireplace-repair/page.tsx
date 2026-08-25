@@ -9,6 +9,7 @@ import { CityPlaceholderPage } from "@/components/city-placeholder-page";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { StructuredData } from "@/components/structured-data";
+import { FromTheField } from "@/components/services/from-the-field";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings, getRequestServiceHref } from "@/lib/cities";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { getGasRepairContextualLinks } from "@/lib/internal-links";
@@ -43,6 +44,11 @@ const gasRepairVisitPoints = [
     title: "Clear repair direction",
     description:
       "If a component has failed or maintenance has been skipped too long, Phoenix explains the next step in plain language so the homeowner can make the decision quickly.",
+  },
+  {
+    title: "$99 diagnostic visit",
+    description:
+      "Complex repairs are not priced by guessing over the phone. When the issue is unknown, Phoenix inspects first, then presents options instead of assuming replacement.",
   },
 ] as const;
 
@@ -146,7 +152,9 @@ export default async function CityGasFireplaceRepairPage({
               </h1>
               <p className="max-w-2xl text-base leading-8 text-[var(--color-paper)]/78 sm:text-lg">
                 Book gas fireplace repair in {city.name} when the unit will not ignite, the flame is weak,
-                the pilot keeps dropping out, or the fireplace shuts off unexpectedly.
+                the pilot keeps dropping out, or the fireplace shuts off unexpectedly. When the problem is
+                unknown, a $99 diagnostic/inspection visit comes first: assessment, findings, options, then
+                an accurate quote. {city.weatherContext}
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 {gasRepairHighlights.map((highlight) => (
@@ -158,7 +166,12 @@ export default async function CityGasFireplaceRepairPage({
               </div>
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href={getRequestServiceHref(city.slug)}
+                  href={getRequestServiceHref({
+                    city: city.slug,
+                    service: "gas-fireplace-repair",
+                    cta: "gas-fireplace-repair",
+                    from: getCityHref(city.slug, "/gas-fireplace-repair"),
+                  })}
                   className="rounded-full bg-[var(--color-ember)] px-5 py-3 text-sm font-semibold text-white"
                 >
                   Request gas fireplace repair
@@ -234,6 +247,8 @@ export default async function CityGasFireplaceRepairPage({
         links={getGasRepairContextualLinks(city.slug)}
         city={city.slug}
       />
+
+      <FromTheField serviceSlug="gas-fireplace-repair" city={city.slug} />
 
       <section className="section-pad bg-[rgba(255,255,255,0.45)]">
         <div className="page-frame grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">

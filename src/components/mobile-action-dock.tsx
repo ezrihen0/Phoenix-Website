@@ -40,7 +40,12 @@ export function MobileActionDock({ settings }: MobileActionDockProps) {
           Call
         </a>
         <Link
-          href={getRequestServiceHref(currentCity)}
+          href={getRequestServiceHref({
+            city: currentCity,
+            cta: "mobile-dock",
+            from: pathname,
+          })}
+          data-cta="mobile-dock"
           className="flex flex-col items-center justify-center gap-1 rounded-[1.1rem] bg-[var(--color-ember)] px-2 py-3 text-white"
         >
           <CalendarDays className="h-4 w-4" />
