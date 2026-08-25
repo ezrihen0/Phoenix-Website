@@ -56,7 +56,7 @@ Env-based credentials create an httpOnly signed session. Admin can edit site set
 
 - Vercel: Next.js preset, set `NEXT_PUBLIC_SITE_URL` and secrets from `.env.example`
 - Docker / Node: standalone output, health check at `/api/health`
-- `vercel.json` schedules `/api/cron/publish-scheduled` at 15:05 UTC and hourly `/api/cron/refresh-weather`. Weather recommendation rules stay off until thresholds are validated.
+- `vercel.json` schedules `/api/cron/publish-scheduled` at 15:05 UTC and hourly `/api/cron/refresh-weather`. Weather data comes from Environment and Climate Change Canada (MSC GeoMet). City home pages can show a conditions panel. Recommendation rules stay off until thresholds are validated.
 
 Do not re-enable `/api/cron/generate-article`. Articles require human review.
 
@@ -65,3 +65,4 @@ Do not re-enable `/api/cron/generate-article`. Articles require human review.
 - Phone `(825) 823-9556` is shared across Alberta hubs unless a city override is set
 - Hours and NAP live in CMS settings (`src/lib/cms/defaults.ts`) and optional env for LocalBusiness schema
 - Google rating is an owner-editable verified field — never fabricate 5.0
+- Articles follow the [Article Research Program](docs/content/PHOENIX_ARTICLE_RESEARCH_PROGRAM_V1.md). Approved Markdown sources live in `docs/content/article-source/`. The coding agent implements approved files only and does not invent code claims or Phoenix jobs.

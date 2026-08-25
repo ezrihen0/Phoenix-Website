@@ -22,7 +22,7 @@ export const defaultSiteSettings: SiteSettings = {
   aiProvider: "openai",
   aiModel: process.env.OPENAI_MODEL || "gpt-4.1",
   aiSystemPrompt:
-    "Write practical, trustworthy articles for Canadian homeowners about fireplaces, chimneys, gas appliances, WETT inspections, and masonry repair. Localize content to the requested Alberta city using only supplied context. Avoid fluff, unsafe advice, and keyword stuffing. Prioritize clear structure, factual guidance, and strong internal linking opportunities.",
+    "Write practical, trustworthy articles for Alberta homeowners about fireplaces, chimneys, gas appliances, WETT inspections, and masonry repair. Default to general Alberta authority content. Use a city only when supplied context shows geography changes the answer. Separate code, official guidance, manufacturer rules, best practice, and Phoenix field notes. Do not invent jobs, photos, ratings, or legal requirements. Avoid fluff, unsafe DIY, and keyword stuffing. Open with a direct answer, then evidence and a relevant Phoenix service link.",
   sendLeadEmails: true,
   notificationEmail: "Service@phoenixfireplace.ca",
   googleAppPassword: "",

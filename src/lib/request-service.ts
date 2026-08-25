@@ -182,6 +182,7 @@ export const REQUEST_SERVICE_CTA_LOCATIONS = [
   "gas-fireplace-repair",
   "article",
   "request-service-form",
+  "weather-module",
 ] as const;
 
 export type RequestServiceCtaLocation = (typeof REQUEST_SERVICE_CTA_LOCATIONS)[number];
@@ -199,6 +200,7 @@ export const REQUEST_SERVICE_CTA_LABELS: Record<RequestServiceCtaLocation, strin
   "gas-fireplace-repair": "Gas repair page",
   article: "Article",
   "request-service-form": "Request Service form",
+  "weather-module": "Weather module",
 };
 
 export function getRequestServiceCtaLabel(value?: string) {

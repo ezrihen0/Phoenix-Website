@@ -3,10 +3,14 @@ import type { CitySlug } from "@/lib/cities";
 export type CityWeatherSnapshot = {
   city: CitySlug;
   temperatureC: number;
-  feelsLikeC: number;
-  precipitationMm: number;
-  windKph: number;
+  feelsLikeC?: number;
+  precipitationMm?: number;
+  windKph?: number;
+  windDirection?: string;
+  humidityPct?: number;
   condition: string;
+  forecastConditions?: string[];
+  sourceUrl?: string;
   alert?: string;
   updatedAt: string;
 };

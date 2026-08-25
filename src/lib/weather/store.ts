@@ -5,7 +5,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import { CITY_SLUGS, cities } from "@/lib/cities";
-import { openMeteoWeatherProvider } from "@/lib/weather/provider";
+import { ecccWeatherProvider } from "@/lib/weather/provider";
 import {
   WEATHER_RULES,
   type CityWeatherSnapshot,
@@ -112,7 +112,7 @@ export async function refreshWeatherCache() {
 
   for (const city of cities) {
     try {
-      nextCities[city.slug] = await openMeteoWeatherProvider.fetchCityWeather(city.slug);
+      nextCities[city.slug] = await ecccWeatherProvider.fetchCityWeather(city.slug);
     } catch (error) {
       console.error(`[weather] Provider failed for ${city.slug}. Keeping previous snapshot if present.`, error);
     }
@@ -129,7 +129,26 @@ export async function refreshWeatherCache() {
 
 export async function getCityWeatherState(citySlug: string): Promise<CityWeatherState | null> {
   const store = await readStore();
-  const snapshot = store.cities[citySlug];
+  let snapshot = store.cities[citySlug];
+
+  if ((!snapshot || !snapshot.sourceUrl) && isSupportedWeatherCity(citySlug)) {
+    try {
+      snapshot = await ecccWeatherProvider.fetchCityWeather(citySlug);
+      try {
+        await writeStore({
+          updatedAt: new Date().toISOString(),
+          cities: { ...store.cities, [citySlug]: snapshot },
+        });
+      } catch (error) {
+        console.error(`[weather] Failed to persist snapshot for ${citySlug}.`, error);
+      }
+    } catch (error) {
+      console.error(`[weather] Provider miss-fill failed for ${citySlug}.`, error);
+      if (!snapshot) {
+        return null;
+      }
+    }
+  }
 
   if (!snapshot) {
     return null;

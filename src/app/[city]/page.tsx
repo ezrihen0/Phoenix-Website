@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, MapPinned, Phone, ShieldCheck } from "lucide-react";
+import { ArrowRight, ChevronDown, Flame, MapPinned, Phone, Shield, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { GoogleReviewsBadge } from "@/components/google-reviews-badge";
@@ -12,7 +12,9 @@ import { SectionHeading } from "@/components/section-heading";
 import { ServiceGuidesGrid } from "@/components/service-guides-grid";
 import { ServiceCard } from "@/components/service-card";
 import { StructuredData } from "@/components/structured-data";
+import { BrandsWeServiceMarquee } from "@/components/brands-we-service-marquee";
 import { cityHasFullContent, getCityBySlug, getCityHref, getCitySettings, getRequestServiceHref } from "@/lib/cities";
+import { getServiceHref } from "@/lib/service-taxonomy";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
 import { getCityHubLinks } from "@/lib/internal-links";
 import {
@@ -27,11 +29,49 @@ import {
   getHomeFaqs,
   getTrustMetrics,
   getValuePillars,
-  heroHighlights,
   processSteps,
   services,
   wettBenefits,
 } from "@/lib/site-data";
+
+const CITY_HERO_SERVICE_TABS = [
+  {
+    slug: "wett-inspections",
+    title: "WETT Inspections",
+    subtitle: "Insurance & real-estate documentation",
+  },
+  {
+    slug: "gas-fireplace-repair",
+    title: "Gas Fireplace Repair",
+    subtitle: "Ignition & performance diagnostics",
+  },
+  {
+    slug: "chimney-repair-masonry",
+    title: "Chimney Repair & Sweeping",
+    subtitle: "Masonry, relining & inspections",
+  },
+] as const;
+
+function ChimneyServiceIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="city-hero-service-tab-glyph"
+      aria-hidden="true"
+    >
+      <path d="M7 21V10h10v11" />
+      <path d="M5 10h14" />
+      <path d="M8 6h8l1.5 4h-11L8 6Z" />
+      <path d="M7 15.5h10" />
+      <path d="M12 10v11" />
+    </svg>
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -95,7 +135,8 @@ export default async function CityHomePage({
     return <CityPlaceholderPage city={city} section="home" />;
   }
 
-  const siteSettings = getCitySettings(await getPublicSiteSettings(), city.slug);
+  const publicSettings = await getPublicSiteSettings();
+  const siteSettings = getCitySettings(publicSettings, city.slug);
   const trustMetrics = getTrustMetrics(city.name);
   const valuePillars = getValuePillars(city.name);
   const homeFaqs = getHomeFaqs(city.name, city.serviceAreas, city.weatherContext);
@@ -118,72 +159,90 @@ export default async function CityHomePage({
         ]}
       />
 
-      <section className="pb-12 pt-2 sm:pb-14 sm:pt-4 lg:pb-16">
-        <div className="page-bleed space-y-6">
-          <Reveal>
-            <div className="relative min-h-[38rem] overflow-hidden rounded-[2.8rem] border border-black/10 bg-[var(--color-ink)] text-[var(--color-paper)] shadow-[0_30px_80px_rgba(31,26,22,0.2)] sm:min-h-[42rem]">
-              <div className="hero-orb hero-orb-primary" />
-              <div className="hero-orb hero-orb-secondary" />
-              <Image
-                src="/images/photos/hero-fireplace.jpg"
-                alt="Modern fireplace in a bright Alberta home"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover opacity-40"
-              />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,16,13,0.34),rgba(20,16,13,0.66),rgba(20,16,13,0.9))]" />
-              <div className="relative flex min-h-[38rem] flex-col justify-between px-6 py-10 sm:min-h-[42rem] sm:px-10 sm:py-12 lg:px-14 lg:py-14">
-                <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center text-center">
-                  <div className="space-y-6">
-                    <p className="eyebrow text-[var(--color-paper)] [text-shadow:0_2px_10px_rgba(0,0,0,0.4)]">
-                      Fireplace & chimney service in {city.name}
-                    </p>
-                    <h1 className="display-title text-balance text-5xl font-semibold leading-[0.92] sm:text-6xl lg:text-7xl">
-                      Phoenix fireplace and chimney service for {city.name} homes.
-                    </h1>
-                    <p className="mx-auto max-w-3xl text-base leading-8 text-[var(--color-paper)]/80 sm:text-lg">
-                      From gas fireplace repair and WETT inspections to chimney sweeping,
-                      relining, and masonry work, Phoenix helps {city.name} homeowners book
-                      the right service and understand what comes next.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-3 pb-6 pt-2 sm:pb-8">
-                      <Link
-                        href={getRequestServiceHref({
-                          city: city.slug,
-                          cta: "city-home",
-                          from: getCityHref(city.slug),
-                        })}
-                        className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
-                      >
-                        Request Service
-                      </Link>
-                      <a
-                        href={`tel:${siteSettings.phoneHref}`}
-                        className="inline-flex items-center gap-2 rounded-full border border-white/18 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/8"
-                      >
-                        <Phone className="h-4 w-4" />
-                        Call {siteSettings.phoneDisplay}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  {heroHighlights.map((highlight) => (
-                    <div
-                      key={highlight}
-                      className="rounded-[1.75rem] border border-white/10 bg-white/8 p-5 backdrop-blur-sm"
-                    >
-                      <CheckCircle2 className="mb-4 h-5 w-5 text-[var(--color-gold)]" />
-                      <p className="text-sm leading-7 text-[var(--color-paper)]/82">{highlight}</p>
-                    </div>
-                  ))}
+      <section className="city-hero relative -mt-[var(--site-header-height)] flex min-h-svh flex-col">
+        <div className="relative flex min-h-svh flex-1 flex-col overflow-hidden bg-[var(--color-ink)] text-[var(--color-paper)]">
+          <Image
+            src="/images/photos/hero-city-home.jpg"
+            alt="Modern fireplace in an Alberta home overlooking snowy mountains"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[72%_center] md:object-[68%_center] lg:object-center"
+          />
+          <div className="city-hero-scrim" aria-hidden="true" />
+          <div className="relative flex min-h-0 flex-1 flex-col justify-between px-6 pb-[7.5rem] pt-[calc(var(--site-header-height)+2.5rem)] sm:px-10 sm:pb-[7.5rem] sm:pt-[calc(var(--site-header-height)+3rem)] lg:px-14 lg:pb-14 lg:pt-[calc(var(--site-header-height)+3.5rem)]">
+            <div className="flex w-full max-w-xl flex-1 flex-col items-center justify-center text-center md:max-w-[min(32rem,52vw)] md:items-start md:justify-center md:text-left lg:max-w-[42.5rem]">
+              <div className="space-y-6">
+                <p className="eyebrow text-[var(--color-paper)] [text-shadow:0_2px_10px_rgba(0,0,0,0.4)]">
+                  Fireplace & chimney service in {city.name}
+                </p>
+                <h1 className="display-title text-balance text-5xl font-semibold leading-[0.92] sm:text-6xl lg:text-7xl">
+                  Phoenix fireplace and chimney service for {city.name} homes.
+                </h1>
+                <p className="max-w-xl text-base leading-8 text-[var(--color-paper)]/80 sm:text-lg md:max-w-none">
+                  From gas fireplace repair and WETT inspections to chimney sweeping,
+                  relining, and masonry work, Phoenix helps {city.name} homeowners book
+                  the right service and understand what comes next.
+                </p>
+                <div className="flex flex-col items-center gap-3 pb-6 pt-2 sm:flex-row sm:flex-wrap sm:justify-center sm:pb-8 md:justify-start">
+                  <Link
+                    href={getRequestServiceHref({
+                      city: city.slug,
+                      cta: "city-home",
+                      from: getCityHref(city.slug),
+                    })}
+                    className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
+                  >
+                    Request Service
+                  </Link>
+                  <a
+                    href={`tel:${siteSettings.phoneHref}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/18 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/8"
+                  >
+                    <Phone className="h-4 w-4" />
+                    Call {siteSettings.phoneDisplay}
+                  </a>
                 </div>
               </div>
             </div>
-          </Reveal>
 
+            <div className="city-hero-scroll-cue" aria-hidden="true">
+              <span>Scroll to explore</span>
+              <ChevronDown className="h-4 w-4" />
+            </div>
+
+            <nav className="city-hero-service-tabs" aria-label="Featured fireplace and chimney services">
+              {CITY_HERO_SERVICE_TABS.map((tab) => (
+                <Link
+                  key={tab.slug}
+                  href={getServiceHref(tab.slug, city.slug)}
+                  className="city-hero-service-tab"
+                >
+                  <span className="city-hero-service-tab-icon">
+                    {tab.slug === "wett-inspections" ? (
+                      <Shield className="city-hero-service-tab-glyph" aria-hidden="true" />
+                    ) : tab.slug === "gas-fireplace-repair" ? (
+                      <Flame className="city-hero-service-tab-glyph" aria-hidden="true" />
+                    ) : (
+                      <ChimneyServiceIcon />
+                    )}
+                  </span>
+                  <span className="city-hero-service-tab-copy">
+                    <span className="city-hero-service-tab-title">{tab.title}</span>
+                    <span className="city-hero-service-tab-subtitle">{tab.subtitle}</span>
+                  </span>
+                  <ArrowRight className="city-hero-service-tab-arrow" aria-hidden="true" />
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <BrandsWeServiceMarquee />
+
+      <section className="pb-12 pt-6 sm:pb-14 lg:pb-16">
+        <div className="page-bleed">
           <div className="grid gap-6 lg:grid-cols-[0.68fr_1.32fr]">
             <Reveal>
               <div className="glass-panel rounded-[2.5rem] p-8">

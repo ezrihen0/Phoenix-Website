@@ -12,6 +12,7 @@ export type CityDefinition = {
   province: string;
   latitude: number;
   longitude: number;
+  ecccCitypageId: string;
   dispatchLabel: string;
   chooserBlurb: string;
   serviceRadius: string;
@@ -34,6 +35,7 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     province: "Alberta",
     latitude: 51.0447,
     longitude: -114.0719,
+    ecccCitypageId: "ab-52",
     dispatchLabel: "Live city site",
     chooserBlurb:
       "Calgary service pages, request-service flow, contact routing, and localized article coverage are live now.",
@@ -68,6 +70,7 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     province: "Alberta",
     latitude: 53.5461,
     longitude: -113.4938,
+    ecccCitypageId: "ab-50",
     dispatchLabel: "Live city site",
     chooserBlurb:
       "Edmonton service pages, contact routing, and weather-aware article coverage are now live.",
@@ -101,6 +104,7 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     province: "Alberta",
     latitude: 52.2681,
     longitude: -113.8112,
+    ecccCitypageId: "ab-29",
     dispatchLabel: "Live city site",
     chooserBlurb:
       "Red Deer service pages, contact routing, and central-Alberta article coverage are now live.",

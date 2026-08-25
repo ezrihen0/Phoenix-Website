@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { Cloud, CloudRain, CloudSnow, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 
-import { trackWeatherBannerCta, trackWeatherBannerView } from "@/lib/analytics/events";
-import type { CitySlug } from "@/lib/cities";
-import type { CityWeatherState } from "@/lib/weather/types";
+import { getCityBySlug, type CitySlug } from "@/lib/cities";
+import type { CityWeatherSnapshot, CityWeatherState } from "@/lib/weather/types";
 
 const CLIENT_CACHE_MS = 45 * 60 * 1000;
 
@@ -13,9 +12,51 @@ type WeatherBannerProps = {
   city: CitySlug;
 };
 
+type ConditionKind = "sun" | "cloud" | "snow" | "rain";
+
+function getConditionKind(condition: string): ConditionKind {
+  const text = condition.toLowerCase();
+
+  if (/(snow|blizzard|flurr|ice pellet|hail|squall)/.test(text)) {
+    return "snow";
+  }
+
+  if (/(rain|shower|drizzle|thunder|storm|precip)/.test(text)) {
+    return "rain";
+  }
+
+  if (/(clear|sunny|fair|mainly sun)/.test(text)) {
+    return "sun";
+  }
+
+  return "cloud";
+}
+
+function formatTemperature(value: number) {
+  return `${Math.round(value)}°C`;
+}
+
+function ConditionIcon({ kind }: { kind: ConditionKind }) {
+  const className = "site-weather-strip-icon";
+
+  if (kind === "sun") {
+    return <Sun className={className} aria-hidden="true" />;
+  }
+
+  if (kind === "snow") {
+    return <CloudSnow className={className} aria-hidden="true" />;
+  }
+
+  if (kind === "rain") {
+    return <CloudRain className={className} aria-hidden="true" />;
+  }
+
+  return <Cloud className={className} aria-hidden="true" />;
+}
+
 export function WeatherBanner({ city }: WeatherBannerProps) {
-  const [state, setState] = useState<CityWeatherState | null>(null);
-  const viewed = useRef(false);
+  const [snapshot, setSnapshot] = useState<CityWeatherSnapshot | null>(null);
+  const cityName = getCityBySlug(city)?.name ?? city;
 
   useEffect(() => {
     const cacheKey = `phoenix-weather:${city}`;
@@ -25,7 +66,7 @@ export function WeatherBanner({ city }: WeatherBannerProps) {
       try {
         const parsed = JSON.parse(cached) as { savedAt: number; state: CityWeatherState | null };
         if (Date.now() - parsed.savedAt < CLIENT_CACHE_MS) {
-          setState(parsed.state);
+          setSnapshot(parsed.state?.snapshot ?? null);
           return;
         }
       } catch {
@@ -36,42 +77,38 @@ export function WeatherBanner({ city }: WeatherBannerProps) {
     fetch(`/api/weather?city=${city}`)
       .then((response) => response.json())
       .then((payload: { state?: CityWeatherState | null }) => {
-        setState(payload.state || null);
+        const nextSnapshot = payload.state?.snapshot ?? null;
+        setSnapshot(nextSnapshot);
         window.sessionStorage.setItem(
           cacheKey,
           JSON.stringify({ savedAt: Date.now(), state: payload.state || null }),
         );
       })
       .catch(() => {
-        setState(null);
+        setSnapshot(null);
       });
   }, [city]);
 
-  useEffect(() => {
-    if (!state?.recommendation || viewed.current) {
-      return;
-    }
-
-    viewed.current = true;
-    trackWeatherBannerView(city);
-  }, [city, state]);
-
-  if (!state?.recommendation) {
+  if (!snapshot) {
     return null;
   }
 
+  const condition = snapshot.condition.trim();
+  const temperature = formatTemperature(snapshot.temperatureC);
+  const kind = getConditionKind(condition);
+  const desktopLabel = condition
+    ? `${cityName} · ${temperature} · ${condition}`
+    : `${cityName} · ${temperature}`;
+  const mobileLabel = condition ? `${temperature} · ${condition}` : temperature;
+
   return (
-    <div className="border-b border-[var(--color-border)] bg-[rgba(201,95,43,0.08)]">
-      <div className="page-bleed flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm leading-6 text-[var(--color-ink)]">{state.recommendation.body}</p>
-        <Link
-          href={state.recommendation.href}
-          data-cta="weather-banner"
-          onClick={() => trackWeatherBannerCta(city)}
-          className="inline-flex shrink-0 rounded-full bg-[var(--color-ember)] px-4 py-2 text-sm font-semibold text-white"
-        >
-          {state.recommendation.ctaLabel}
-        </Link>
+    <div className="site-weather-strip" aria-label={`Current weather in ${desktopLabel}`}>
+      <div className="page-bleed site-weather-strip-inner">
+        <ConditionIcon kind={kind} />
+        <p className="site-weather-strip-copy">
+          <span className="site-weather-strip-desktop">{desktopLabel}</span>
+          <span className="site-weather-strip-mobile">{mobileLabel}</span>
+        </p>
       </div>
     </div>
   );

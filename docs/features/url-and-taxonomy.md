@@ -84,6 +84,6 @@ General `/services/[slug]` pages use Alberta titles and link down to Calgary, Ed
 
 ## Weather and portal (boundaries)
 
-- Weather: see [weather.md](weather.md). Cache may refresh hourly. Recommendation rules stay disabled until thresholds are owner-validated. Do not invent temperature or precipitation cutoffs in code.
+- Weather: see [weather.md](weather.md). ECCC GeoMet is the Canadian source. Cache may refresh hourly. The city-page conditions panel shows factual weather plus Phoenix service context. Recommendation rules stay disabled until thresholds are owner-validated. Do not invent precipitation or wind cutoffs in code.
 - Portal: see [portal.md](portal.md). Noindex job-centric contract. Do not restore a mock customer, a Property entity, or frontend queries to WizField.
 - Content: see [content-engine.md](content-engine.md). No city article clones. Generate-article cron stays disabled.

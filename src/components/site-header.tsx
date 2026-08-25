@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Clock3, Flame, Menu, Phone, X } from "lucide-react";
+import { ChevronDown, Menu, Phone, X } from "lucide-react";
 import type { FocusEvent, MouseEvent } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import {
   PhoenixLogoEasterEgg,
@@ -13,8 +13,6 @@ import {
 } from "@/components/phoenix-logo-easter-egg";
 import { WeatherBanner } from "@/components/weather/weather-banner";
 import {
-  cities,
-  getCityBySlug,
   getCityFromPathname,
   getCityHref,
   getCitySettings,
@@ -35,11 +33,11 @@ const CLICK_STREAK_WINDOW_MS = 650;
 const CLICK_STREAK_RESET_MS = 950;
 const PHOENIX_MESSAGE_COUNT = 4;
 const SERVICES_MENU_CLOSE_DELAY_MS = 160;
+const HEADER_SCROLL_THRESHOLD_PX = 24;
 
 export function SiteHeader({ settings }: SiteHeaderProps) {
   const pathname = usePathname();
   const currentCity = getCityFromPathname(pathname);
-  const city = currentCity ? getCityBySlug(currentCity) : undefined;
   const effectiveSettings = getCitySettings(settings, currentCity);
   const showCityNavigation = Boolean(currentCity);
   const requestServiceHref = getRequestServiceHref({
@@ -47,7 +45,6 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
     cta: "header",
     from: pathname,
   });
-  const isChooserPage = pathname === "/";
   const isProvinceWideServicesRoute =
     pathname === "/services" ||
     pathname?.startsWith("/services/") ||
@@ -72,6 +69,10 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
   const clickResetTimerRef = useRef<number | null>(null);
   const servicesMenuCloseTimerRef = useRef<number | null>(null);
   const lastPhoenixMessageIndexRef = useRef(-1);
+  const barRef = useRef<HTMLDivElement | null>(null);
+  const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
+  const isCityHomePage = Boolean(currentCity && pathname === getCityHref(currentCity));
+  const heroOverlay = isCityHomePage && !isHeaderScrolled;
 
   useEffect(() => {
     return () => {
@@ -84,6 +85,51 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
       }
     };
   }, []);
+
+  useLayoutEffect(() => {
+    const node = barRef.current;
+
+    if (!node) {
+      return;
+    }
+
+    const updateHeaderHeight = () => {
+      const header = node.closest("header");
+      const borderBottom = header
+        ? Number.parseFloat(window.getComputedStyle(header).borderBottomWidth) || 0
+        : 0;
+      document.documentElement.style.setProperty(
+        "--site-header-height",
+        `${node.offsetHeight + borderBottom}px`,
+      );
+    };
+
+    updateHeaderHeight();
+    const observer = new ResizeObserver(updateHeaderHeight);
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isCityHomePage) {
+      setIsHeaderScrolled(false);
+      return;
+    }
+
+    const updateScrolled = () => {
+      setIsHeaderScrolled(window.scrollY > HEADER_SCROLL_THRESHOLD_PX);
+    };
+
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updateScrolled);
+    };
+  }, [isCityHomePage]);
 
   function clearServicesMenuCloseTimer() {
     if (servicesMenuCloseTimerRef.current) {
@@ -212,55 +258,11 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
 
   return (
     <>
-      {currentCity ? <WeatherBanner city={currentCity} /> : null}
-      <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[rgba(244,236,223,0.82)] backdrop-blur-xl">
-        <div className="hidden border-b border-[var(--color-border)] bg-[var(--color-ink)] text-[0.78rem] text-[var(--color-paper)] md:block">
-          <div className="page-bleed flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-            <div className="flex flex-wrap items-center gap-4">
-              <span className="inline-flex items-center gap-2">
-                <Flame className="h-3.5 w-3.5 text-[var(--color-gold)]" />
-                {city
-                  ? `Fireplace and chimney service for ${city.name} homes`
-                  : "Choose your city for the right dispatch number and service path"}
-              </span>
-              {showCityNavigation ? (
-                <span className="inline-flex items-center gap-2 text-[var(--color-paper)]/75">
-                  <Clock3 className="h-3.5 w-3.5 text-[var(--color-gold)]" />
-                  {effectiveSettings.hoursLabel} · {effectiveSettings.hoursDetail}
-                </span>
-              ) : null}
-            </div>
-            {showCityNavigation ? (
-              <div className="flex flex-wrap items-center gap-4">
-                <Link href="/" className="font-semibold text-[var(--color-paper)]/78 hover:text-white">
-                  Choose city
-                </Link>
-                <a
-                  href={`tel:${effectiveSettings.phoneHref}`}
-                  className="inline-flex items-center gap-2 font-semibold"
-                >
-                  <Phone className="h-3.5 w-3.5 text-[var(--color-gold)]" />
-                  {effectiveSettings.phoneDisplay}
-                </a>
-                <Link
-                  href={requestServiceHref}
-                  data-cta="header-info-bar"
-                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-ember)] px-4 py-2 font-semibold text-white transition hover:bg-[var(--color-ember-dark)]"
-                >
-                  Request Service
-                </Link>
-              </div>
-            ) : isChooserPage ? (
-              <div className="flex flex-wrap items-center gap-4 text-[var(--color-paper)]/78">
-                {cities.map((cityOption) => (
-                  <Link key={cityOption.slug} href={getCityHref(cityOption.slug)} className="font-semibold hover:text-white">
-                    {cityOption.name}
-                  </Link>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        </div>
+      <header
+        className={`site-header sticky top-0 z-50 ${heroOverlay ? "is-overlay" : "is-solid"}${isCityHomePage && isHeaderScrolled ? " is-hero-scrolled" : ""}`}
+      >
+        <div ref={barRef}>
+        {currentCity ? <WeatherBanner city={currentCity} /> : null}
 
         <div className="page-bleed flex items-center justify-between gap-3 px-4 py-3 lg:gap-6 lg:py-4">
           <Link
@@ -282,7 +284,7 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               width={180}
               height={67}
               priority
-              className="h-auto w-[8.25rem] sm:w-[10.5rem]"
+              className="site-header-logo h-auto w-[8.25rem] sm:w-[10.5rem]"
             />
           </Link>
 
@@ -310,7 +312,9 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                         aria-expanded={isServicesMenuOpen}
                         className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${isServicesActive
                           ? "bg-[var(--color-ink)] shadow-[0_12px_24px_rgba(31,26,22,0.18)]"
-                          : "text-[var(--color-ink)] hover:bg-[var(--color-card)]"
+                          : heroOverlay
+                            ? "text-white hover:bg-white/10"
+                            : "text-[var(--color-ink)] hover:bg-[var(--color-card)]"
                           }`}
                         style={
                           isServicesActive
@@ -381,7 +385,9 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
                     href={href}
                     className={`rounded-full px-4 py-2 text-sm font-semibold transition ${isActive
                       ? "bg-[var(--color-ink)] shadow-[0_12px_24px_rgba(31,26,22,0.18)]"
-                      : "text-[var(--color-ink)] hover:bg-[var(--color-card)]"
+                      : heroOverlay
+                        ? "text-white hover:bg-white/10"
+                        : "text-[var(--color-ink)] hover:bg-[var(--color-card)]"
                       }`}
                     style={
                       isActive
@@ -402,13 +408,21 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             <div className="hidden items-center gap-3 lg:flex">
               <Link
                 href="/"
-                className="rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-semibold transition hover:border-[var(--color-ink)]"
+                className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                  heroOverlay
+                    ? "border-white/30 text-white hover:border-white/70"
+                    : "border-[var(--color-border)] hover:border-[var(--color-ink)]"
+                }`}
               >
                 Cities
               </Link>
               <a
                 href={`tel:${effectiveSettings.phoneHref}`}
-                className="rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-semibold transition hover:border-[var(--color-ink)]"
+                className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                  heroOverlay
+                    ? "border-white/30 text-white hover:border-white/70"
+                    : "border-[var(--color-border)] hover:border-[var(--color-ink)]"
+                }`}
               >
                 Call now
               </a>
@@ -446,7 +460,9 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               {showCityNavigation ? (
                 <a
                   href={`tel:${effectiveSettings.phoneHref}`}
-                  className="inline-flex rounded-full border border-[var(--color-border)] p-3"
+                  className={`inline-flex rounded-full border p-3 ${
+                    heroOverlay ? "border-white/30 text-white" : "border-[var(--color-border)]"
+                  }`}
                   aria-label={`Call ${effectiveSettings.phoneDisplay}`}
                 >
                   <Phone className="h-4 w-4" />
@@ -468,7 +484,9 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
               </Link>
               <button
                 type="button"
-                className="inline-flex rounded-full border border-[var(--color-border)] p-3"
+                className={`inline-flex rounded-full border p-3 ${
+                  heroOverlay ? "border-white/30 text-white" : "border-[var(--color-border)]"
+                }`}
                 aria-expanded={isOpen}
                 aria-label={isOpen ? "Close menu" : "Open menu"}
                 onClick={() => setIsOpen((value) => !value)}
@@ -478,9 +496,16 @@ export function SiteHeader({ settings }: SiteHeaderProps) {
             </div>
           ) : null}
         </div>
+        </div>
 
         {isOpen && showServicesNavigation ? (
-          <div className="border-t border-[var(--color-border)] bg-[rgba(248,242,234,0.82)] backdrop-blur-xl lg:hidden">
+          <div
+            className={`border-t border-[var(--color-border)] backdrop-blur-xl lg:hidden ${
+              isCityHomePage
+                ? "absolute inset-x-0 top-full max-h-[min(70dvh,calc(100dvh-var(--site-header-height)-5.75rem))] overflow-y-auto bg-[rgba(248,242,234,0.96)]"
+                : "bg-[rgba(248,242,234,0.82)]"
+            }`}
+          >
             <div className="page-bleed flex min-w-0 flex-col gap-3.5 px-4 py-4">
               {showCityNavigation ? (
                 <div className="rounded-[1.75rem] border border-[var(--color-border)] bg-white/70 p-4 text-sm leading-7 text-[var(--color-muted)]">

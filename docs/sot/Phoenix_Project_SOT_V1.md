@@ -334,6 +334,8 @@ Weather Intelligence may additionally measure:
 
 -   `weather_banner_view`
 -   `weather_banner_cta`
+-   `weather_module_cta`
+-   `weather_source_click`
 
 ------------------------------------------------------------------------
 
@@ -341,13 +343,16 @@ Weather Intelligence may additionally measure:
 
 Phoenix is **city-aware**.
 
+The Canadian weather source is Environment and Climate Change Canada
+(MSC GeoMet City Page Weather).
+
 The website must not call the upstream Weather Provider on every page
 view.
 
 Architecture:
 
 ``` text
-Weather Provider
+ECCC GeoMet
       ↓
 Hourly Scheduled Refresh
       ↓
@@ -355,9 +360,8 @@ Phoenix Server Cache / Store
       ↓
 City Weather State
       ↓
-Rules Engine
-      ↓
-Recommendation
+City-page service-context panel
+and (when enabled) Rules Engine → Recommendation banner
       ↓
 Website
 ```
@@ -374,11 +378,18 @@ Relevant data may include:
 -   feels-like
 -   precipitation
 -   wind
+-   humidity
 -   condition
 -   applicable weather alert/state
+-   official source URL
 -   updated_at
 
 Only data actually required by the product should be retained/processed.
+
+The city-page panel shows factual observations and Phoenix **service
+context**. It must not present ECCC data as a chimney, masonry, leak, or
+fireplace risk rating. Recommendation-engine rules remain off until
+thresholds are technically validated.
 
 ------------------------------------------------------------------------
 
@@ -388,7 +399,10 @@ Server refresh target:
 
 **Once per hour.**
 
-Visitors do not trigger upstream Weather API calls.
+Visitors do not trigger upstream Weather API calls from the browser.
+
+A server-side cache miss may fill one city snapshot with a short timeout.
+If that fill fails, the page still renders.
 
 The client may cache current recommendation/weather state for
 approximately 30--60 minutes.
@@ -441,7 +455,7 @@ A weather trigger does not automatically create an article.
 
 The system may display:
 
-**Banner / Recommendation Card / Contextual CTA**
+**Banner / Recommendation Card / Contextual CTA / City-page conditions panel**
 
 Example:
 

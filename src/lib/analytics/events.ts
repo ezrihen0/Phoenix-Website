@@ -48,3 +48,11 @@ export function trackWeatherBannerView(city?: string) {
 export function trackWeatherBannerCta(city?: string) {
   sendGAEvent("weather_banner_cta", city ? { city } : undefined);
 }
+
+export function trackWeatherModuleCta(city?: string) {
+  sendGAEvent("weather_module_cta", city ? { city } : undefined);
+}
+
+export function trackWeatherSourceClick(city?: string) {
+  sendGAEvent("weather_source_click", city ? { city } : undefined);
+}
