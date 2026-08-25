@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
-import { LeadCard } from "@/components/admin/lead-card";
+import { LeadInboxList } from "@/components/admin/lead-inbox-list";
 import { LeadInboxSummary } from "@/components/admin/lead-inbox-summary";
 import { requireLeadsAccess } from "@/lib/auth/permissions";
 import { cities, getCityBySlug } from "@/lib/cities";
@@ -11,10 +11,35 @@ import { summarizeLeads } from "@/lib/leads/handling";
 
 export const dynamic = "force-dynamic";
 
+const PAGE_SIZE = 20;
+
+function buildLeadsHref(city?: string, page?: number) {
+  const params = new URLSearchParams();
+  if (city) {
+    params.set("city", city);
+  }
+  if (page && page > 1) {
+    params.set("page", String(page));
+  }
+  const query = params.toString();
+  return query ? `/admin/leads?${query}` : "/admin/leads";
+}
+
+function resolvePage(rawPage: string | undefined, totalPages: number) {
+  const parsed = Number.parseInt(rawPage ?? "1", 10);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    return 1;
+  }
+  if (totalPages < 1) {
+    return 1;
+  }
+  return Math.min(parsed, totalPages);
+}
+
 export default async function AdminLeadsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ city?: string }>;
+  searchParams: Promise<{ city?: string; page?: string }>;
 }) {
   const session = await requireLeadsAccess();
   const storageStatus = getCmsStorageStatus();
@@ -52,6 +77,10 @@ export default async function AdminLeadsPage({
   }
 
   const summary = summarizeLeads(leads);
+  const totalPages = Math.max(1, Math.ceil(leads.length / PAGE_SIZE));
+  const currentPage = resolvePage(params.page, totalPages);
+  const paginatedLeads = leads.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const showPagination = !loadError && leads.length > PAGE_SIZE;
 
   return (
     <AdminShell
@@ -64,7 +93,7 @@ export default async function AdminLeadsPage({
     >
       <div className="flex flex-wrap gap-3">
         <Link
-          href="/admin/leads"
+          href={buildLeadsHref()}
           className={`rounded-full px-4 py-2 text-sm font-semibold transition ${selectedCity ? "border border-[var(--color-border)] bg-white/65 hover:bg-white" : "bg-[var(--color-ink)] text-[var(--color-paper)]"}`}
         >
           All cities
@@ -72,7 +101,7 @@ export default async function AdminLeadsPage({
         {cities.map((city) => (
           <Link
             key={city.slug}
-            href={`/admin/leads?city=${city.slug}`}
+            href={buildLeadsHref(city.slug)}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition ${selectedCity === city.slug ? "bg-[var(--color-ink)] text-[var(--color-paper)]" : "border border-[var(--color-border)] bg-white/65 hover:bg-white"}`}
           >
             {city.name}
@@ -87,11 +116,43 @@ export default async function AdminLeadsPage({
           {loadError}
         </div>
       ) : leads.length ? (
-        <div className="space-y-4">
-          {leads.map((lead) => (
-            <LeadCard key={lead.id} lead={lead} />
-          ))}
-        </div>
+        <>
+          <LeadInboxList leads={paginatedLeads} />
+          {showPagination ? (
+            <nav
+              aria-label="Lead inbox pagination"
+              className="flex flex-wrap items-center justify-center gap-3 pt-2 text-sm font-semibold text-[var(--color-ink)]"
+            >
+              {currentPage > 1 ? (
+                <Link
+                  href={buildLeadsHref(selectedCity, currentPage - 1)}
+                  className="rounded-full border border-[var(--color-border)] bg-white/70 px-4 py-2 transition hover:bg-white"
+                >
+                  Previous
+                </Link>
+              ) : (
+                <span className="rounded-full border border-[var(--color-border)] bg-white/40 px-4 py-2 text-[var(--color-muted)]">
+                  Previous
+                </span>
+              )}
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              {currentPage < totalPages ? (
+                <Link
+                  href={buildLeadsHref(selectedCity, currentPage + 1)}
+                  className="rounded-full border border-[var(--color-border)] bg-white/70 px-4 py-2 transition hover:bg-white"
+                >
+                  Next
+                </Link>
+              ) : (
+                <span className="rounded-full border border-[var(--color-border)] bg-white/40 px-4 py-2 text-[var(--color-muted)]">
+                  Next
+                </span>
+              )}
+            </nav>
+          ) : null}
+        </>
       ) : (
         <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-8 text-sm leading-7 text-[var(--color-muted)]">
           No leads have been submitted yet.

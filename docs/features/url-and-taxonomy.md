@@ -50,7 +50,7 @@ Retired as URL identities (legacy aliases only): `chimney-sweep-repair`, `masonr
 
 - `/request-service` — one global Smart Form. Not in the sitemap. Page robots + `X-Robots-Tag`.
 - `/thank-you` — post-submit confirmation (noindex).
-- `/portal`, `/portal/login` — portal shell (noindex). WizField remains deferred.
+- `/portal`, `/portal/login` — portal shell (noindex). Portal adapter deferred; WizField Request Service sync is live on intake ([wizfield-integration.md](wizfield-integration.md)).
 - Canonical portal host: `https://portal.phoenixfireplace.ca` (same deployment; `/` and `/login` same-host redirect into the `/portal` routes). Apex `/portal` is a temporary fallback. The portal host must not serve marketing pages, `/admin`, or `/sitemap.xml`.
 
 City pages send users to `/request-service` with allowlisted query context (`city`, `service`, `cta`, `from`). The customer can change a preselected city or service. Do not put street address or coordinates on inbound query strings.
@@ -86,5 +86,5 @@ General `/services/[slug]` pages use Alberta titles and link down to Calgary, Ed
 ## Weather and portal (boundaries)
 
 - Weather: see [weather.md](weather.md). ECCC GeoMet is the Canadian source. Cache may refresh hourly. The city-page conditions panel shows factual weather plus Phoenix service context. Recommendation rules stay disabled until thresholds are owner-validated. Do not invent precipitation or wind cutoffs in code.
-- Portal: see [portal.md](portal.md). Noindex job-centric contract. Do not restore a mock customer, a Property entity, or frontend queries to WizField.
+- Portal: see [portal.md](portal.md). Noindex job-centric contract. Request Service sync is live; portal **read** adapter is deferred. Do not restore a mock customer, a Property entity, or frontend queries to WizField.
 - Content: see [content-engine.md](content-engine.md). No city article clones. Generate-article cron stays disabled.

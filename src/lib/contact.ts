@@ -9,6 +9,12 @@ import type { Lead, LeadDeliveryStatus } from "@/lib/cms/types";
 import { sendLeadNotificationEmail } from "@/lib/email/lead-notifications";
 import { CONTACT_FORM_RECAPTCHA_ACTION, DEFAULT_RECAPTCHA_MIN_SCORE } from "@/lib/recaptcha";
 import {
+  applyWizfieldOutcomeToLead,
+  formatWizfieldOfficeSyncLines,
+  type WizfieldSyncOutcome,
+} from "@/lib/wizfield/map-request-service";
+import { sendRequestServiceToWizField } from "@/lib/wizfield/client";
+import {
   SERVICE_REQUEST_CONTACT_METHODS,
   SERVICE_REQUEST_TITLES,
   SERVICE_REQUEST_URGENCY_OPTIONS,
@@ -343,6 +349,7 @@ export async function routeLeadSubmission(
 async function sendWebsiteLeadEmail(
   payload: ServiceRequest,
   leadId: string,
+  wizfieldOutcome?: WizfieldSyncOutcome,
 ): Promise<DeliveryResult> {
   const settings = await getSiteSettings();
   const city = getCityBySlug(payload.city) || getCityBySlug(defaultCitySlug);
@@ -352,6 +359,16 @@ async function sendWebsiteLeadEmail(
   const ctaLabel = getRequestServiceCtaLabel(payload.ctaLocation) || "Not provided";
   const addressLines = formatServiceAddressLines(payload);
   const formattedAddress = formatServiceAddress(payload) || "Not provided";
+  const wizfieldLines = wizfieldOutcome ? formatWizfieldOfficeSyncLines(wizfieldOutcome) : [];
+  const wizfieldHtml = wizfieldLines
+    .map((line) => {
+      const separatorIndex = line.indexOf(": ");
+      const label = separatorIndex >= 0 ? line.slice(0, separatorIndex) : "WizField";
+      const value = separatorIndex >= 0 ? line.slice(separatorIndex + 2) : line;
+
+      return `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`;
+    })
+    .join("");
   const addressHtml = addressLines.length
     ? addressLines
         .map((line) => {
@@ -365,6 +382,7 @@ async function sendWebsiteLeadEmail(
     : `<p><strong>Address:</strong> Not provided</p>`;
   const lines = [
     `Lead ID: ${leadId}`,
+    ...wizfieldLines,
     `Admin inbox: ${adminLeadsUrl}`,
     `City: ${city?.name || "Unknown"}`,
     `Source: Request Service`,
@@ -394,6 +412,7 @@ async function sendWebsiteLeadEmail(
     html: `
         <h2>${escapeHtml(subject)}</h2>
         <p><strong>Lead ID:</strong> ${escapeHtml(leadId)}</p>
+        ${wizfieldHtml}
         <p><strong>Admin inbox:</strong> <a href="${escapeHtml(adminLeadsUrl)}">${escapeHtml(adminLeadsUrl)}</a></p>
         <p><strong>City:</strong> ${escapeHtml(city?.name || "Unknown")}</p>
         <p><strong>Source:</strong> Request Service</p>
@@ -495,6 +514,7 @@ export async function routeServiceRequestSubmission(
     disposition: "pending",
     emailDeliveryStatus: "skipped",
     emailDeliveryNote: "Notification pending.",
+    wizfieldSyncStatus: "not_attempted",
   };
 
   await saveLead(leadRecord);
@@ -505,13 +525,65 @@ export async function routeServiceRequestSubmission(
   });
   revalidatePath("/admin/leads");
 
+  // After the Phoenix safety lead exists, WizField sync and metadata enrichment
+  // must not convert this submission into a failed customer request.
+  // requestId = lead.id is replay idempotency for this persisted lead only.
+  // A browser double-submit creates two Phoenix leads and is not idempotent.
+  let syncedLead = leadRecord;
+  let wizfieldOutcome: WizfieldSyncOutcome | undefined;
+
+  try {
+    wizfieldOutcome = await sendRequestServiceToWizField({
+      requestId: leadId,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      phone: payload.phone,
+      email: payload.email,
+      service: payload.service,
+      message: payload.message,
+      urgency: payload.urgency,
+      urgencyDetail: payload.urgencyDetail,
+      preferredDay: payload.preferredDay,
+      preferredTime: payload.preferredTime,
+      addressStreet: addressParts.addressStreet || payload.addressStreet,
+      addressCity: addressParts.addressCity || payload.addressCity,
+      addressProvince: addressParts.addressProvince || payload.addressProvince,
+      addressPostalCode: addressParts.addressPostalCode || payload.addressPostalCode,
+      city: leadRecord.city,
+      ctaLocation: leadRecord.ctaLocation,
+      sourceUrl: leadRecord.sourceUrl,
+      utmSource: leadRecord.utmSource,
+      utmMedium: leadRecord.utmMedium,
+      utmCampaign: leadRecord.utmCampaign,
+    });
+    syncedLead = applyWizfieldOutcomeToLead(leadRecord, wizfieldOutcome);
+  } catch {
+    console.error("[wizfield] Request Service sync failed after Phoenix lead save", {
+      leadId,
+    });
+    wizfieldOutcome = {
+      wizfieldSyncStatus: "failed",
+      wizfieldLastSyncAt: new Date().toISOString(),
+      wizfieldSyncError: "WizField sync failed.",
+    };
+    syncedLead = applyWizfieldOutcomeToLead(leadRecord, wizfieldOutcome);
+  }
+
+  try {
+    await saveLead(syncedLead);
+  } catch {
+    console.error("[wizfield] Phoenix lead was saved, but WizField sync status could not be updated", {
+      leadId,
+    });
+  }
+
   let emailDelivery: DeliveryResult = {
     status: "failed",
     note: "Lead was saved, but the notification email did not run.",
   };
 
   try {
-    emailDelivery = await sendWebsiteLeadEmail(payload, leadId);
+    emailDelivery = await sendWebsiteLeadEmail(payload, leadId, wizfieldOutcome);
   } catch (error) {
     console.error("[lead-email] Website request notification failed after save", error);
     emailDelivery = {
@@ -522,7 +594,7 @@ export async function routeServiceRequestSubmission(
 
   try {
     await saveLead({
-      ...leadRecord,
+      ...syncedLead,
       emailDeliveryStatus: emailDelivery.status,
       emailDeliveryNote: emailDelivery.note,
     });

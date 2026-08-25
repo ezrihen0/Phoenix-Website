@@ -271,7 +271,7 @@ Lead
 Future routing:
 
 **Coordinates → nearest Phoenix hub → coverage logic → lead routing →
-WizField**
+WizField Request Service sync (Phase 1 live after lead save)**
 
 Map failure must never block lead submission.
 
@@ -281,13 +281,67 @@ Manual address entry remains the fallback.
 
 ## 12. Lead Authority
 
-For now, the Phoenix Lead System is the source of truth for web leads.
+The Phoenix Lead System remains the **source of truth for web leads** on this website.
 
 Email is notification only.
 
-CRM authority remains **DEFERRED** until WizField integration.
+After a lead is persisted, Phoenix may **asynchronously sync** a copy to WizField via the Request Service integration (§12.1). WizField becomes operational authority for CRM workflow once sync succeeds; Phoenix retains the original inbox record and sync metadata regardless of WizField outcome.
 
-The website must not depend on email delivery to preserve a lead.
+The website must not depend on email delivery or WizField sync to preserve a lead or to show the customer a successful submission.
+
+------------------------------------------------------------------------
+
+## 12.1 WizField Request Service Sync (Phase 1 — LIVE)
+
+Scope: **server-only** intake sync after Request Service submit. This is not portal UI, not staff CRM UX, and not customer-facing WizField queries from the browser.
+
+Endpoint (WizField):
+
+``` text
+POST {WIZFIELD_API_BASE_URL}/api/integrations/phoenix/request-service
+Authorization: Bearer {WIZFIELD_INTEGRATION_SECRET}
+```
+
+Rules:
+
+- Organization is resolved from the integration credential on WizField. **Never send `organizationId` from Phoenix.**
+- `requestId` **must equal** the persisted Phoenix `lead.id`. This is **replay idempotency for one saved lead**, not browser double-submit protection. A double-submit creates two Phoenix leads.
+- Flow is fixed:
+
+``` text
+Validate
+↓
+Persist Phoenix lead (saveLead)
+↓
+Attempt WizField sync (best effort)
+↓
+Store sync outcome on the lead
+↓
+Office notification email
+↓
+Customer success + /thank-you
+```
+
+- WizField timeout: **4 seconds** (`WIZFIELD_REQUEST_TIMEOUT_MS`).
+- WizField or sync-metadata failures **must not** fail the customer request after the Phoenix lead exists.
+- Accept HTTP 200 as synced **only** when the returned `requestId` matches the local `lead.id`.
+- Env vars are **server-only**: `WIZFIELD_API_BASE_URL`, `WIZFIELD_INTEGRATION_SECRET`. Never `NEXT_PUBLIC_*`.
+- When env is unset, sync status is `not_attempted`; intake still succeeds.
+
+Service mapping (Phoenix title → WizField `service.type`):
+
+| Phoenix service title | WizField type |
+|---|---|
+| Gas Fireplace Repair | `repair` |
+| Gas Fireplace Maintenance | `cleaning` |
+| Gas Fireplace Installation | `repair` (exact Phoenix title preserved in `originalService`) |
+| Chimney Sweeping & Inspection | `cleaning` |
+| Chimney Repair & Masonry | `repair` |
+| WETT Inspections | `inspection` |
+
+Lead sync metadata (Phoenix admin): `wizfieldSyncStatus`, `wizfieldCustomerId`, `wizfieldLeadId`, `wizfieldPortalAccessStatus`, `wizfieldPortalAccessExpiresAt`, `wizfieldLastSyncAt`, `wizfieldSyncError`.
+
+Implementation: `src/lib/wizfield/`, `src/lib/contact.ts` (`routeServiceRequestSubmission`). Feature note: [wizfield-integration.md](../features/wizfield-integration.md).
 
 ------------------------------------------------------------------------
 
@@ -298,7 +352,11 @@ Form
 ↓
 Server validation
 ↓
-Lead persisted
+Lead persisted (Phoenix inbox)
+↓
+WizField Request Service sync attempted (non-blocking)
+↓
+Sync metadata stored on lead
 ↓
 Success
 ↓
@@ -310,6 +368,8 @@ Conversion recorded
 A submit click alone is not a conversion.
 
 Do not pass PII through analytics or URL parameters where inappropriate.
+
+WizField sync failure after Phoenix persistence is an **operator/sync issue**, not a failed customer conversion.
 
 ------------------------------------------------------------------------
 
@@ -751,19 +811,25 @@ City launch triggers sitemap inclusion/update.
 Phoenix Customer Portal is a **real product architecture**, not a
 disposable mock.
 
-The frontend remains independent from WizField.
+The frontend remains independent from WizField until the Phoenix portal
+adapter is explicitly connected.
 
 ``` text
-Phoenix Portal
+Phoenix Portal UI
       ↓
-Stable Portal API Contract
+Stable Portal API Contract (Phoenix adapter)
       ↓
-WizField Adapter/API
+WizField portal session + read API
       ↓
-WizField
+WizField CRM data
 ```
 
 The Portal does not directly query WizField's database.
+
+WizField Phase 3 provides session-scoped read routes on the WizField
+backend (`/api/portal/home`, `/jobs`, `/finance`, `/documents`, plus
+scoped PDF reads). Phoenix portal UI still uses an isolated UI preview
+until the adapter replaces it (§36).
 
 ------------------------------------------------------------------------
 
@@ -774,18 +840,31 @@ Current WizField model is job-centric:
 ``` text
 Organization
 └── Customer
+    ├── Lead (pending request until converted)
     ├── Job
-    │   ├── Quote
+    │   ├── Quote (estimate)
     │   └── Invoice
     │       └── Payment
     ├── Inspection
     ├── Warranty
-    └── Portal Access
+    └── Portal Access (magic link / session)
 ```
 
 There is currently **no Property entity**.
 
 Phoenix Portal V1 must not invent a dependency on one.
+
+WizField Phase 3 read contract (backend only, session-scoped):
+
+- `GET /api/portal/home` — customer, pending request, upcoming appointment, job summaries; legacy snake_case keys preserved for existing WizField portal UI
+- `GET /api/portal/jobs` — full job history + appointment projection
+- `GET /api/portal/finance` — estimates, invoices, payments (no staff notes or processor IDs)
+- `GET /api/portal/documents` — aggregated document refs
+- Scoped PDF reads for invoices and inspections; warranty PDF routes unchanged
+
+New reads require exact `organization_id === session.organization_id`. Legacy `/home` snake_case tolerance for NULL-org rows remains on WizField only for backward compatibility.
+
+Phoenix website does **not** call these routes in production yet. See [portal.md](../features/portal.md).
 
 ------------------------------------------------------------------------
 
@@ -858,18 +937,31 @@ Portal-safe file routes are required for private documents/photos.
 
 ------------------------------------------------------------------------
 
-## 36. CRM Status
+## 36. WizField Integration Status
 
-WizField operational integration is currently:
+WizField integration is **phased**. Do not tightly couple unrelated Phoenix surfaces to unfinished phases.
 
-**DEFERRED / PREPARING**
+| Phase | Scope | Status on Phoenix website |
+|---|---|---|
+| **1 — Request Service** | Server-only intake sync after lead save | **LIVE** (§12.1) |
+| **3 — Portal read API** | WizField backend session-scoped reads | **Backend live**; Phoenix portal adapter **DEFERRED** |
+| **Portal UI** | Replace `portalUiPreviewProfile` with live WizField reads | **DEFERRED** |
+| **Portal auth adapter** | Magic-link redeem via WizField on `portal.phoenixfireplace.ca` | **DEFERRED** |
 
-Do not tightly couple Phoenix production website behaviour to unfinished
-WizField functionality.
+Allowed now:
 
-Design stable boundaries now.
+- Request Service → WizField sync after Phoenix lead persistence
+- Operator visibility of sync status in admin leads and office email
+- Portal UI preview shell for layout work (`src/lib/portal/ui-preview.ts`)
 
-Connect later.
+Not allowed now:
+
+- Frontend or browser calls to WizField
+- Treating WizField sync failure as a failed customer submission
+- Sending `organizationId` from Phoenix
+- Replacing the portal preview with live WizField data without an explicit owner decision
+
+Design stable boundaries now. Connect later phases deliberately.
 
 ------------------------------------------------------------------------
 
@@ -915,6 +1007,7 @@ Canadian Global SOT
 Phoenix Project SOT
 ↓
 Feature / Technical Docs
+  (url-and-taxonomy, weather, portal, wizfield-integration, content-engine)
 ↓
 README
 ↓

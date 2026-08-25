@@ -14,7 +14,18 @@ import {
   shouldRewrapProtectedJson,
   unprotectJson,
 } from "@/lib/cms/secure-json";
-import type { Article, Lead, LeadDisposition, LeadDispositionReason, OfficeDailyStateRecord, OfficeDailyStateStore, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
+import type {
+  Article,
+  Lead,
+  LeadDisposition,
+  LeadDispositionReason,
+  OfficeDailyStateRecord,
+  OfficeDailyStateStore,
+  PublicSiteSettings,
+  SiteSettings,
+  WizfieldPortalAccessStatus,
+  WizfieldSyncStatus,
+} from "@/lib/cms/types";
 import { sanitizeWeatherTags } from "@/lib/weather/content-tags";
 import { OFFICE_DAILY_STATE_RETENTION_DAYS } from "@/lib/office/constants";
 import { pruneOfficeDailyStateRecords } from "@/lib/office/daily-state";
@@ -333,7 +344,38 @@ function normalizeLeadRecord(lead: Lead & { city?: string }) {
     officeNote: lead.officeNote?.trim() || undefined,
     handledAt: lead.handledAt,
     handledBy: lead.handledBy?.trim() || undefined,
+    wizfieldSyncStatus: normalizeWizfieldSyncStatus(lead.wizfieldSyncStatus),
+    wizfieldCustomerId: lead.wizfieldCustomerId?.trim() || undefined,
+    wizfieldLeadId: lead.wizfieldLeadId?.trim() || undefined,
+    wizfieldPortalAccessStatus: normalizeWizfieldPortalAccessStatus(lead.wizfieldPortalAccessStatus),
+    wizfieldPortalAccessExpiresAt: lead.wizfieldPortalAccessExpiresAt?.trim() || undefined,
+    wizfieldLastSyncAt: lead.wizfieldLastSyncAt?.trim() || undefined,
+    wizfieldSyncError: lead.wizfieldSyncError?.trim() || undefined,
   } satisfies Lead;
+}
+
+function normalizeWizfieldSyncStatus(value?: WizfieldSyncStatus): WizfieldSyncStatus {
+  if (value === "synced" || value === "failed" || value === "not_attempted") {
+    return value;
+  }
+
+  return "not_attempted";
+}
+
+function normalizeWizfieldPortalAccessStatus(
+  value?: WizfieldPortalAccessStatus,
+): WizfieldPortalAccessStatus | undefined {
+  if (
+    value === "sent" ||
+    value === "already_sent" ||
+    value === "pending_email" ||
+    value === "email_failed" ||
+    value === "not_requested"
+  ) {
+    return value;
+  }
+
+  return undefined;
 }
 
 function normalizeLeadDisposition(value?: LeadDisposition): LeadDisposition {

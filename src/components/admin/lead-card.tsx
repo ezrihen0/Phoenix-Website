@@ -1,46 +1,42 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { CalendarCheck, CalendarX, Mail, Phone, Send, ShieldCheck } from "lucide-react";
+import { useState, useTransition, type ReactNode } from "react";
+import { CalendarCheck, CalendarX, ChevronDown, Mail, Phone } from "lucide-react";
 
 import {
   markLeadAddedToCalendarAction,
   markLeadNotAddedAction,
 } from "@/app/admin/lead-actions";
 import { LeadDispositionDialog } from "@/components/admin/lead-disposition-dialog";
-import { getCityBySlug } from "@/lib/cities";
-import type { Lead, LeadDispositionReason } from "@/lib/cms/types";
-import { formatServiceAddressLines, getRequestServiceCtaLabel } from "@/lib/request-service";
+import type { Lead, LeadDisposition, LeadDispositionReason } from "@/lib/cms/types";
+import { formatSiteDateTime } from "@/lib/datetime";
 import {
-  formatDurationMinutes,
   formatLeadDateTime,
-  formatLeadTime,
-  getElapsedMinutes,
   getLeadDisposition,
   getLeadDispositionLabel,
-  getLeadDispositionReasonLabel,
-  getLeadDomainLabel,
-  getLeadHandlingTimeMinutes,
-  getLeadSlaClasses,
-  getLeadSlaTier,
   getLeadSourceLabel,
   isLeadHandled,
 } from "@/lib/leads/handling";
+import { formatServiceAddress } from "@/lib/request-service";
 
 type LeadCardProps = {
   lead: Lead;
+  expanded: boolean;
+  onToggle: () => void;
 };
 
-export function LeadCard({ lead }: LeadCardProps) {
+export function LeadCard({ lead, expanded, onToggle }: LeadCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const disposition = getLeadDisposition(lead);
   const handled = isLeadHandled(lead);
-  const elapsedMinutes = getElapsedMinutes(lead.createdAt);
-  const slaTier = getLeadSlaTier(elapsedMinutes);
-  const handlingMinutes = getLeadHandlingTimeMinutes(lead);
+  const fullName = `${lead.firstName} ${lead.lastName}`.trim();
+  const fullAddress = formatServiceAddress(lead) || lead.address?.trim() || "Not provided";
+  const receivedLabel = formatLeadDateTime(lead.createdAt);
+  const scanDate = formatSiteDateTime(lead.createdAt);
+  const statusLabel = getLeadDispositionLabel(disposition);
 
   function handleAddedToCalendar() {
     setErrorMessage(null);
@@ -78,57 +74,70 @@ export function LeadCard({ lead }: LeadCardProps) {
 
   return (
     <>
-      <article className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <DispositionBadge disposition={disposition} elapsedMinutes={elapsedMinutes} slaTier={slaTier} />
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
-                {getLeadSourceLabel(lead.source)}
-              </span>
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-ember)]">
-                {getCityBySlug(lead.city)?.name || lead.city}
-              </span>
-              <StatusPill label="Email" status={lead.emailDeliveryStatus} />
+      <article className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)]">
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={expanded}
+          className="flex w-full min-w-0 items-start gap-3 p-3 text-left transition hover:bg-white/50 sm:p-4 lg:grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_auto] lg:items-center lg:gap-4"
+        >
+          <ChevronDown
+            className={`mt-0.5 h-4 w-4 shrink-0 text-[var(--color-muted)] transition-transform lg:mt-0 ${expanded ? "rotate-180" : ""}`}
+            aria-hidden
+          />
+          <div className="min-w-0 flex-1 space-y-2 lg:contents">
+            <ScanCell label="Name" value={fullName} className="font-semibold text-[var(--color-ink)]" />
+            <ScanCell label="Phone" value={lead.phone} />
+            <ScanCell label="Service" value={lead.service} truncate />
+            <ScanCell label="Date" value={scanDate} />
+            <div className="flex min-w-0 items-center lg:justify-end">
+              <StatusBadge disposition={disposition} label={statusLabel} />
             </div>
+          </div>
+        </button>
 
-            <div>
-              <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
-                {lead.firstName} {lead.lastName}
-              </h2>
-              <p className="mt-1 text-sm font-semibold text-[var(--color-ink)]">{lead.service}</p>
-            </div>
-
-            {lead.urgency ? (
-              <p className="text-sm font-semibold text-[var(--color-ink)]">
-                Urgency: {lead.urgency}
-                {lead.urgencyDetail ? ` · ${lead.urgencyDetail}` : ""}
-              </p>
-            ) : null}
-
-            <p className="max-w-3xl whitespace-pre-wrap text-sm leading-7 text-[var(--color-muted)]">
-              {lead.message}
-            </p>
-
-            <AttributionBlock lead={lead} />
-
-            {handled ? (
-              <HandlingDetails lead={lead} handlingMinutes={handlingMinutes} disposition={disposition} />
-            ) : null}
+        {expanded ? (
+          <div className="border-t border-[var(--color-border)] px-3 pb-3 pt-2 sm:px-4 sm:pb-4">
+            <dl className="grid gap-3 text-sm sm:grid-cols-2">
+              <DetailField label="Full Name" value={fullName} />
+              <DetailField label="Calendar Status" value={statusLabel} />
+              <DetailField label="Full Address" value={fullAddress} className="sm:col-span-2" />
+              <DetailField
+                label="Phone"
+                value={
+                  <a href={`tel:${lead.phone}`} className="inline-flex items-center gap-2 font-semibold text-[var(--color-ink)] underline-offset-2 hover:underline">
+                    <Phone className="h-4 w-4 shrink-0 text-[var(--color-ember)]" />
+                    {lead.phone}
+                  </a>
+                }
+              />
+              <DetailField
+                label="Email"
+                value={
+                  <a href={`mailto:${lead.email}`} className="inline-flex min-w-0 items-center gap-2 break-all font-semibold text-[var(--color-ink)] underline-offset-2 hover:underline">
+                    <Mail className="h-4 w-4 shrink-0 text-[var(--color-ember)]" />
+                    {lead.email}
+                  </a>
+                }
+              />
+              <DetailField label="Source" value={getLeadSourceLabel(lead.source)} />
+              <DetailField label="Requested Service" value={lead.service} />
+              <DetailField label="Lead Received Date" value={receivedLabel} className="sm:col-span-2" />
+            </dl>
 
             {errorMessage ? (
-              <p className="rounded-[1rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+              <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
                 {errorMessage}
               </p>
             ) : null}
 
             {!handled ? (
-              <div className="flex flex-wrap gap-3 pt-1">
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   type="button"
                   onClick={handleAddedToCalendar}
                   disabled={isPending}
-                  className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-emerald-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
                   <CalendarCheck className="h-4 w-4" />
                   Added to Calendar
@@ -137,7 +146,7 @@ export function LeadCard({ lead }: LeadCardProps) {
                   type="button"
                   onClick={() => setIsDialogOpen(true)}
                   disabled={isPending}
-                  className="inline-flex items-center gap-2 rounded-full bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-red-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
                   <CalendarX className="h-4 w-4" />
                   Not Added to Calendar
@@ -145,61 +154,7 @@ export function LeadCard({ lead }: LeadCardProps) {
               </div>
             ) : null}
           </div>
-
-          <div className="grid gap-3 rounded-[1.5rem] border border-[var(--color-border)] bg-white/70 p-4 text-sm text-[var(--color-muted)] sm:min-w-[18rem]">
-            <a href={`tel:${lead.phone}`} className="inline-flex items-center gap-2 font-semibold text-[var(--color-ink)]">
-              <Phone className="h-4 w-4 text-[var(--color-ember)]" />
-              {lead.phone}
-            </a>
-            <a href={`mailto:${lead.email}`} className="inline-flex items-center gap-2 font-semibold text-[var(--color-ink)]">
-              <Mail className="h-4 w-4 text-[var(--color-ember)]" />
-              {lead.email}
-            </a>
-            <p>
-              <span className="font-semibold text-[var(--color-ink)]">Lead ID:</span> {lead.id}
-            </p>
-            {formatServiceAddressLines(lead).length ? (
-              <div className="space-y-1">
-                <p className="font-semibold text-[var(--color-ink)]">Service address</p>
-                {formatServiceAddressLines(lead).map((line) => {
-                  const separatorIndex = line.indexOf(": ");
-                  const label = separatorIndex >= 0 ? line.slice(0, separatorIndex) : "Address";
-                  const value = separatorIndex >= 0 ? line.slice(separatorIndex + 2) : line;
-
-                  return (
-                    <p key={line}>
-                      <span className="font-semibold text-[var(--color-ink)]">{label}:</span> {value}
-                    </p>
-                  );
-                })}
-              </div>
-            ) : lead.address ? (
-              <p>
-                <span className="font-semibold text-[var(--color-ink)]">Address:</span> {lead.address}
-              </p>
-            ) : null}
-            {lead.preferredContactMethod ? (
-              <p>
-                <span className="font-semibold text-[var(--color-ink)]">Preferred contact:</span>{" "}
-                {lead.preferredContactMethod}
-              </p>
-            ) : null}
-            <p>
-              <span className="font-semibold text-[var(--color-ink)]">Preferred day:</span>{" "}
-              {lead.preferredDay || "Not provided"}
-            </p>
-            <p>
-              <span className="font-semibold text-[var(--color-ink)]">Preferred time:</span>{" "}
-              {lead.preferredTime || "Not provided"}
-            </p>
-            {lead.emailDeliveryNote ? (
-              <p>
-                <span className="font-semibold text-[var(--color-ink)]">Email note:</span>{" "}
-                {lead.emailDeliveryNote}
-              </p>
-            ) : null}
-          </div>
-        </div>
+        ) : null}
       </article>
 
       <LeadDispositionDialog
@@ -212,178 +167,60 @@ export function LeadCard({ lead }: LeadCardProps) {
   );
 }
 
-function DispositionBadge({
-  disposition,
-  elapsedMinutes,
-  slaTier,
+function ScanCell({
+  label,
+  value,
+  className,
+  truncate,
 }: {
-  disposition: ReturnType<typeof getLeadDisposition>;
-  elapsedMinutes: number;
-  slaTier: ReturnType<typeof getLeadSlaTier>;
+  label: string;
+  value: string;
+  className?: string;
+  truncate?: boolean;
 }) {
-  if (disposition === "pending") {
-    return (
-      <span
-        className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${getLeadSlaClasses(slaTier)}`}
+  return (
+    <div className="min-w-0 lg:block">
+      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-muted)] lg:sr-only">
+        {label}
+      </p>
+      <p
+        className={`text-sm text-[var(--color-ink)] ${truncate ? "truncate" : "break-words"} ${className ?? ""}`}
+        title={truncate ? value : undefined}
       >
-        Pending · {formatDurationMinutes(elapsedMinutes)}
-      </span>
-    );
-  }
+        {value}
+      </p>
+    </div>
+  );
+}
 
+function DetailField({
+  label,
+  value,
+  className,
+}: {
+  label: string;
+  value: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`min-w-0 ${className ?? ""}`}>
+      <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-muted)]">{label}</dt>
+      <dd className="mt-1 break-words text-sm text-[var(--color-ink)]">{value}</dd>
+    </div>
+  );
+}
+
+function StatusBadge({ disposition, label }: { disposition: LeadDisposition; label: string }) {
   const classes =
     disposition === "added-to-calendar"
       ? "bg-emerald-50 text-emerald-800"
-      : "bg-red-50 text-red-800";
+      : disposition === "not-added"
+        ? "bg-red-50 text-red-800"
+        : "bg-amber-50 text-amber-900";
 
   return (
-    <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${classes}`}
-    >
-      {getLeadDispositionLabel(disposition)}
-    </span>
-  );
-}
-
-function AttributionBlock({ lead }: { lead: Lead }) {
-  const cityName = getCityBySlug(lead.city)?.name || lead.city;
-  const ctaLabel = getRequestServiceCtaLabel(lead.ctaLocation);
-  const nearestHubName = lead.nearestHub ? getCityBySlug(lead.nearestHub)?.name || lead.nearestHub : undefined;
-  const mapHref =
-    lead.latitude != null && lead.longitude != null
-      ? `https://maps.google.com/?q=${lead.latitude},${lead.longitude}`
-      : undefined;
-
-  return (
-    <div className="grid gap-2 rounded-[1.25rem] border border-[var(--color-border)] bg-white/60 p-4 text-sm text-[var(--color-muted)] sm:grid-cols-2">
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">Domain:</span>{" "}
-        {getLeadDomainLabel(lead)}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">City:</span> {cityName}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">Source:</span>{" "}
-        {getLeadSourceLabel(lead.source)}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">CTA:</span> {ctaLabel || "Not provided"}
-      </p>
-      <p className="sm:col-span-2 break-all">
-        <span className="font-semibold text-[var(--color-ink)]">Source page:</span>{" "}
-        {lead.sourceUrl ? (
-          <a href={lead.sourceUrl} className="font-semibold text-[var(--color-ink)] underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
-            {lead.sourceUrl}
-          </a>
-        ) : (
-          "Not provided"
-        )}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">UTM source:</span>{" "}
-        {lead.utmSource || "Not provided"}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">UTM medium:</span>{" "}
-        {lead.utmMedium || "Not provided"}
-      </p>
-      <p className="sm:col-span-2">
-        <span className="font-semibold text-[var(--color-ink)]">UTM campaign:</span>{" "}
-        {lead.utmCampaign || "Not provided"}
-      </p>
-      {lead.inServiceArea != null || nearestHubName || mapHref ? (
-        <p className="sm:col-span-2">
-          <span className="font-semibold text-[var(--color-ink)]">Coverage:</span>{" "}
-          {lead.inServiceArea == null
-            ? "Address submitted without a map pin"
-            : lead.inServiceArea
-              ? "Inside 100 km hub radius"
-              : "Outside 100 km hub radius"}
-          {nearestHubName ? ` · nearest hub ${nearestHubName}` : ""}
-          {typeof lead.serviceAreaDistanceKm === "number"
-            ? ` · ${lead.serviceAreaDistanceKm.toFixed(1)} km`
-            : ""}
-          {mapHref ? (
-            <>
-              {" · "}
-              <a href={mapHref} className="font-semibold text-[var(--color-ink)] underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
-                Open map pin
-              </a>
-            </>
-          ) : null}
-        </p>
-      ) : null}
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">Received:</span>{" "}
-        {formatLeadDateTime(lead.createdAt)}
-      </p>
-    </div>
-  );
-}
-
-function HandlingDetails({
-  lead,
-  handlingMinutes,
-  disposition,
-}: {
-  lead: Lead;
-  handlingMinutes: number | null;
-  disposition: ReturnType<typeof getLeadDisposition>;
-}) {
-  return (
-    <div className="grid gap-2 rounded-[1.25rem] border border-[var(--color-border)] bg-white/60 p-4 text-sm text-[var(--color-muted)] sm:grid-cols-2">
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">Received:</span>{" "}
-        {formatLeadTime(lead.createdAt)}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">Handled:</span>{" "}
-        {lead.handledAt ? formatLeadTime(lead.handledAt) : "—"}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">Handling Time:</span>{" "}
-        {handlingMinutes == null ? "—" : formatDurationMinutes(handlingMinutes)}
-      </p>
-      <p>
-        <span className="font-semibold text-[var(--color-ink)]">Handled By:</span>{" "}
-        {lead.handledBy || "—"}
-      </p>
-      <p className="sm:col-span-2">
-        <span className="font-semibold text-[var(--color-ink)]">Result:</span>{" "}
-        {getLeadDispositionLabel(disposition)}
-        {disposition === "not-added" && lead.dispositionReason
-          ? ` · ${getLeadDispositionReasonLabel(lead.dispositionReason)}`
-          : ""}
-      </p>
-      {lead.officeNote ? (
-        <p className="sm:col-span-2 whitespace-pre-wrap">
-          <span className="font-semibold text-[var(--color-ink)]">Office Note:</span> {lead.officeNote}
-        </p>
-      ) : null}
-    </div>
-  );
-}
-
-function StatusPill({
-  label,
-  status,
-}: {
-  label: string;
-  status: "sent" | "skipped" | "failed";
-}) {
-  const classes =
-    status === "sent"
-      ? "bg-emerald-50 text-emerald-700"
-      : status === "failed"
-        ? "bg-red-50 text-red-700"
-        : "bg-stone-100 text-stone-700";
-  const Icon = status === "sent" ? ShieldCheck : Send;
-
-  return (
-    <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs ${classes}`}>
-      <Icon className="h-3.5 w-3.5" />
-      {label}: {status}
+    <span className={`inline-flex max-w-full items-center rounded-full px-2.5 py-1 text-xs font-semibold ${classes}`}>
+      <span className="truncate">{label}</span>
     </span>
   );
 }

@@ -26,8 +26,8 @@ The site connects search → education → diagnosis → Request Service → lea
 - `/calgary`, `/edmonton`, `/red-deer` — city homes and nested revenue pages
 - `/request-service` — one global Smart Form (noindex); `/{city}/request-service` 301s here with city context
 - `/thank-you` — post-conversion (noindex)
-- `https://portal.phoenixfireplace.ca` — customer portal host (noindex; WizField deferred). Same Vercel project; `/` and `/login` redirect same-host to `/portal` and `/portal/login`.
-- `/portal/login` — apex fallback for the portal foundation (noindex; WizField deferred)
+- `https://portal.phoenixfireplace.ca` — customer portal host (noindex; portal adapter deferred; WizField read API live on backend only). Same Vercel project; `/` and `/login` redirect same-host to `/portal` and `/portal/login`.
+- `/portal/login` — apex fallback for the portal shell (noindex; UI preview only)
 
 Canonical city service URLs and redirect policy: [docs/features/url-and-taxonomy.md](docs/features/url-and-taxonomy.md).
 
@@ -47,7 +47,13 @@ npm run build
 
 ## Lead intake
 
-One Request Service funnel posts to `/api/request-service` (and the contact API remains a compatibility path). Leads are stored before any email is sent. Office staff disposition them in `/admin/leads`.
+One Request Service funnel posts to `/api/request-service` (and the contact API remains a compatibility path). Leads are stored in the Phoenix admin inbox **before** any email or WizField sync.
+
+After save, the server best-effort syncs to WizField (`POST /api/integrations/phoenix/request-service`). WizField failures do not fail the customer submission. Sync status and WizField ids are stored on the lead and shown in `/admin/leads`.
+
+Configure server-only `WIZFIELD_API_BASE_URL` and `WIZFIELD_INTEGRATION_SECRET` from `.env.example`. Never use `NEXT_PUBLIC_*` for WizField.
+
+Details: [docs/features/wizfield-integration.md](docs/features/wizfield-integration.md) and Phoenix SOT §12.1.
 
 ## Admin and CMS
 
@@ -55,7 +61,7 @@ Env-based credentials create an httpOnly signed session. Admin can edit site set
 
 ## Deployment
 
-- Vercel: Next.js preset, set `NEXT_PUBLIC_SITE_URL=https://phoenixfireplace.ca`, `PORTAL_URL=https://portal.phoenixfireplace.ca`, and secrets from `.env.example`
+- Vercel: Next.js preset, set `NEXT_PUBLIC_SITE_URL=https://phoenixfireplace.ca`, `PORTAL_URL=https://portal.phoenixfireplace.ca`, WizField server vars when intake sync is enabled, and other secrets from `.env.example`
 - Docker / Node: standalone output, health check at `/api/health`
 - `vercel.json` schedules `/api/cron/publish-scheduled` at 15:05 UTC and hourly `/api/cron/refresh-weather`. Weather data comes from Environment and Climate Change Canada (MSC GeoMet). City home pages can show a conditions panel. Recommendation rules stay off until thresholds are validated.
 

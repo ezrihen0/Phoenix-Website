@@ -4,6 +4,7 @@ import { authIsConfigured, officeAuthIsConfigured } from "@/lib/auth/options";
 import { defaultSiteSettings } from "@/lib/cms/defaults";
 import { getCmsStorageMode, getSiteSettings } from "@/lib/cms/storage";
 import { leadEmailDeliveryIsConfigured } from "@/lib/email/lead-notifications";
+import { isWizfieldConfigured } from "@/lib/wizfield/client";
 
 const deploymentVersion =
   process.env.VERCEL_DEPLOYMENT_ID?.trim() ||
@@ -32,6 +33,7 @@ export async function GET() {
     adminAuthConfigured: authIsConfigured(),
     officeAuthConfigured: officeAuthIsConfigured(),
     brevoConfigured: Boolean(process.env.BREVO_API_KEY?.trim()),
+    wizfieldConfigured: isWizfieldConfigured(),
     leadEmailConfigured,
     deploymentVersion,
     timestamp: new Date().toISOString(),

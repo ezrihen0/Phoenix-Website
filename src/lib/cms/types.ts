@@ -5,6 +5,15 @@ export type ArticleStatus = "draft" | "scheduled" | "published";
 
 export type LeadDeliveryStatus = "sent" | "skipped" | "failed";
 
+export type WizfieldSyncStatus = "not_attempted" | "synced" | "failed";
+
+export type WizfieldPortalAccessStatus =
+  | "sent"
+  | "already_sent"
+  | "pending_email"
+  | "email_failed"
+  | "not_requested";
+
 export type ArticleAuthorType = "organization" | "person";
 
 export type ArticleScope = "general" | "city";
@@ -127,6 +136,13 @@ export type Lead = {
   bookingDeliveryNote?: string;
   emailDeliveryStatus: LeadDeliveryStatus;
   emailDeliveryNote?: string;
+  wizfieldSyncStatus?: WizfieldSyncStatus;
+  wizfieldCustomerId?: string;
+  wizfieldLeadId?: string;
+  wizfieldPortalAccessStatus?: WizfieldPortalAccessStatus;
+  wizfieldPortalAccessExpiresAt?: string;
+  wizfieldLastSyncAt?: string;
+  wizfieldSyncError?: string;
   disposition?: LeadDisposition;
   dispositionReason?: LeadDispositionReason;
   officeNote?: string;
