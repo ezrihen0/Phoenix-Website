@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Briefcase, CalendarDays, FileText, LayoutGrid, MessageCircle, Settings } from "lucide-react";
+import { Briefcase, CalendarDays, FileText, LayoutGrid, Receipt, Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 import { PORTAL_PROFILE_TABS, type PortalProfileTabId } from "@/lib/portal/ui-preview";
@@ -9,7 +9,7 @@ const TAB_ICONS: Record<PortalProfileTabId, LucideIcon> = {
   jobs: Briefcase,
   documents: FileText,
   appointments: CalendarDays,
-  messages: MessageCircle,
+  finance: Receipt,
   settings: Settings,
 };
 

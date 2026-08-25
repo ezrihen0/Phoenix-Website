@@ -1,0 +1,340 @@
+.frame {
+  width: 100%;
+  max-width: 794px;
+  aspect-ratio: 210 / 297;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(31, 26, 22, 0.12);
+  overflow: hidden;
+}
+
+.page {
+  position: relative;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  background: #fff;
+  color: #1f1a16;
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  container-type: inline-size;
+}
+
+.header {
+  position: relative;
+  height: 24.05%;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #1c1816;
+}
+
+.headerLeft {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  width: 62%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4.2% 4.2% 3.2%;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 2.4%;
+}
+
+.logo {
+  height: 3.2rem;
+  width: auto;
+}
+
+.wordmark {
+  min-width: 0;
+}
+
+.phoenix {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.15rem, 3.4cqw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #c56a3a;
+}
+
+.subBrand {
+  margin: 0.15rem 0 0;
+  font-size: clamp(0.42rem, 1.35cqw, 0.68rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: #fff;
+}
+
+.contactList {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contactItem {
+  display: grid;
+  grid-template-columns: 0.85rem 1fr;
+  align-items: center;
+  gap: 0.45rem;
+  color: #fff;
+  font-size: clamp(0.42rem, 1.2cqw, 0.62rem);
+}
+
+.contactIcon {
+  color: #c56a3a;
+}
+
+.headerRight {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 2;
+  display: flex;
+  width: 46%;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 4% 4.2% 4% 9%;
+  background:
+    linear-gradient(145deg, #d08a52 0%, #c56a3a 42%, #9a4320 100%);
+  clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+  color: #fff;
+}
+
+.docType {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.1rem, 3.6cqw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.metaRow {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr;
+  gap: 0.35rem;
+  margin-top: 0.22rem;
+  font-size: clamp(0.42rem, 1.15cqw, 0.6rem);
+}
+
+.metaLabel {
+  opacity: 0.86;
+}
+
+.statusPill {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.08rem 0.45rem;
+  color: #1c1816;
+  font-weight: 700;
+}
+
+.body {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2.1% 4.2% 0;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.6%;
+}
+
+.card {
+  min-height: 18.5%;
+  border: 1px solid #d8d0c6;
+  padding: 0.7rem 0.75rem;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.45rem;
+  color: #c56a3a;
+  font-size: clamp(0.5rem, 1.3cqw, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.cardLine {
+  margin: 0.28rem 0 0;
+  border-bottom: 1px dashed #d8d0c6;
+  padding-bottom: 0.18rem;
+  font-size: clamp(0.5rem, 1.35cqw, 0.7rem);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 18% 1fr;
+  align-items: center;
+  margin-top: 1.5%;
+  min-height: 8.8%;
+  background: #f4efe8;
+}
+
+.summaryLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-right: 2px solid #c56a3a;
+  padding: 0.55rem 0.65rem;
+  color: #c56a3a;
+  font-size: clamp(0.46rem, 1.2cqw, 0.62rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.summaryText {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  font-size: clamp(0.52rem, 1.4cqw, 0.72rem);
+  line-height: 1.4;
+}
+
+.tableWrap {
+  margin-top: 1.2%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: clamp(0.48rem, 1.25cqw, 0.66rem);
+}
+
+.table th {
+  background: #1c1816;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: left;
+  padding: 0.45rem 0.5rem;
+}
+
+.table td {
+  border: 1px solid #e6dfd6;
+  padding: 0.38rem 0.5rem;
+  vertical-align: top;
+}
+
+.colDesc {
+  width: 51%;
+}
+
+.colQty {
+  width: 13%;
+}
+
+.colPrice {
+  width: 19%;
+}
+
+.colAmt {
+  width: 17%;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.8%;
+  margin-top: 1.7%;
+}
+
+.notes {
+  border: 1px solid #d8d0c6;
+  padding: 0.65rem 0.75rem;
+}
+
+.totals {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.28rem 0.15rem;
+  font-size: clamp(0.5rem, 1.3cqw, 0.68rem);
+}
+
+.emphasis {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  background: #1c1816;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: clamp(0.52rem, 1.35cqw, 0.7rem);
+}
+
+.emphasis dt {
+  padding: 0.45rem 0.6rem;
+}
+
+.emphasis dd {
+  margin: 0;
+  background: #c56a3a;
+  padding: 0.45rem 0.6rem;
+}
+
+.footer {
+  height: 7.8%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 4.2% 1.4%;
+  text-align: center;
+}
+
+.footerRule {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  margin-bottom: 0.55rem;
+  background: #c56a3a;
+}
+
+.footerMark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.1rem;
+  height: 1.1rem;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  background: #fff;
+}
+
+.credentials {
+  margin: 0;
+  font-size: clamp(0.38rem, 1.05cqw, 0.55rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.tagline {
+  margin: 0.22rem 0 0;
+  color: #c56a3a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.48rem, 1.25cqw, 0.68rem);
+  font-style: italic;
+}

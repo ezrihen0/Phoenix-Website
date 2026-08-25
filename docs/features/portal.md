@@ -21,4 +21,6 @@ On that host, `/` redirects same-host to `/portal` and `/login` redirects same-h
 
 The `/portal` profile shell may render an isolated **UI preview** view-model (`src/lib/portal/ui-preview.ts`) so layout work can proceed. That preview is labeled on the page, is not a live customer, and must never be returned from the WizField adapter. Do not restore a mock customer through `getPortalSnapshot()`.
 
+The Finance tab (`/portal?tab=finance`) is part of that preview. Invoice and estimate PDFs are generated from the preview document, not from WizField.
+
 WizField production coupling is out of scope until the owner explicitly opens it.

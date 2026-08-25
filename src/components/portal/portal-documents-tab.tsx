@@ -29,7 +29,7 @@ export function PortalDocumentsTab({ documents }: PortalDocumentsTabProps) {
       <div className="rounded-[1.75rem] border border-[var(--color-border)] bg-white/90 px-5 py-10 text-center shadow-[0_10px_30px_rgba(31,26,22,0.05)]">
         <h2 className="text-xl font-semibold text-[var(--color-ink)]">No documents yet</h2>
         <p className="mt-2 text-sm leading-7 text-[var(--color-muted)]">
-          Reports, quotes and invoices shared with you will appear here.
+          Reports and documents shared with you will appear here.
         </p>
       </div>
     );

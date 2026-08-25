@@ -24,6 +24,26 @@ export function PortalAppHeader({ profile }: PortalAppHeaderProps) {
         </Link>
 
         <div className="flex min-w-0 items-center gap-3">
+          <a
+            href={`tel:${siteConfig.phoneHref}`}
+            className="text-sm font-medium text-[var(--color-muted)] transition hover:text-[var(--color-ink)]"
+          >
+            Call
+          </a>
+          <a
+            href="/request-service?city=calgary&cta=portal"
+            className="hidden text-sm font-medium text-[var(--color-muted)] transition hover:text-[var(--color-ink)] sm:inline"
+          >
+            Request Service
+          </a>
+          {siteConfig.email ? (
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="hidden text-sm font-medium text-[var(--color-muted)] transition hover:text-[var(--color-ink)] lg:inline"
+            >
+              Email
+            </a>
+          ) : null}
           <Link
             href="/portal/login"
             className="text-sm font-medium text-[var(--color-muted)] transition hover:text-[var(--color-ink)]"

@@ -1,12 +1,12 @@
-import { PORTAL_UI_PREVIEW_NOTICE, type PortalProfileTabId, type PortalUiPreviewProfile } from "@/lib/portal/ui-preview";
+import { PORTAL_UI_PREVIEW_NOTICE, type PortalFinanceSelection, type PortalProfileTabId, type PortalUiPreviewProfile } from "@/lib/portal/ui-preview";
 import type { PortalConnectionStatus } from "@/lib/portal/types";
 
 import { PortalAppHeader } from "./portal-app-header";
 import { PortalAppointmentsTab } from "./portal-appointments-tab";
 import { PortalDocumentsTab } from "./portal-documents-tab";
+import { PortalFinanceTab } from "./portal-finance-tab";
 import { PortalJobDetail } from "./portal-job-detail";
 import { PortalJobsTab } from "./portal-jobs-tab";
-import { PortalMessagesTab } from "./portal-messages-tab";
 import { PortalOverview } from "./portal-overview";
 import { PortalProfileCover } from "./portal-profile-cover";
 import { PortalProfileTabs } from "./portal-profile-tabs";
@@ -18,6 +18,8 @@ type PortalProfileShellProps = {
   activeTab: PortalProfileTabId;
   activeJobId?: string | null;
   invalidJobRequested?: boolean;
+  financeSelection?: PortalFinanceSelection | null;
+  invalidFinanceRequested?: boolean;
 };
 
 function PortalTabSurface({
@@ -25,11 +27,15 @@ function PortalTabSurface({
   activeTab,
   activeJobId,
   invalidJobRequested,
+  financeSelection,
+  invalidFinanceRequested,
 }: {
   profile: PortalUiPreviewProfile;
   activeTab: PortalProfileTabId;
   activeJobId?: string | null;
   invalidJobRequested?: boolean;
+  financeSelection?: PortalFinanceSelection | null;
+  invalidFinanceRequested?: boolean;
 }) {
   if (activeTab === "overview") {
     return <PortalOverview profile={profile} />;
@@ -53,8 +59,14 @@ function PortalTabSurface({
     return <PortalAppointmentsTab appointments={profile.appointments} />;
   }
 
-  if (activeTab === "messages") {
-    return <PortalMessagesTab />;
+  if (activeTab === "finance") {
+    return (
+      <PortalFinanceTab
+        profile={profile}
+        selection={financeSelection}
+        invalidSelection={invalidFinanceRequested}
+      />
+    );
   }
 
   return <PortalSettingsTab settings={profile.settings} />;
@@ -66,6 +78,8 @@ export function PortalProfileShell({
   activeTab,
   activeJobId,
   invalidJobRequested = false,
+  financeSelection = null,
+  invalidFinanceRequested = false,
 }: PortalProfileShellProps) {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f3eee6] text-[var(--color-ink)]">
@@ -81,6 +95,8 @@ export function PortalProfileShell({
           activeTab={activeTab}
           activeJobId={activeJobId}
           invalidJobRequested={invalidJobRequested}
+          financeSelection={financeSelection}
+          invalidFinanceRequested={invalidFinanceRequested}
         />
       </div>
     </div>
