@@ -26,7 +26,8 @@ The site connects search → education → diagnosis → Request Service → lea
 - `/calgary`, `/edmonton`, `/red-deer` — city homes and nested revenue pages
 - `/request-service` — one global Smart Form (noindex); `/{city}/request-service` 301s here with city context
 - `/thank-you` — post-conversion (noindex)
-- `/portal/login` — customer portal foundation (noindex; WizField deferred)
+- `https://portal.phoenixfireplace.ca` — customer portal host (noindex; WizField deferred). Same Vercel project; `/` and `/login` redirect same-host to `/portal` and `/portal/login`.
+- `/portal/login` — apex fallback for the portal foundation (noindex; WizField deferred)
 
 Canonical city service URLs and redirect policy: [docs/features/url-and-taxonomy.md](docs/features/url-and-taxonomy.md).
 
@@ -54,7 +55,7 @@ Env-based credentials create an httpOnly signed session. Admin can edit site set
 
 ## Deployment
 
-- Vercel: Next.js preset, set `NEXT_PUBLIC_SITE_URL` and secrets from `.env.example`
+- Vercel: Next.js preset, set `NEXT_PUBLIC_SITE_URL=https://phoenixfireplace.ca`, `PORTAL_URL=https://portal.phoenixfireplace.ca`, and secrets from `.env.example`
 - Docker / Node: standalone output, health check at `/api/health`
 - `vercel.json` schedules `/api/cron/publish-scheduled` at 15:05 UTC and hourly `/api/cron/refresh-weather`. Weather data comes from Environment and Climate Change Canada (MSC GeoMet). City home pages can show a conditions panel. Recommendation rules stay off until thresholds are validated.
 

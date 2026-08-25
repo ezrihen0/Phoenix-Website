@@ -51,6 +51,7 @@ Retired as URL identities (legacy aliases only): `chimney-sweep-repair`, `masonr
 - `/request-service` — one global Smart Form. Not in the sitemap. Page robots + `X-Robots-Tag`.
 - `/thank-you` — post-submit confirmation (noindex).
 - `/portal`, `/portal/login` — portal shell (noindex). WizField remains deferred.
+- Canonical portal host: `https://portal.phoenixfireplace.ca` (same deployment; `/` and `/login` same-host redirect into the `/portal` routes). Apex `/portal` is a temporary fallback. The portal host must not serve marketing pages, `/admin`, or `/sitemap.xml`.
 
 City pages send users to `/request-service` with allowlisted query context (`city`, `service`, `cta`, `from`). The customer can change a preselected city or service. Do not put street address or coordinates on inbound query strings.
 
