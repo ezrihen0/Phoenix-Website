@@ -5,6 +5,7 @@ import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { ArticlePublishControls } from "@/components/admin/article-publish-controls";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { WEATHER_CONTENT_TAGS, WEATHER_CONTENT_TAG_LABELS } from "@/lib/weather/content-tags";
 import { requireArticlesAccess } from "@/lib/auth/permissions";
 import { cities, defaultCitySlug } from "@/lib/cities";
 import { getArticleById, getCmsStorageStatus } from "@/lib/cms/storage";
@@ -110,6 +111,29 @@ export function ArticleEditor({ article }: { article?: Article }) {
         <Field label="Cover image alt" name="coverImageAlt" defaultValue={article?.coverImageAlt} placeholder="Technician inspecting a fireplace venting issue" className="md:col-span-2" />
         <Field label="Keywords" name="keywords" defaultValue={article?.keywords.join(", ")} required className="md:col-span-2" />
         <Field label="Related slugs" name="relatedSlugs" defaultValue={article?.relatedSlugs.join(", ")} className="md:col-span-2" />
+        <fieldset className="md:col-span-2">
+          <legend className="mb-2 text-sm font-medium text-[var(--color-ink)]">Weather content tags</legend>
+          <p className="mb-3 text-sm leading-6 text-[var(--color-muted)]">
+            Explicit editorial tags only. These control the header weather article strip. Do not infer tags from the body.
+          </p>
+          <input type="hidden" name="weatherTagsField" value="1" />
+          <div className="grid gap-2 sm:grid-cols-2">
+            {WEATHER_CONTENT_TAGS.map((tag) => (
+              <label key={tag} className="flex items-center gap-2 rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-medium text-[var(--color-ink)]">
+                <input
+                  type="checkbox"
+                  name="weatherTags"
+                  value={tag}
+                  defaultChecked={article?.weatherTags?.includes(tag)}
+                />
+                <span>
+                  {tag}
+                  <span className="block text-xs font-normal text-[var(--color-muted)]">{WEATHER_CONTENT_TAG_LABELS[tag]}</span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <Field label="Author" name="authorName" defaultValue={article?.authorName || "Phoenix Editorial Team"} required />
         <label className="flex flex-col gap-2 text-sm font-medium text-[var(--color-ink)]">
           <span>Author type</span>

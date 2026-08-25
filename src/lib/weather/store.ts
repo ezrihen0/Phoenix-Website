@@ -6,6 +6,7 @@ import path from "node:path";
 
 import { CITY_SLUGS, cities } from "@/lib/cities";
 import { ecccWeatherProvider } from "@/lib/weather/provider";
+import { resolveWeatherArticleStrip } from "@/lib/weather/article-strip";
 import {
   WEATHER_RULES,
   type CityWeatherSnapshot,
@@ -154,9 +155,20 @@ export async function getCityWeatherState(citySlug: string): Promise<CityWeather
     return null;
   }
 
+  let articleStrip = null;
+
+  try {
+    if (isSupportedWeatherCity(citySlug)) {
+      articleStrip = await resolveWeatherArticleStrip(citySlug, snapshot);
+    }
+  } catch (error) {
+    console.error(`[weather] Article strip lookup failed for ${citySlug}.`, error);
+  }
+
   return {
     snapshot,
     recommendation: resolveRecommendation(snapshot),
+    articleStrip,
   };
 }
 

@@ -1,4 +1,5 @@
 import type { CitySlug } from "@/lib/cities";
+import type { WeatherContentTag } from "@/lib/weather/content-tags";
 
 export type ArticleStatus = "draft" | "scheduled" | "published";
 
@@ -21,6 +22,7 @@ export type Article = {
   keywords: string[];
   relatedSlugs: string[];
   relatedServiceSlugs?: string[];
+  weatherTags?: WeatherContentTag[];
   status: ArticleStatus;
   scheduledAt?: string;
   authorName: string;

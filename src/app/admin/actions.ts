@@ -51,6 +51,7 @@ import {
   type EvidenceRecord,
 } from "@/lib/evidence";
 import { getServiceLandingHref, serviceLandingPages } from "@/lib/site-data";
+import { sanitizeWeatherTags } from "@/lib/weather/content-tags";
 
 const articleSchema = z.object({
   city: z.enum(CITY_SLUGS),
@@ -463,6 +464,9 @@ export async function saveArticleAction(formData: FormData) {
       keywords: toList(parsed.keywords),
       relatedSlugs: toList(parsed.relatedSlugs || ""),
       relatedServiceSlugs: toList(parsed.relatedServiceSlugs || ""),
+      weatherTags: formData.get("weatherTagsField") === "1"
+        ? sanitizeWeatherTags(formData.getAll("weatherTags").map(String))
+        : existingArticle?.weatherTags || [],
       status: parsed.status,
       scheduledAt: parsed.status === "scheduled" ? scheduledAt : undefined,
       authorName: parsed.authorName,

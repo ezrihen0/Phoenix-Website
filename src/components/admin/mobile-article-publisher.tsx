@@ -8,6 +8,7 @@ import { ArticleBody } from "@/components/articles/article-body";
 import { cities, defaultCitySlug, getCityHref, type CitySlug } from "@/lib/cities";
 import { slugify } from "@/lib/cms/helpers";
 import type { GeneratedArticleDraft } from "@/lib/cms/types";
+import { WEATHER_CONTENT_TAGS, WEATHER_CONTENT_TAG_LABELS, type WeatherContentTag } from "@/lib/weather/content-tags";
 
 type MobileArticlePublisherProps = {
   defaultAuthorName: string;
@@ -25,6 +26,7 @@ type FormFields = {
   relatedSlugs: string;
   coverImage: string;
   coverImageAlt: string;
+  weatherTags: WeatherContentTag[];
 };
 
 const emptyFields: FormFields = {
@@ -39,6 +41,7 @@ const emptyFields: FormFields = {
   relatedSlugs: "",
   coverImage: "",
   coverImageAlt: "",
+  weatherTags: [],
 };
 
 export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePublisherProps) {
@@ -368,6 +371,37 @@ export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePubli
                 className="min-h-11 w-full rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-base outline-none"
               />
             </MobileField>
+
+            <fieldset>
+              <legend className="mb-2 text-sm font-medium text-[var(--color-ink)]">Weather content tags</legend>
+              <p className="mb-3 text-sm leading-6 text-[var(--color-muted)]">
+                Explicit editorial tags only. These control the header weather article strip.
+              </p>
+              <div className="grid gap-2">
+                {WEATHER_CONTENT_TAGS.map((tag) => (
+                  <label key={tag} className="flex items-start gap-2 rounded-2xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-medium text-[var(--color-ink)]">
+                    <input
+                      type="checkbox"
+                      name="weatherTags"
+                      value={tag}
+                      checked={fields.weatherTags.includes(tag)}
+                      onChange={(event) => {
+                        setFields((current) => ({
+                          ...current,
+                          weatherTags: event.target.checked
+                            ? [...current.weatherTags, tag]
+                            : current.weatherTags.filter((entry) => entry !== tag),
+                        }));
+                      }}
+                    />
+                    <span>
+                      {tag}
+                      <span className="block text-xs font-normal text-[var(--color-muted)]">{WEATHER_CONTENT_TAG_LABELS[tag]}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
           </div>
         ) : (
           <>
@@ -377,8 +411,13 @@ export function MobileArticlePublisher({ defaultAuthorName }: MobileArticlePubli
             <input type="hidden" name="coverImage" value={fields.coverImage} />
             <input type="hidden" name="coverImageAlt" value={fields.coverImageAlt} />
             <input type="hidden" name="relatedSlugs" value={fields.relatedSlugs} />
+            {fields.weatherTags.map((tag) => (
+              <input key={tag} type="hidden" name="weatherTags" value={tag} />
+            ))}
           </>
         )}
+
+        <input type="hidden" name="weatherTagsField" value="1" />
 
         <div className="pb-28">
           <ArticlePublishControls layout="fixed" />

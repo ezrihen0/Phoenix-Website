@@ -15,6 +15,7 @@ import {
   unprotectJson,
 } from "@/lib/cms/secure-json";
 import type { Article, Lead, LeadDisposition, LeadDispositionReason, OfficeDailyStateRecord, OfficeDailyStateStore, PublicSiteSettings, SiteSettings } from "@/lib/cms/types";
+import { sanitizeWeatherTags } from "@/lib/weather/content-tags";
 import { OFFICE_DAILY_STATE_RETENTION_DAYS } from "@/lib/office/constants";
 import { pruneOfficeDailyStateRecords } from "@/lib/office/daily-state";
 import type { EvidenceRecord, PublicEvidence } from "@/lib/evidence";
@@ -250,6 +251,9 @@ function normalizeArticleRecord(article: Article & { city?: string; scope?: stri
     keywords: article.keywords || [],
     relatedSlugs: article.relatedSlugs || [],
     relatedServiceSlugs: article.relatedServiceSlugs || [],
+    weatherTags: Array.isArray(article.weatherTags)
+      ? sanitizeWeatherTags(article.weatherTags)
+      : sanitizeWeatherTags(defaultArticles.find((seed) => seed.id === article.id)?.weatherTags),
     authorName: article.authorName || defaultSiteSettings.defaultAuthorName,
     authorType: article.authorType === "person" ? "person" : "organization",
     coverImage: article.coverImage || undefined,

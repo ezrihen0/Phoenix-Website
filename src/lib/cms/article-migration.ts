@@ -260,6 +260,10 @@ function mergeSeedProposal(existing: Article | undefined, seed: Article, migrati
     updatedAt: migrationTimestamp,
     aiGenerated: existing?.aiGenerated ?? seed.aiGenerated,
     relatedSlugs: existing?.relatedSlugs?.length ? existing.relatedSlugs : seed.relatedSlugs,
+    weatherTags:
+      existing?.weatherTags !== undefined
+        ? existing.weatherTags
+        : seed.weatherTags,
   };
 }
 

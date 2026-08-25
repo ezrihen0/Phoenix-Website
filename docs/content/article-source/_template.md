@@ -11,6 +11,7 @@ PRIMARY QUESTION:
 SEASONAL PRIORITY:
 PAID AWARENESS CANDIDATE: NO
 AUTHORITY LINKS: required | if-supports-claim | no-forced-gov
+WEATHER TAGS:
 UPGRADE EXISTING:
 LAST VERIFIED:
 
@@ -72,5 +73,6 @@ Caption:
 
 - Slug:
 - Related service slugs:
+- Weather tags (explicit approved tags only; leave blank if none):
 - Publish now: NO
 - CMS import only after STATUS: APPROVED

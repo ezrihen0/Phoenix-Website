@@ -1,10 +1,12 @@
 "use client";
 
-import { Cloud, CloudRain, CloudSnow, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, Cloud, CloudRain, CloudSnow, Sun } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
+import { trackWeatherArticleStripClick, trackWeatherArticleStripImpression } from "@/lib/analytics/events";
 import { getCityBySlug, type CitySlug } from "@/lib/cities";
-import type { CityWeatherSnapshot, CityWeatherState } from "@/lib/weather/types";
+import type { CityWeatherSnapshot, CityWeatherState, WeatherArticleStrip } from "@/lib/weather/types";
 
 const CLIENT_CACHE_MS = 45 * 60 * 1000;
 
@@ -56,17 +58,25 @@ function ConditionIcon({ kind }: { kind: ConditionKind }) {
 
 export function WeatherBanner({ city }: WeatherBannerProps) {
   const [snapshot, setSnapshot] = useState<CityWeatherSnapshot | null>(null);
+  const [articleStrip, setArticleStrip] = useState<WeatherArticleStrip | null>(null);
+  const [loadState, setLoadState] = useState<"loading" | "ready" | "empty">("loading");
+  const impressionKey = useRef<string | null>(null);
   const cityName = getCityBySlug(city)?.name ?? city;
 
   useEffect(() => {
-    const cacheKey = `phoenix-weather:${city}`;
+    let cancelled = false;
+    const cacheKey = `phoenix-weather:v2:${city}`;
     const cached = window.sessionStorage.getItem(cacheKey);
 
     if (cached) {
       try {
         const parsed = JSON.parse(cached) as { savedAt: number; state: CityWeatherState | null };
         if (Date.now() - parsed.savedAt < CLIENT_CACHE_MS) {
-          setSnapshot(parsed.state?.snapshot ?? null);
+          if (!cancelled) {
+            setSnapshot(parsed.state?.snapshot ?? null);
+            setArticleStrip(parsed.state?.articleStrip ?? null);
+            setLoadState(parsed.state?.snapshot ? "ready" : "empty");
+          }
           return;
         }
       } catch {
@@ -75,41 +85,128 @@ export function WeatherBanner({ city }: WeatherBannerProps) {
     }
 
     fetch(`/api/weather?city=${city}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Weather request failed");
+        }
+
+        return response.json();
+      })
       .then((payload: { state?: CityWeatherState | null }) => {
+        if (cancelled) {
+          return;
+        }
+
         const nextSnapshot = payload.state?.snapshot ?? null;
         setSnapshot(nextSnapshot);
+        setArticleStrip(payload.state?.articleStrip ?? null);
+        setLoadState(nextSnapshot ? "ready" : "empty");
         window.sessionStorage.setItem(
           cacheKey,
           JSON.stringify({ savedAt: Date.now(), state: payload.state || null }),
         );
       })
       .catch(() => {
+        if (cancelled) {
+          return;
+        }
+
         setSnapshot(null);
+        setArticleStrip(null);
+        setLoadState("empty");
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [city]);
 
-  if (!snapshot) {
+  useEffect(() => {
+    if (!articleStrip) {
+      impressionKey.current = null;
+      return;
+    }
+
+    const key = `${city}:${articleStrip.tag}:${articleStrip.articleSlug}`;
+
+    if (impressionKey.current === key) {
+      return;
+    }
+
+    impressionKey.current = key;
+    trackWeatherArticleStripImpression(city, articleStrip.tag, articleStrip.articleSlug);
+  }, [articleStrip, city]);
+
+  if (loadState === "empty") {
     return null;
+  }
+
+  if (loadState === "loading" || !snapshot) {
+    return (
+      <div className="site-weather-strip" aria-hidden="true">
+        <div className="page-bleed site-weather-strip-inner" />
+      </div>
+    );
   }
 
   const condition = snapshot.condition.trim();
   const temperature = formatTemperature(snapshot.temperatureC);
   const kind = getConditionKind(condition);
-  const desktopLabel = condition
+  const factsDesktop = condition
     ? `${cityName} · ${temperature} · ${condition}`
     : `${cityName} · ${temperature}`;
-  const mobileLabel = condition ? `${temperature} · ${condition}` : temperature;
+  const factsMobile = condition ? `${temperature} · ${condition}` : temperature;
+  const desktopLabel = articleStrip
+    ? `${temperature} in ${cityName} — ${articleStrip.label}`
+    : factsDesktop;
+  const mobileLabel = articleStrip
+    ? `${temperature} · ${articleStrip.articleShortTitle}`
+    : factsMobile;
+  const ariaLabel = articleStrip
+    ? `${desktopLabel}. Read ${articleStrip.articleTitle}`
+    : `Current weather in ${factsDesktop}`;
+
+  const copy = (
+    <>
+      <ConditionIcon kind={kind} />
+      <p className="site-weather-strip-copy">
+        <span className="site-weather-strip-desktop">
+          {desktopLabel}
+          {articleStrip ? (
+            <>
+              {" · "}
+              <span className="site-weather-strip-cta">{articleStrip.articleTitle}</span>
+            </>
+          ) : null}
+        </span>
+        <span className="site-weather-strip-mobile">{mobileLabel}</span>
+      </p>
+      {articleStrip ? <ArrowRight className="site-weather-strip-arrow" aria-hidden="true" /> : null}
+    </>
+  );
+
+  if (articleStrip) {
+    return (
+      <div className="site-weather-strip">
+        <div className="page-bleed site-weather-strip-inner">
+          <Link
+            href={articleStrip.href}
+            className="site-weather-strip-link"
+            aria-label={ariaLabel}
+            onClick={() => {
+              trackWeatherArticleStripClick(city, articleStrip.tag, articleStrip.articleSlug);
+            }}
+          >
+            {copy}
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="site-weather-strip" aria-label={`Current weather in ${desktopLabel}`}>
-      <div className="page-bleed site-weather-strip-inner">
-        <ConditionIcon kind={kind} />
-        <p className="site-weather-strip-copy">
-          <span className="site-weather-strip-desktop">{desktopLabel}</span>
-          <span className="site-weather-strip-mobile">{mobileLabel}</span>
-        </p>
-      </div>
+    <div className="site-weather-strip" aria-label={ariaLabel}>
+      <div className="page-bleed site-weather-strip-inner">{copy}</div>
     </div>
   );
 }

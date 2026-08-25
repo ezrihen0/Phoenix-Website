@@ -336,6 +336,8 @@ Weather Intelligence may additionally measure:
 -   `weather_banner_cta`
 -   `weather_module_cta`
 -   `weather_source_click`
+-   `weather_article_strip_impression`
+-   `weather_article_strip_click`
 
 ------------------------------------------------------------------------
 

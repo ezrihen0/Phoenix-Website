@@ -33,7 +33,23 @@ If a city snapshot is missing (or has no ECCC source URL yet), the server may fi
 ## Public UI
 
 - **City-page panel** (`FireplaceConditionsPanel`): factual conditions plus Phoenix service context on Calgary, Edmonton, and Red Deer home pages. Reusable later on selected articles.
-- **Header banner** (`WeatherBanner`): still gated. It only renders when a recommendation exists.
+- **Header weather strip** (`WeatherBanner`): compact ECCC facts in the sticky header. Lives in the same 2rem slot as the previous compact strip. No second bar.
+
+## Weather article strip
+
+Content routing, not a forecast and not a risk score.
+
+Flow: current ECCC snapshot → approved content tag → published Phoenix article → header CTA.
+
+- Kill switch: `WEATHER_ARTICLE_STRIP_ENABLED` must be exactly `true`. Default is off.
+- Tags live on CMS article metadata (`weatherTags`). Editors set them explicitly. The strip never infers tags from article text.
+- Query path uses `listArticles()` (published only). Drafts and scheduled articles cannot appear.
+- City-scoped published articles win over general Alberta articles for the same tag.
+- If several published articles share a tag, the strip rotates by Alberta calendar day.
+- If weather is missing, hide the strip. If no tagged published article matches the current rule, show weather facts only and no CTA.
+- Precipitation/melt condition text takes priority over temperature bands. `+5°C` to `+10°C` has no content tag. Above `+10°C` uses `maintenance` only.
+
+This strip does **not** enable `WEATHER_RULES`.
 
 ## Service context vs recommendation rules
 

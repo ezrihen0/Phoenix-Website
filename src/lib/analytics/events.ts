@@ -56,3 +56,19 @@ export function trackWeatherModuleCta(city?: string) {
 export function trackWeatherSourceClick(city?: string) {
   sendGAEvent("weather_source_click", city ? { city } : undefined);
 }
+
+export function trackWeatherArticleStripImpression(city: string, weatherTag: string, articleSlug: string) {
+  sendGAEvent("weather_article_strip_impression", {
+    city,
+    weather_tag: weatherTag,
+    article_slug: articleSlug,
+  });
+}
+
+export function trackWeatherArticleStripClick(city: string, weatherTag: string, articleSlug: string) {
+  sendGAEvent("weather_article_strip_click", {
+    city,
+    weather_tag: weatherTag,
+    article_slug: articleSlug,
+  });
+}

@@ -1,4 +1,5 @@
 import type { CitySlug } from "@/lib/cities";
+import type { WeatherContentTag } from "@/lib/weather/content-tags";
 
 export type CityWeatherSnapshot = {
   city: CitySlug;
@@ -32,9 +33,19 @@ export type WeatherRecommendation = {
   ctaLabel: string;
 };
 
+export type WeatherArticleStrip = {
+  tag: WeatherContentTag;
+  label: string;
+  articleTitle: string;
+  articleShortTitle: string;
+  articleSlug: string;
+  href: string;
+};
+
 export type CityWeatherState = {
   snapshot: CityWeatherSnapshot;
   recommendation: WeatherRecommendation | null;
+  articleStrip: WeatherArticleStrip | null;
 };
 
 export const WEATHER_RULES: WeatherRule[] = [
