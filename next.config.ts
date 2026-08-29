@@ -8,6 +8,7 @@ import type { NextConfig } from "next";
  * Installation URLs were deliberately retired (no redirect, return 404).
  */
 const nextConfig: NextConfig = {
+  output: "standalone",
   reactStrictMode: true,
   async redirects() {
     return [
