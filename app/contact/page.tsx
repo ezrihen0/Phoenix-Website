@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
-export const metadata: Metadata = { title: "Contact", description: "Contact Phoenix for fireplace and chimney service in Alberta." };
+import { buildSimplePage } from "@/lib/seo";
+export const metadata: Metadata = buildSimplePage("/contact", "Contact", "Contact Phoenix for fireplace and chimney service in Alberta.");
 export default function ContactPage() {
   return (
     <section className="container-shell py-16">

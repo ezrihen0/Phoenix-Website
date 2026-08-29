@@ -1,10 +1,14 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { buildSimplePage } from "@/lib/seo";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { Hero } from "@/components/home/Hero";
 import { RealWorkProof } from "@/components/home/RealWorkProof";
 import { ServicesOverview } from "@/components/home/ServicesOverview";
 import { StaticReviews } from "@/components/home/StaticReviews";
 import { TrustBar } from "@/components/home/TrustBar";
+
+export const metadata: Metadata = buildSimplePage("/");
 
 export default function HomePage() {
   return (
