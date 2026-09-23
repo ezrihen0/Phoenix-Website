@@ -53,6 +53,8 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     ],
     phoneDisplay: "(587) 853-5660",
     phoneHref: "+15878535660",
+    mapEmbedUrl:
+      "https://maps.google.com/maps?q=Calgary%20Alberta&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",
     contactFormEnabled: true,
     articlesEnabled: true,
@@ -85,6 +87,8 @@ const cityDefinitions: Record<CitySlug, CityDefinition> = {
     ],
     phoneDisplay: "(780) 800-7248",
     phoneHref: "+17808007248",
+    mapEmbedUrl:
+      "https://maps.google.com/maps?q=Edmonton%20Alberta&t=m&z=9&output=embed&iwloc=near",
     launchStage: "full",
     contactFormEnabled: true,
     articlesEnabled: true,

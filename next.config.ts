@@ -1,4 +1,18 @@
+import { networkInterfaces } from "node:os";
+
 import type { NextConfig } from "next";
+
+function lanDevOrigins() {
+  const origins = new Set<string>();
+  for (const entries of Object.values(networkInterfaces())) {
+    for (const entry of entries ?? []) {
+      if (entry.family === "IPv4" && !entry.internal) {
+        origins.add(entry.address);
+      }
+    }
+  }
+  return [...origins];
+}
 
 const isVercelDeployment = Boolean(process.env.VERCEL);
 const deploymentId =
@@ -7,6 +21,7 @@ const deploymentId =
   undefined;
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: lanDevOrigins(),
   output: isVercelDeployment ? undefined : "standalone",
   poweredByHeader: false,
   deploymentId,

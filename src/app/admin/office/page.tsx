@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStorageUnavailablePanel } from "@/components/admin/admin-storage-status";
 import { OfficeDailyDashboard } from "@/components/admin/office-daily-dashboard";
@@ -97,6 +99,18 @@ export default async function OfficeDashboardPage() {
       userRole={session.role}
       storageStatus={storageStatus}
     >
+      <div className="rounded-[2rem] border border-[var(--color-border)] bg-white/75 p-6">
+        <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">WETT Reports</h2>
+        <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
+          Start a new inspection report or resume a draft from the mobile workspace.
+        </p>
+        <Link
+          href="/admin/office/wett"
+          className="mt-5 inline-flex rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)]"
+        >
+          Open WETT Reports
+        </Link>
+      </div>
       <OfficeDailyDashboard
         checklist={dailyState.checklist}
         dateLabel={dateLabel}

@@ -49,6 +49,7 @@ export function getNavLinksForRole(role: UserRole) {
   if (role === "admin") {
     return [
       { href: "/admin", label: "Overview" },
+      { href: "/admin/office/wett", label: "WETT Reports" },
       { href: "/admin/articles", label: "Articles" },
       { href: "/admin/articles/migrate", label: "Migration" },
       { href: "/admin/evidence", label: "Evidence" },
@@ -59,6 +60,7 @@ export function getNavLinksForRole(role: UserRole) {
 
   return [
     { href: "/admin/office", label: "Today" },
+    { href: "/admin/office/wett", label: "WETT Reports" },
     { href: "/admin/articles", label: "Articles" },
     { href: "/admin/publish", label: "Publish" },
     { href: "/admin/leads", label: "Leads" },
@@ -104,6 +106,55 @@ export async function requireOfficeDashboardAccess(): Promise<SessionUser> {
 
   if (session.role !== "office") {
     redirect(getDefaultAdminPathForRole(session.role));
+  }
+
+  return session;
+}
+
+function wettReportUsernameAllowlist() {
+  const raw = process.env.WETT_REPORT_USERNAMES?.trim();
+
+  if (!raw) {
+    return null;
+  }
+
+  const names = raw
+    .split(",")
+    .map((name) => name.trim().toLowerCase())
+    .filter(Boolean);
+
+  return names.length > 0 ? names : null;
+}
+
+export function canUseWettReports(session: Pick<SessionUser, "role" | "username">) {
+  if (session.role !== "admin" && session.role !== "office") {
+    return false;
+  }
+
+  const allowlist = wettReportUsernameAllowlist();
+
+  if (!allowlist) {
+    return true;
+  }
+
+  return allowlist.includes(session.username.trim().toLowerCase());
+}
+
+export async function requireWettReportAccess(): Promise<SessionUser> {
+  const session = await requireSession();
+
+  if (!canUseWettReports(session)) {
+    redirect(getDefaultAdminPathForRole(session.role));
+  }
+
+  return session;
+}
+
+export async function getWettReportSession(): Promise<SessionUser | null> {
+  const session = await getSession();
+
+  if (!session || !canUseWettReports(session)) {
+    return null;
   }
 
   return session;

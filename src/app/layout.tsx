@@ -3,9 +3,7 @@ import { Bricolage_Grotesque, Cormorant_Garamond } from "next/font/google";
 
 import { GoogleAnalyticsHead } from "@/components/google-analytics";
 import { GoogleAnalyticsTracker } from "@/components/google-analytics-tracker";
-import { MobileActionDock } from "@/components/mobile-action-dock";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { RootChromeFrame } from "@/components/root-chrome-frame";
 import { StructuredData } from "@/components/structured-data";
 import { VercelAnalytics } from "@/components/vercel-analytics";
 import { getPublicSiteSettings } from "@/lib/cms/storage";
@@ -83,12 +81,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full bg-[var(--color-paper)] text-[var(--color-ink)]">
         <StructuredData data={[buildWebsiteSchema(), buildOrganizationSchema()]} />
-        <div className="relative flex min-h-screen flex-col overflow-x-clip pb-24 lg:pb-0">
-          <SiteHeader settings={settings} />
-          <main className="flex-1">{children}</main>
-          <SiteFooter settings={settings} />
-          <MobileActionDock settings={settings} />
-        </div>
+        <RootChromeFrame settings={settings}>{children}</RootChromeFrame>
         <VercelAnalytics />
         <GoogleAnalyticsTracker />
       </body>

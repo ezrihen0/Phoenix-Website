@@ -133,6 +133,12 @@ export default async function AdminDashboardPage({
           href="/admin/settings"
           cta="Edit settings"
         />
+        <ActionPanel
+          title="WETT Reports"
+          description="Create and resume private WETT inspection reports from the office workspace."
+          href="/admin/office/wett"
+          cta="Open WETT Reports"
+        />
       </div>
 
       <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] p-6">
