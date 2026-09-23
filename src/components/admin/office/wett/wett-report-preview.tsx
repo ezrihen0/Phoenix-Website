@@ -96,7 +96,6 @@ export function WettReportPreview({ model }: { model: WettReportViewModel }) {
       ) : null}
       <footer className="border-t border-[#d8d0c6] bg-[#f4efe8] px-5 py-5 text-sm leading-6 text-[#6b625a]">
         <p>{model.signOff}</p>
-        <p className="mt-2">{model.scopeNote}</p>
       </footer>
     </article>
   );

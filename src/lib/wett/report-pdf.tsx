@@ -188,7 +188,6 @@ function WettPdfDocument({
 
         <View style={{ marginTop: 16, padding: 12, borderWidth: 1, borderColor: COLORS.line, borderRadius: 6 }}>
           <Text style={{ fontSize: 11, lineHeight: 1.4 }}>{model.signOff}</Text>
-          <Text style={{ fontSize: 10, color: COLORS.muted, marginTop: 8, lineHeight: 1.4 }}>{model.scopeNote}</Text>
         </View>
 
         {photos.filter((photo) => !model.sectionResults.some((item) => item.photoIds.includes(photo.id)) && !model.findings.some((item) => item.photoIds.includes(photo.id)) && !model.measurements.some((item) => item.photoIds.includes(photo.id)) && !model.cleaning?.photoIds.includes(photo.id)).map((photo) => (

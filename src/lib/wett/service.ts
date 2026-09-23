@@ -12,6 +12,7 @@ import {
 } from "@/lib/wett/completion-state";
 import {
   allocateReportNumber,
+  isPhoenixReportNumber,
   applyEditableDraft,
   createEmptyWettReport,
   isEditableWettStatus,
@@ -23,6 +24,7 @@ import {
   type WettReport,
 } from "@/lib/wett/schema";
 import {
+  readCompletedWettReport,
   readWettIndex,
   readWettReport,
   withWettLock,
@@ -64,12 +66,53 @@ async function persistReport(report: WettReport) {
   return report;
 }
 
-export async function listWettReports() {
+async function assignCurrentReportNumbers() {
   const index = await readWettIndex();
+  let changed = false;
+
+  for (const summary of index.reports) {
+    if (isPhoenixReportNumber(summary.reportNumber)) {
+      continue;
+    }
+
+    const reportNumber = allocateReportNumber(index);
+    summary.reportNumber = reportNumber;
+    changed = true;
+    const report = await readWettReport(summary.id);
+
+    if (report) {
+      report.reportNumber = reportNumber;
+      await writeWettReport(report);
+    }
+
+    const completed = await readCompletedWettReport(summary.id);
+
+    if (completed) {
+      completed.reportNumber = reportNumber;
+      await writeCompletedWettReport(completed);
+    }
+  }
+
+  if (changed) {
+    await writeWettIndex(index);
+  }
+
+  return index;
+}
+
+export async function listWettReports() {
+  const index = await withWettLock(() => assignCurrentReportNumbers());
   return [...index.reports].sort((first, second) => second.updatedAt.localeCompare(first.updatedAt));
 }
 
 export async function getWettReport(reportId: string) {
+  const report = await readWettReport(reportId);
+
+  if (!report || isPhoenixReportNumber(report.reportNumber)) {
+    return report;
+  }
+
+  await withWettLock(() => assignCurrentReportNumbers());
   return readWettReport(reportId);
 }
 

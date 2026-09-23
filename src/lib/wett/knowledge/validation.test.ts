@@ -510,4 +510,16 @@ const accepted = { ...partialAccess, observation: "Light soot was observed.", ac
 assert.equal(accepted.deposits, "heavy");
 assert.equal(accepted.assessment, undefined);
 
+const unnamedApproval = reportFor("wood-stove");
+unnamedApproval.inspection.inspectorName = "";
+unnamedApproval.signOff.signedBy = "";
+unnamedApproval.signOff.inspectorApproved = true;
+const unnamedModel = buildWettReportViewModel(unnamedApproval);
+assert.equal(unnamedModel.signOff.includes("Approved by"), false);
+assert.equal(unnamedModel.signOff.includes("Not recorded"), false);
+assert.match(unnamedModel.signOff, /observed on the inspection date/);
+const namedApproval = reportFor("wood-stove");
+namedApproval.signOff.inspectorApproved = true;
+assert.equal(buildWettReportViewModel(namedApproval).signOff, "Approved by Michael");
+
 console.log("wett knowledge validation passed");

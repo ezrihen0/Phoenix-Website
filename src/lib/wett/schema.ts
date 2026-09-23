@@ -673,9 +673,28 @@ export function parseWettIndex(value: unknown): WettIndexFile {
   };
 }
 
-export function allocateReportNumber(index: WettIndexFile, now = new Date()) {
+const PHOENIX_REPORT_NUMBER = /^PHX\d{4}-\d{6}$/;
+
+export function isPhoenixReportNumber(value: string) {
+  return PHOENIX_REPORT_NUMBER.test(value);
+}
+
+function randomSixDigits() {
+  const values = new Uint32Array(1);
+  crypto.getRandomValues(values);
+  return String(values[0] % 1_000_000).padStart(6, "0");
+}
+
+export function allocateReportNumber(index: Pick<WettIndexFile, "reports">, now = new Date()) {
   const year = String(now.getFullYear());
-  const next = (index.nextSequenceByYear[year] ?? 0) + 1;
-  index.nextSequenceByYear[year] = next;
-  return `PHX-WETT-${year}-${String(next).padStart(5, "0")}`;
+  const used = new Set(index.reports.map((report) => report.reportNumber));
+
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    const reportNumber = `PHX${year}-${randomSixDigits()}`;
+    if (!used.has(reportNumber)) {
+      return reportNumber;
+    }
+  }
+
+  throw new Error("A unique report number could not be assigned.");
 }

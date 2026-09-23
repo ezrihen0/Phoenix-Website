@@ -40,14 +40,25 @@ export type WettReportViewModel = {
   } | null;
   photos: Array<{ id: string; caption: string }>;
   signOff: string;
-  scopeNote: string;
   technicianNote: string;
   maintenanceNotes: string;
   protectiveBarrierNotes: string;
 };
 
+const INSPECTION_CONDITION_NOTE =
+  "This report reflects the system condition as observed on the inspection date. Subsequent use, alteration, repair, deterioration, weather exposure, or other changes may affect the condition of the system.";
+
 function display(value: string | undefined, fallback = "Not recorded") {
   return value?.trim() || fallback;
+}
+
+function reportSignOff(report: WettReport) {
+  if (!report.signOff.inspectorApproved) {
+    return "Field capture. Inspector approval has not been recorded.";
+  }
+
+  const approver = (report.signOff.signedBy || report.inspection.inspectorName)?.trim();
+  return approver ? `Approved by ${approver}` : INSPECTION_CONDITION_NOTE;
 }
 
 export function buildWettReportViewModel(report: WettReport, generatedAt = new Date().toISOString()): WettReportViewModel {
@@ -134,11 +145,7 @@ export function buildWettReportViewModel(report: WettReport, generatedAt = new D
       id: photo.id,
       caption: [photo.evidenceType, photo.caption].filter(Boolean).join(" — ") || "Phoenix Evidence Photo",
     })),
-    signOff: report.signOff.inspectorApproved
-      ? `Approved by ${display(report.signOff.signedBy || report.inspection.inspectorName)}`
-      : "Field capture. Inspector approval has not been recorded.",
-    scopeNote:
-      "This is a WETT Inspection Report for a Phoenix Alberta inspection. It records the selected inspection level, observations, measurements, access limits, and the responsible inspector's classification. It is not a WETT certificate. Phoenix evidence photos are not an official WETT mandatory-photo schedule.",
+    signOff: reportSignOff(report),
     technicianNote: report.notes.generalTechnicianNote?.trim() || "",
     maintenanceNotes: report.maintenance.notes?.trim() || "",
     protectiveBarrierNotes: report.protectiveBarrier.notes?.trim() || "",
