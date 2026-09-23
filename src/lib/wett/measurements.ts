@@ -477,7 +477,7 @@ function typeLabel(definition: MeasurementDefinition, value: string | undefined)
 }
 
 export function measurementOutputLines(system: WettSystem, items: MeasurementItem[]) {
-  const lines: Array<{ label: string; value: string }> = [];
+  const lines: Array<{ id: string; label: string; value: string }> = [];
 
   for (const definition of measurementDefinitions(system.type)) {
     if (!measurementIsActive(definition, system, items)) continue;
@@ -507,7 +507,7 @@ export function measurementOutputLines(system: WettSystem, items: MeasurementIte
 
     if (item.status) parts.push(`Status: ${MEASUREMENT_STATUS_LABELS[item.status]}`);
     if (parts.length === 0) continue;
-    lines.push({ label: definition.label, value: parts.join("\n") });
+    lines.push({ id: definition.id, label: definition.label, value: parts.join("\n") });
   }
 
   return lines;

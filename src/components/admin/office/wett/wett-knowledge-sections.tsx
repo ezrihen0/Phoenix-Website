@@ -1,6 +1,7 @@
 "use client";
 
 import { WettHelpControl } from "@/components/admin/office/wett/wett-help";
+import { createId } from "@/lib/id";
 import { WettIdentificationSection } from "@/components/admin/office/wett/wett-identification-section";
 import { WettMeasurementsSection } from "@/components/admin/office/wett/wett-measurements-section";
 import { EVIDENCE_TYPE_LABELS, PHOENIX_EVIDENCE_LABEL } from "@/lib/wett/knowledge/evidence";
@@ -440,7 +441,7 @@ function FindingsSection({
         </div>
       )) : null}
       {report.notes.additionalIssues === "yes" ? (
-        <button type="button" disabled={disabled} className="min-h-12 rounded-full bg-[#1c1816] px-4 text-sm font-semibold text-white" onClick={() => onChange((current) => ({ ...current, notes: { ...current.notes, additionalIssues: "yes" }, findings: [...current.findings, { id: crypto.randomUUID() }] }))}>Add Another Finding</button>
+        <button type="button" disabled={disabled} className="min-h-12 rounded-full bg-[#1c1816] px-4 text-sm font-semibold text-white" onClick={() => onChange((current) => ({ ...current, notes: { ...current.notes, additionalIssues: "yes" }, findings: [...current.findings, { id: createId() }] }))}>Add Another Finding</button>
       ) : null}
     </div>
   );
@@ -479,7 +480,7 @@ function RecommendationsSection({ report, disabled, onChange }: { report: WettRe
                       const options = new Set(existing?.options || []);
                       if (options.has(option.id)) options.delete(option.id);
                       else options.add(option.id);
-                      const next = { id: existing?.id || crypto.randomUUID(), inspectionItemId: row.inspectionItemId, findingId: row.findingId, options: [...options], text: existing?.text };
+                      const next = { id: existing?.id || createId(), inspectionItemId: row.inspectionItemId, findingId: row.findingId, options: [...options], text: existing?.text };
                       return { ...current, recommendations: [...current.recommendations.filter((item) => item.id !== existing?.id), next] };
                     })}
                   >
@@ -490,7 +491,7 @@ function RecommendationsSection({ report, disabled, onChange }: { report: WettRe
             </div>
             <Area label="Technician recommendation" value={stored?.text || ""} disabled={disabled} onChange={(value) => onChange((current) => {
               const existing = current.recommendations.find((item) => (row.inspectionItemId && item.inspectionItemId === row.inspectionItemId) || (row.findingId && item.findingId === row.findingId));
-              const next = { id: existing?.id || crypto.randomUUID(), inspectionItemId: row.inspectionItemId, findingId: row.findingId, options: existing?.options, text: value };
+              const next = { id: existing?.id || createId(), inspectionItemId: row.inspectionItemId, findingId: row.findingId, options: existing?.options, text: value };
               return { ...current, recommendations: [...current.recommendations.filter((item) => item.id !== existing?.id), next] };
             })} />
           </div>
@@ -535,7 +536,7 @@ function CleaningAssessment({
       const recommendations = current.recommendations.filter((item) => item.inspectionItemId !== CLEANING_ITEM_ID);
       if (copy) {
         recommendations.push({
-          id: existing?.id || crypto.randomUUID(),
+          id: existing?.id || createId(),
           inspectionItemId: CLEANING_ITEM_ID,
           priority: copy.priority,
           options: ["cleaning"],

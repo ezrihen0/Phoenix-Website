@@ -10,6 +10,7 @@ import { identificationLines } from "@/lib/wett/system-profile";
 
 export type WettReportViewModel = {
   title: "WETT Inspection Report";
+  reportId: string;
   reportNumber: string;
   status: string;
   generatedAt: string;
@@ -23,7 +24,7 @@ export type WettReportViewModel = {
   systemLabel: string;
   identification: Array<{ label: string; value: string }>;
   executiveSummary: string[];
-  measurements: Array<{ label: string; value: string }>;
+  measurements: Array<{ label: string; value: string; photoIds: string[] }>;
   sectionResults: Array<{ label: string; value: string; photoIds: string[] }>;
   findings: Array<{ title: string; body: string; photoIds: string[] }>;
   uti: string[];
@@ -66,6 +67,7 @@ export function buildWettReportViewModel(report: WettReport, generatedAt = new D
 
   return {
     title: "WETT Inspection Report",
+    reportId: report.id,
     reportNumber: report.reportNumber,
     status: report.status,
     generatedAt,
@@ -88,7 +90,16 @@ export function buildWettReportViewModel(report: WettReport, generatedAt = new D
       `Not verified: ${notVerifiedCount}`,
       `Applicable sections recorded: ${report.checklist.filter((item) => applicable.some((entry) => entry.id === item.id)).length} of ${applicable.length}`,
     ],
-    measurements: measurementOutputLines(report.system, report.measurements.items),
+    measurements: measurementOutputLines(report.system, report.measurements.items).map((line) => ({
+      label: line.label,
+      value: line.value,
+      photoIds: [
+        ...new Set([
+          ...report.photos.filter((photo) => photo.measurementId === line.id).map((photo) => photo.id),
+          ...report.measurements.items.filter((item) => item.id === line.id && item.photoId).map((item) => item.photoId as string),
+        ]),
+      ],
+    })),
     sectionResults: applicable.flatMap((item) => {
       const stored = report.checklist.find((entry) => entry.id === item.id);
       if (!stored?.status && !stored?.workflowControl && !stored?.observation) return [];

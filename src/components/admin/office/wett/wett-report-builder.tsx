@@ -542,18 +542,18 @@ export function WettReportBuilder({ initialReport, username }: { initialReport: 
                 <li key={`${index}-${blocker}`} className="rounded-2xl bg-[#f4efe8] px-3 py-3">{blocker}</li>
               ))}
             </ul>
-            <details className="rounded-2xl border border-[#d8d0c6] p-3">
-              <summary className="min-h-12 cursor-pointer text-sm font-semibold">View all report photos</summary>
-              <div className="mt-3 grid gap-3">
+            {report.photos.length > 0 ? (
+              <div className="grid gap-3">
+                <p className="font-semibold">Photo evidence</p>
                 {report.photos.map((photo) => (
                   <figure key={photo.id}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={`/api/admin/wett/reports/${report.id}/photos/${photo.id}`} alt={photo.caption || "Inspection photo"} className="aspect-[4/3] w-full rounded-2xl object-cover" />
-                    <figcaption className="mt-1 text-sm">{photo.caption || "Phoenix Evidence Photo"}</figcaption>
+                    <figcaption className="mt-1 text-sm">{photo.caption || photo.inspectionSection || "Phoenix Evidence Photo"}</figcaption>
                   </figure>
                 ))}
               </div>
-            </details>
+            ) : null}
             <a href={`/admin/office/wett/${report.id}/preview`} className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#1c1816] px-4 font-semibold">Open preview</a>
             <a href={`/api/admin/wett/reports/${report.id}/pdf`} className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#1c1816] px-4 font-semibold">Download PDF</a>
           </div>

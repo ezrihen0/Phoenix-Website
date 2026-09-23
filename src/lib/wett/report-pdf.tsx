@@ -34,8 +34,8 @@ async function getPhoenixLogoSrc() {
 async function photoSources(report: WettReport) {
   const sources: Array<{ id: string; caption: string; src: string }> = [];
 
-  for (const photo of report.photos.slice(0, 8)) {
-    if (!photo.contentType.startsWith("image/") || photo.contentType.includes("heic") || photo.contentType.includes("heif")) {
+  for (const photo of report.photos) {
+    if (!photo.contentType.startsWith("image/")) {
       continue;
     }
 
@@ -135,6 +135,9 @@ function WettPdfDocument({
           <View key={item.label} style={{ borderBottomWidth: 1, borderBottomColor: COLORS.line, paddingVertical: 4 }}>
             <Text style={{ fontSize: 10, color: COLORS.muted }}>{item.label}</Text>
             <Text style={{ fontSize: 10, marginTop: 2 }}>{item.value}</Text>
+            {photos.filter((photo) => item.photoIds.includes(photo.id)).map((photo) => (
+              <Image key={photo.id} src={photo.src} style={{ width: 180, height: 120, objectFit: "cover", marginTop: 4 }} />
+            ))}
           </View>
         ))}
 
@@ -188,7 +191,7 @@ function WettPdfDocument({
           <Text style={{ fontSize: 10, color: COLORS.muted, marginTop: 8, lineHeight: 1.4 }}>{model.scopeNote}</Text>
         </View>
 
-        {photos.filter((photo) => !model.sectionResults.some((item) => item.photoIds.includes(photo.id)) && !model.findings.some((item) => item.photoIds.includes(photo.id)) && !model.cleaning?.photoIds.includes(photo.id)).map((photo) => (
+        {photos.filter((photo) => !model.sectionResults.some((item) => item.photoIds.includes(photo.id)) && !model.findings.some((item) => item.photoIds.includes(photo.id)) && !model.measurements.some((item) => item.photoIds.includes(photo.id)) && !model.cleaning?.photoIds.includes(photo.id)).map((photo) => (
           <View key={photo.src} style={{ marginTop: 12 }} wrap={false}>
             <Image src={photo.src} style={{ width: 240, height: 160, objectFit: "cover" }} />
             <Text style={{ marginTop: 4, fontSize: 10, color: COLORS.muted }}>{photo.caption}</Text>

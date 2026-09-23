@@ -49,8 +49,8 @@ export function WettReportPreview({ model }: { model: WettReportViewModel }) {
           ))}
         </ul>
       </section>
-      {model.measurements.length > 0 ? <ListSection title="Measurements & system checks" rows={model.measurements} /> : null}
-      {model.sectionResults.length > 0 ? <ListSection title="Inspection" rows={model.sectionResults} /> : null}
+      {model.measurements.length > 0 ? <ListSection title="Measurements & system checks" rows={model.measurements} reportId={model.reportId} photos={model.photos} /> : null}
+      {model.sectionResults.length > 0 ? <ListSection title="Inspection" rows={model.sectionResults} reportId={model.reportId} photos={model.photos} /> : null}
       {model.cleaning ? (
         <section className="border-t border-[#d8d0c6] px-5 py-5">
           <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-[#6b625a]">Maintenance / combustible deposits</h3>
@@ -58,17 +58,27 @@ export function WettReportPreview({ model }: { model: WettReportViewModel }) {
           <p className="mt-2 text-sm leading-6">Assessment: {model.cleaning.assessment}</p>
           {model.cleaning.recommendation ? <p className="mt-2 text-sm leading-6">Technician recommendation: {model.cleaning.recommendation}</p> : null}
           {model.cleaning.technicalBasis ? <p className="mt-2 text-sm leading-6">Technical basis: {model.cleaning.technicalBasis}</p> : null}
+          <ReportPhotos reportId={model.reportId} photos={model.photos} photoIds={model.cleaning.photoIds} />
         </section>
       ) : null}
       {model.findings.length > 0 ? (
         <section className="border-t border-[#d8d0c6] px-5 py-5">
           <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-[#6b625a]">Additional findings</h3>
           {model.findings.map((finding) => (
-            <p key={`${finding.title}-${finding.body}`} className="mt-2 text-sm leading-6">
-              <span className="font-semibold">{finding.title}. </span>
-              {finding.body}
-            </p>
+            <div key={`${finding.title}-${finding.body}`} className="mt-3">
+              <p className="text-sm leading-6">
+                <span className="font-semibold">{finding.title}. </span>
+                {finding.body}
+              </p>
+              <ReportPhotos reportId={model.reportId} photos={model.photos} photoIds={finding.photoIds} />
+            </div>
           ))}
+        </section>
+      ) : null}
+      {unplacedPhotos(model).length > 0 ? (
+        <section className="border-t border-[#d8d0c6] px-5 py-5">
+          <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-[#6b625a]">Photo evidence</h3>
+          <ReportPhotos reportId={model.reportId} photos={unplacedPhotos(model)} photoIds={unplacedPhotos(model).map((photo) => photo.id)} />
         </section>
       ) : null}
       {model.recommendations.length > 0 ? (
@@ -92,19 +102,71 @@ export function WettReportPreview({ model }: { model: WettReportViewModel }) {
   );
 }
 
-function ListSection({ title, rows }: { title: string; rows: Array<{ label: string; value: string }> }) {
+function placedPhotoIds(model: WettReportViewModel) {
+  return new Set([
+    ...model.measurements.flatMap((item) => item.photoIds),
+    ...model.sectionResults.flatMap((item) => item.photoIds),
+    ...model.findings.flatMap((item) => item.photoIds),
+    ...(model.cleaning?.photoIds || []),
+  ]);
+}
+
+function unplacedPhotos(model: WettReportViewModel) {
+  const placed = placedPhotoIds(model);
+  return model.photos.filter((photo) => !placed.has(photo.id));
+}
+
+function ListSection({
+  title,
+  rows,
+  reportId,
+  photos,
+}: {
+  title: string;
+  rows: Array<{ label: string; value: string; photoIds?: string[] }>;
+  reportId: string;
+  photos: WettReportViewModel["photos"];
+}) {
   return (
     <section className="border-t border-[#d8d0c6] px-5 py-5">
       <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-[#6b625a]">{title}</h3>
       <dl className="mt-3 divide-y divide-[#d8d0c6]">
         {rows.map((item) => (
-          <div key={item.label} className="flex justify-between gap-4 py-2 text-sm">
-            <dt className="text-[#6b625a]">{item.label}</dt>
-            <dd className="max-w-[65%] whitespace-pre-line text-right font-medium">{item.value}</dd>
+          <div key={item.label} className="py-3 text-sm">
+            <div className="flex justify-between gap-4">
+              <dt className="text-[#6b625a]">{item.label}</dt>
+              <dd className="max-w-[65%] whitespace-pre-line text-right font-medium">{item.value}</dd>
+            </div>
+            <ReportPhotos reportId={reportId} photos={photos} photoIds={item.photoIds || []} />
           </div>
         ))}
       </dl>
     </section>
+  );
+}
+
+function ReportPhotos({
+  reportId,
+  photos,
+  photoIds,
+}: {
+  reportId: string;
+  photos: WettReportViewModel["photos"];
+  photoIds: string[];
+}) {
+  const shown = photos.filter((photo) => photoIds.includes(photo.id));
+  if (shown.length === 0) return null;
+
+  return (
+    <div className="mt-3 grid gap-3">
+      {shown.map((photo) => (
+        <figure key={photo.id}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={`/api/admin/wett/reports/${reportId}/photos/${photo.id}`} alt={photo.caption} className="max-h-80 w-full rounded-2xl object-cover" />
+          <figcaption className="mt-1 text-sm text-[#6b625a]">{photo.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
   );
 }
 

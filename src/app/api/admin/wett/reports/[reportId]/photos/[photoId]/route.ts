@@ -1,3 +1,4 @@
+import sharp from "sharp";
 import { NextResponse } from "next/server";
 
 import { getWettReportSession } from "@/lib/auth/permissions";
@@ -37,10 +38,22 @@ export async function GET(_request: Request, context: { params: Promise<{ report
     return NextResponse.json({ error: "Photo not found." }, { status: 404, headers: privateHeaders });
   }
 
-  return new Response(Buffer.from(bytes), {
+  let body: Uint8Array = bytes;
+  let contentType = photo.contentType;
+
+  if (contentType.includes("heic") || contentType.includes("heif")) {
+    try {
+      body = await sharp(Buffer.from(bytes)).rotate().jpeg({ quality: 80 }).toBuffer();
+      contentType = "image/jpeg";
+    } catch {
+      contentType = photo.contentType;
+    }
+  }
+
+  return new Response(Buffer.from(body), {
     headers: {
       ...privateHeaders,
-      "Content-Type": photo.contentType,
+      "Content-Type": contentType,
     },
   });
 }
