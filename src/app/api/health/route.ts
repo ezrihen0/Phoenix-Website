@@ -36,6 +36,8 @@ export async function GET() {
     wizfieldConfigured: isWizfieldConfigured(),
     leadEmailConfigured,
     deploymentVersion,
+    gitCommit: process.env.VERCEL_GIT_COMMIT_SHA?.trim() || null,
+    wettReportsRoute: true,
     timestamp: new Date().toISOString(),
   });
 }

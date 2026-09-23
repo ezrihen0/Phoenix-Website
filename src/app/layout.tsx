@@ -76,10 +76,8 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
       className={`${bricolage.variable} ${cormorant.variable} h-full scroll-smooth antialiased`}
     >
-      <head>
-        <GoogleAnalyticsHead />
-      </head>
       <body className="min-h-full bg-[var(--color-paper)] text-[var(--color-ink)]">
+        <GoogleAnalyticsHead />
         <StructuredData data={[buildWebsiteSchema(), buildOrganizationSchema()]} />
         <RootChromeFrame settings={settings}>{children}</RootChromeFrame>
         <VercelAnalytics />
